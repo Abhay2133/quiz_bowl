@@ -1,12 +1,22 @@
-import 'package:desktop/participant.dart';
+import 'package:desktop/screens/home/home_screen.dart';
+import 'package:desktop/screens/login/login_screen.dart';
+import 'package:desktop/screens/quiz/quiz_screen.dart';
+import 'package:desktop/screens/start/start_screen.dart';
+import 'package:desktop/screens/submission/submission_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'home_page.dart'; // Import the homepage
-import 'admin_login_page.dart'; // Import the admin login page
-import 'participant_login_page.dart'; // Import the participant login page
+import 'package:window_manager/window_manager.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+  // Initialize window options
+  windowManager.waitUntilReadyToShow().then((_) async {
+    await windowManager.setFullScreen(false); // Start in windowed mode
+  });
   runApp(MyApp());
 }
 
@@ -18,12 +28,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/quiz',
       routes: {
-        '/': (context) => HomePage(),
-        '/adminLogin': (context) => AdminLoginPage(), // Replace with your admin login page widget
-        '/participantLogin': (context) => ParticipantLoginPage(), // Replace with your participant login page widget
-        '/participant': (context) => ParticipantPage(), // Replace with your participant login page widget
+        '/': (context) => HomeScreen(),
+        '/login': (context) => LoginScreen(),
+        '/start': (context) => StartScreen(),
+        '/quiz': (context) => QuizScreen(),
+        '/submission': (context) => SubmissionScreen(),
       },
     );
   }
