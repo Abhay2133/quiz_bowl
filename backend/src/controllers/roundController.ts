@@ -4,13 +4,14 @@ import prisma from '../prisma/client';
 
 // Create a new round
 export const createRound = async (req: Request, res: Response) => {
-  const { testId, name, order, duration, startTiming, questionCount } = req.body;
+  const { testId, name, duration, startTiming, questionCount } = req.body;
   try {
     const round = await prisma.round.create({
-      data: { testId, name, order, duration, startTiming, questionCount },
+      data: { testId, name, duration, startTiming, questionCount },
     });
     res.status(201).json(round);
   } catch (error) {
+    console.error(error);
     res.status(400).json({ error: 'Error creating round' });
   }
 };
@@ -22,6 +23,7 @@ export const getRoundsByTestId = async (req: Request, res: Response) => {
     const rounds = await prisma.round.findMany({ where: { testId: parseInt(testId) } });
     res.json(rounds);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error fetching rounds' });
   }
 };
@@ -36,6 +38,7 @@ export const getRoundById = async (req: Request, res: Response) => {
     }
     res.json(round);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error fetching round' });
   }
 };
@@ -51,6 +54,7 @@ export const updateRound = async (req: Request, res: Response) => {
     });
     res.json(updatedRound);
   } catch (error) {
+    console.error(error);
     res.status(400).json({ error: 'Error updating round' });
   }
 };
@@ -62,6 +66,7 @@ export const deleteRound = async (req: Request, res: Response) => {
     await prisma.round.delete({ where: { id: parseInt(id) } });
     res.status(204).send();
   } catch (error) {
+    console.error(error);
     res.status(404).json({ error: 'Round not found' });
   }
 };
