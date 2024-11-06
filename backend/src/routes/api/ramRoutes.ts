@@ -1,6 +1,6 @@
 // src/routes/ramRoutes.ts
 import express from 'express';
-import { getRamUsage } from '../controllers/ramController';
+import { getRamUsage } from '../../controllers/ramController';
 
 const router = express.Router();
 

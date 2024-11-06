@@ -5,13 +5,15 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "prebuild":"npx prisma migrate deploy",
-    "dev": "nodemon --exec ts-node src/index.ts",
-    "prepreview":"npm run build",
-    "preview":"npm run start",
-    "prisma:generate": "npx prisma generate", 
-    "prisma:migrate": "npx prisma migrate deploy", 
-    "prisma:seed": "npx prisma db seed"
+    "prebuild": "npx prisma migrate deploy",
+    "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
+    "prepreview": "npm run build",
+    "preview": "npm run start",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate deploy",
+    "prisma:seed": "npx prisma db seed",
+    "pretest":"npm run build",
+    "test": "node --test dist"
   },
   "keywords": [],
   "author": "",
@@ -23,16 +25,20 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^22.8.7",
+    "@types/node": "^22.9.0",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.7",
     "prisma": "^5.21.1",
+    "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }

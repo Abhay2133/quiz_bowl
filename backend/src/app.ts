@@ -1,23 +1,20 @@
-import express, { Application } from "express";
+import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import authRoutes from "./routes/authRoutes";
-import ramRoutes from "./routes/ramRoutes";
-
+import apiRoutes from "./routes/api"
 dotenv.config();
 
-const app: Application = express();
+const app = express();
 
 app.use(morgan("dev"));
 // Middleware setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', authRoutes);
-app.use('/api', ramRoutes);
+app.use("/api", apiRoutes);
 
 // Placeholder for routes
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Quiz Bowl Backend API");
 });
 
