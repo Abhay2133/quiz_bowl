@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -13,3 +13,30 @@ model User {
   teamName  String
   testCode  String
 }
+
+model Test {
+  id          Int      @id @default(autoincrement()) // Unique identifier for each test
+  name        String   // Name of the test
+  duration    Int      // Duration in minutes
+  startTiming DateTime // Start time of the test
+  date        DateTime // Date when the test is scheduled
+  createdAt   DateTime @default(now()) // Automatically set the creation date
+  updatedAt   DateTime @updatedAt // Automatically updated on any change
+
+  rounds      Round[]  // A test can have multiple rounds
+
+}
+
+model Round {
+  id          Int      @id @default(autoincrement()) // Unique identifier for each round
+  testId      Int      // Foreign key linking to the Test table
+  name        String   // Name of the round (e.g., Screening, Pre-final, Final)
+  order       Int      // The order in which the round occurs (1 for Screening, 2 for Pre-final, etc.)
+  duration    Int      // Duration of the round in minutes
+  startTiming DateTime // Start time of the round
+  createdAt   DateTime @default(now()) // Automatically set the creation date
+  updatedAt   DateTime @updatedAt // Automatically updated on any change
+
+  test        Test     @relation(fields: [testId], references: [id]) // Relationship with Test table
+}
+

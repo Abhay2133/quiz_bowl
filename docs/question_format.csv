@@ -1,0 +1,14 @@
+id,question,answer,option1,option2,option3,option4,type,link,difficulty
+1,What is the capital of France?,option1,Paris,Berlin,Rome,Madrid,text,,Easy
+2,Identify the sound made by a lion.,option1,Roar,Meow,Chirp,Growl,audio,audio/lion-roar.mp3,Medium
+3,Who is depicted in this famous painting 'Mona Lisa'?,option2,Pablo Picasso,Leonardo da Vinci,Vincent van Gogh,Michelangelo,image,images/mona-lisa.jpg,Hard
+4,What is 5 + 7?,option2,11,12,13,14,text,,Easy
+5,Solve for x in the equation shown on the screen.,option2,4,5,6,7,text,,Medium
+6,Which planet is known as the Red Planet?,option2,Jupiter,Mars,Saturn,Venus,text,,Easy
+7,What sound does this instrument make?,option3,Guitar,Drums,Violin,Piano,audio,audio/violin.mp3,Medium
+8,Identify this country based on the flag shown.,option1,Japan,China,India,South Korea,image,images/japan-flag.png,Easy
+9,Watch the video and answer: In what year did World War II end?,option4,1939,1941,1943,1945,video,video/ww2-end.mp4,Medium
+10,Describe Newton's First Law of Motion.,option1,An object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force.,,,,video,video/newton-first-law.mp4,Hard
+11,Which element has the atomic number 1?,option4,Oxygen,Nitrogen,Helium,Hydrogen,text,,Easy
+12,What is the speed of light in a vacuum?,option2,"300,000,000 m/s","299,792,458 m/s","150,000,000 m/s","250,000,000 m/s",text,,Hard
+13,Who won the 2018 FIFA World Cup?,option3,Brazil,Germany,France,Argentina,text,,Medium
