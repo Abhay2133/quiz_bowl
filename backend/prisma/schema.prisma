@@ -30,8 +30,8 @@ model Team {
 
 model Test {
   id          Int      @id @default(autoincrement()) // Unique identifier for each test
-  name        String // Name of the test
-  testcode    String // TestCode for user login
+  name        String   @unique // Name of the test
+  testcode    String   @unique // TestCode for user login
   duration    Int // Duration in minutes
   startTiming DateTime // Start time of the test
   date        DateTime // Date when the test is scheduled
