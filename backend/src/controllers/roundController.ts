@@ -4,10 +4,10 @@ import prisma from '../prisma/client';
 
 // Create a new round
 export const createRound = async (req: Request, res: Response) => {
-  const { testId, name, duration, startTiming, questionCount } = req.body;
+  const { testId, name, order, duration, startTiming, questionCount } = req.body;
   try {
     const round = await prisma.round.create({
-      data: { testId, name, duration, startTiming, questionCount },
+      data: { testId, name, order, duration, startTiming, questionCount },
     });
     res.status(201).json(round);
   } catch (error) {
