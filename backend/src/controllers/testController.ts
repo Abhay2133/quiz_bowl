@@ -10,9 +10,9 @@ export const createTest = async (req: Request, res: Response) => {
       data: { name, duration, startTiming, date, testcode },
     });
     res.status(201).json(test);
-  } catch (error) {
-    res.status(400).json({ error: 'Error creating test' });
-    console.error(error)
+  } catch (error:any) {
+    console.error(error);
+    res.status(400).json({ error: 'Error creating test', message : error.message });
 
   }
 };
@@ -23,6 +23,7 @@ export const getTests = async (req: Request, res: Response) => {
     const tests = await prisma.test.findMany();
     res.json(tests);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error fetching tests' });
   }
 };
@@ -37,6 +38,7 @@ export const getTestById = async (req: Request, res: Response) => {
     }
     res.json(test);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error fetching test' });
   }
 };
@@ -51,8 +53,9 @@ export const updateTest = async (req: Request, res: Response) => {
       data: { name, duration, startTiming, date },
     });
     res.json(updatedTest);
-  } catch (error) {
-    res.status(400).json({ error: 'Error updating test' });
+  } catch (error:any) {
+    console.error(error);
+    res.status(400).json({ error: 'Error updating test', message : error.message });
   }
 };
 
@@ -63,6 +66,7 @@ export const deleteTest = async (req: Request, res: Response) => {
     await prisma.test.delete({ where: { id: parseInt(id) } });
     res.status(204).send();
   } catch (error) {
+    console.error(error);
     res.status(404).json({ error: 'Test not found' });
   }
 };

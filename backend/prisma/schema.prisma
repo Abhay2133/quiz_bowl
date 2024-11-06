@@ -43,15 +43,18 @@ model Test {
 }
 
 model Round {
-  id            Int      @id @default(autoincrement()) // Unique identifier for each round
-  testId        Int // Foreign key linking to the Test table
-  name          String // Name of the round (e.g., Screening, Pre-final, Final)
-  order         Int @unique // The order in which the round occurs (1 for Screening, 2 for Pre-final, etc.)
-  duration      Int // Duration of the round in minutes
-  startTiming   DateTime // Start time of the round
-  createdAt     DateTime @default(now()) // Automatically set the creation date
-  updatedAt     DateTime @updatedAt // Automatically updated on any change
-  questionCount Int // number of question in current Round
+  id          Int      @id @default(autoincrement()) // Unique identifier for each round
+  testId      Int // Foreign key linking to the Test table
+  name        String // Name of the round (e.g., Screening, Pre-final, Final)
+  order       Int      @unique // The order in which the round occurs (1 for Screening, 2 for Pre-final, etc.)
+  duration    Int // Duration of the round in minutes
+  startTiming DateTime // Start time of the round
+  createdAt   DateTime @default(now()) // Automatically set the creation date
+  updatedAt   DateTime @updatedAt // Automatically updated on any change
+  // questionCount Int // number of question in current Round
+  easyQ       Int      @default(0)
+  mediumQ     Int      @default(0)
+  hardQ       Int      @default(0)
 
   questions Question[] // a round has multiple questions
   test      Test       @relation(fields: [testId], references: [id]) // Relationship with Test table
