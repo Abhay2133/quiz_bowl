@@ -10,7 +10,7 @@ export const createTest = async (req: Request, res: Response) => {
     const test = await prisma.test.create({
       data: { name, duration, startTiming, date, testcode },
     });
-    res.status(201).json({ ...test, startTiming: toIndianTime(test.startTiming.toISOString()), date: toIndianTime(test.date.toISOString()) });
+    res.status(201).json({ ...test, createdAt: toIndianTime(test.createdAt.toISOString()), updatedAt: toIndianTime(test.updatedAt.toISOString()) });
   } catch (error) {
     res.status(400).json({ error: 'Error creating test' });
     console.error(error)
@@ -22,7 +22,7 @@ export const createTest = async (req: Request, res: Response) => {
 export const getTests = async (req: Request, res: Response) => {
   try {
     const tests = await prisma.test.findMany();
-    res.json(tests.map((test: any) => ({ ...test, startTiming: toIndianTime(test.startTiming.toISOString()), date: toIndianTime(test.date.toISOString()) })));
+    res.json(tests.map((test: any) => ({ ...test, createdAt: toIndianTime(test.createdAt.toISOString()), updatedAt: toIndianTime(test.updatedAt.toISOString()) })));
   } catch (error) {
     res.status(500).json({ error: 'Error fetching tests' });
   }
@@ -36,7 +36,7 @@ export const getTestById = async (req: Request, res: Response) => {
     if (!test) {
       return res.status(404).json({ error: 'Test not found' });
     }
-    res.json({...test, startTiming:toIndianTime(test.startTiming.toISOString()), date : toIndianTime(test.date.toISOString())});
+    res.json({ ...test, createdAt: toIndianTime(test.createdAt.toISOString()), updatedAt: toIndianTime(test.updatedAt.toISOString()) });
   } catch (error) {
     res.status(500).json({ error: 'Error fetching test' });
   }
@@ -51,8 +51,9 @@ export const updateTest = async (req: Request, res: Response) => {
       where: { id: parseInt(id) },
       data: { name, duration, startTiming, date },
     });
-    res.json({...test, startTiming:toIndianTime(test.startTiming.toISOString()), date : toIndianTime(test.date.toISOString())});
+    res.json({ ...test, createdAt: toIndianTime(test.createdAt.toISOString()), updatedAt: toIndianTime(test.updatedAt.toISOString()) });
   } catch (error) {
+    console.error(error);
     res.status(400).json({ error: 'Error updating test' });
   }
 };
