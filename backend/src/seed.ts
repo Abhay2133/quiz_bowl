@@ -2,7 +2,7 @@ import { PrismaClient, Difficulty, QuestionType, ANSWER } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function main() {
+export async function mainSeed() {
   // Create a test
   const test = await prisma.test.create({
     data: {
@@ -98,11 +98,3 @@ function generateQuestions(roundName: string, easyCount: number, mediumCount: nu
 }
 
 // Run the seeding function
-main()
-  .catch(e => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
