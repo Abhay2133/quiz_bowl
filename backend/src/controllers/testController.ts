@@ -1,6 +1,6 @@
 // src/controllers/testController.ts
-import { Request, Response } from 'express';
-import prisma from '../prisma/client';
+import { Request, Response } from "express";
+import prisma from "../prisma/client";
 
 // Create a new test
 export const createTest = async (req: Request, res: Response) => {
@@ -10,10 +10,9 @@ export const createTest = async (req: Request, res: Response) => {
       data: { name, duration, startTiming, date, testcode },
     });
     res.status(201).json(test);
-  } catch (error:any) {
+  } catch (error: any) {
     console.error(error);
-    res.status(400).json({ error: 'Error creating test', message : error.message });
-
+    res.status(400).json({ error: "Error creating test", message: error.message });
   }
 };
 
@@ -24,7 +23,7 @@ export const getTests = async (req: Request, res: Response) => {
     res.json(tests);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error fetching tests' });
+    res.status(500).json({ error: "Error fetching tests" });
   }
 };
 
@@ -34,12 +33,12 @@ export const getTestById = async (req: Request, res: Response) => {
   try {
     const test = await prisma.test.findUnique({ where: { id: parseInt(id) } });
     if (!test) {
-      return res.status(404).json({ error: 'Test not found' });
+      return res.status(404).json({ error: "Test not found" });
     }
     res.json(test);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error fetching test' });
+    res.status(500).json({ error: "Error fetching test" });
   }
 };
 
@@ -53,9 +52,9 @@ export const updateTest = async (req: Request, res: Response) => {
       data: { name, duration, startTiming, date },
     });
     res.json(updatedTest);
-  } catch (error:any) {
+  } catch (error: any) {
     console.error(error);
-    res.status(400).json({ error: 'Error updating test', message : error.message });
+    res.status(400).json({ error: "Error updating test", message: error.message });
   }
 };
 
@@ -65,8 +64,24 @@ export const deleteTest = async (req: Request, res: Response) => {
   try {
     await prisma.test.delete({ where: { id: parseInt(id) } });
     res.status(204).send();
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    res.status(404).json({ error: 'Test not found' });
+    res.status(500).json({ error: "Error Deleting test", message: error.message });
   }
 };
+
+// get test by testcode
+export const getTestByCode = async (req: Request, res: Response) => {
+  const { testcode } = req.params;
+  try {
+    const test = await prisma.test.findUnique({ where: { testcode } });
+    if (!test) return res.status(404).json({ error: "no test found by testcode : " + testcode });
+    const usertest: any = { ...test };
+    delete usertest.createdAt;
+    delete usertest.updatedAt;
+    res.status(200).json(usertest);
+  } catch (e: any) {
+    console.error(e);
+    res.status(500).json({ error: `Error fetching test by testcode "${testcode}"`, message: e.message })
+  }
+}

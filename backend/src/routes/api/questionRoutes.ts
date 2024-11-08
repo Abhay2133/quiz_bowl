@@ -1,6 +1,6 @@
 // src/routes/questionRoutes.ts
 import express from 'express';
-import { createQuestion, getQuestions, getQuestionById, updateQuestion, deleteQuestion } from '../../controllers/questionController';
+import { createQuestion, getQuestions, getQuestionById, updateQuestion, deleteQuestion, getQuestionByRoundId } from '../../controllers/questionController';
 
 const router = express.Router();
 
@@ -13,6 +13,11 @@ router.get('/questions', getQuestions);
 // Route to get a specific question by its ID
 router.get('/questions/:id', async (req: express.Request, res: express.Response) => {
   await getQuestionById(req, res)
+});
+
+// Route to get a specific question by its ID
+router.get('/questions/round/:roundId', async (req: express.Request, res: express.Response) => {
+  await getQuestionByRoundId(req, res)
 });
 
 // Error code

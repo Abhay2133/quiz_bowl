@@ -4,15 +4,15 @@ import prisma from '../prisma/client';
 
 // Create a new round
 export const createRound = async (req: Request, res: Response) => {
-  const { testId, name, order, duration, startTiming, easyQ, mediumQ, hardQ } = req.body;
+  const { testId, name, easyQ, mediumQ, hardQ } = req.body;
   try {
     const round = await prisma.round.create({
-      data: { testId, name, order, duration, startTiming, easyQ, mediumQ, hardQ},
+      data: { testId, name, easyQ, mediumQ, hardQ },
     });
     res.status(201).json(round);
-  } catch (error:any) {
+  } catch (error: any) {
     console.error(error);
-    res.status(400).json({ error: 'Error creating round', message : error.message  });
+    res.status(400).json({ error: 'Error creating round', message: error.message });
   }
 };
 
@@ -46,11 +46,11 @@ export const getRoundById = async (req: Request, res: Response) => {
 // Update a round by ID
 export const updateRound = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { testId, name, order, duration, startTiming, easyQ, mediumQ, hardQ } = req.body;
+  const { testId, name, easyQ, mediumQ, hardQ } = req.body;
   try {
     const updatedRound = await prisma.round.update({
       where: { id: parseInt(id) },
-      data: { testId, name, order, duration, startTiming , easyQ, mediumQ, hardQ },
+      data: { testId, name, easyQ, mediumQ, hardQ },
     });
     res.json(updatedRound);
   } catch (error) {
@@ -68,5 +68,22 @@ export const deleteRound = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(404).json({ error: 'Round not found' });
+  }
+};
+
+
+// get round by testcode
+export const getRoundByTestCode = async (req: Request, res: Response) => {
+  const { testcode } = req.params;
+  try {
+    const rounds = await prisma.round.findMany({ where: { test: { testcode } } });
+    if (!rounds) {
+      return res.status(404).json({ error: 'Round not found' });
+    }
+    const userRounds = rounds.map(item=> {id:item.id})
+    res.json(userRounds );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error fetching round' });
   }
 };

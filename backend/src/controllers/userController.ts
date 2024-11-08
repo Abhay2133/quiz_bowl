@@ -36,6 +36,17 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
+// Get users by Team
+export const getUsersByTeamId = async (req: Request, res: Response) => {
+  const { teamId } = req.params;
+  try {
+    const users = await prisma.user.findMany({ where: { teamId: parseInt(teamId) } });
+    res.json(users);
+  } catch (error) {
+    res.status(404).json({ error: 'Error fetching team\'s users' });
+  }
+};
+
 // Update a user
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
