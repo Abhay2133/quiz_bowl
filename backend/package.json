@@ -15,7 +15,7 @@
     "prisma:seed": "npx prisma db seed",
     "pretest": "npm run build",
     "test": "node --test dist",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "ts-node src/seed.ts",
     "reset": "npx prisma migrate reset --force"
   },
   "keywords": [],
