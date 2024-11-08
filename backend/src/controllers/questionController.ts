@@ -124,9 +124,9 @@ export const generateRound = async (req: Request, res: Response) => {
     const round = await prisma.round.findUnique({ where: { id: roundId } });
     if (!round) return res.status(404).json({ error: `no round (id:${roundId}) found` });
     const { easyQ, mediumQ, hardQ } = round;
-    const easyQuestions = shuffleArray(await prisma.question.findMany({ where: { roundId, difficulty: "EASY" } })).slice(0, easyQ)
-    const mediumQuestions = shuffleArray(await prisma.question.findMany({ where: { roundId, difficulty: "MEDIUM" } })).slice(0, mediumQ)
-    const hardQuestions = shuffleArray(await prisma.question.findMany({ where: { roundId, difficulty: "HARD" } })).slice(0, hardQ)
+    const easyQuestions = shuffleArray(await prisma.question.findMany({ where: { roundId, difficulty: "EASY" } })).slice(0, easyQ).map(toUserQ)
+    const mediumQuestions = shuffleArray(await prisma.question.findMany({ where: { roundId, difficulty: "MEDIUM" } })).slice(0, mediumQ).map(toUserQ)
+    const hardQuestions = shuffleArray(await prisma.question.findMany({ where: { roundId, difficulty: "HARD" } })).slice(0, hardQ).map(toUserQ)
 
     return res.json([...easyQuestions, ...mediumQuestions, ...hardQuestions])
   } catch (e: any) {
