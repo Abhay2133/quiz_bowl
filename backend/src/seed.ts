@@ -3,41 +3,41 @@ import { PrismaClient, Difficulty, QuestionType, ANSWER } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function mainSeed() {
-  // Create a test
+  // Create one test
   const test = await prisma.test.create({
     data: {
-      name: 'Sample Test 1',
-      testcode: 'TEST1CODE',
+      name: 'Sample Test',
+      testcode: 'TEST123',
       duration: 120, // 2 hours
-      startTiming: new Date(),
-      date: new Date(),
+      startTiming: new Date('2024-11-10T09:00:00Z'),
+      date: new Date('2024-11-10T09:00:00Z'),
       rounds: {
         create: [
           {
-            name: 'Round 1',
-            easyQ: 7,
-            mediumQ: 7,
-            hardQ: 6,
+            name: 'Screening',
+            easyQ: 20,
+            mediumQ: 20,
+            hardQ: 20,
             questions: {
-              create: generateQuestions('Round 1', 7, 7, 6),
+              create: generateQuestions(20, Difficulty.EASY),
             },
           },
           {
-            name: 'Round 2',
-            easyQ: 6,
-            mediumQ: 7,
-            hardQ: 7,
+            name: 'Pre-final',
+            easyQ: 20,
+            mediumQ: 20,
+            hardQ: 20,
             questions: {
-              create: generateQuestions('Round 2', 6, 7, 7),
+              create: generateQuestions(20, Difficulty.MEDIUM),
             },
           },
           {
-            name: 'Round 3',
-            easyQ: 7,
-            mediumQ: 6,
-            hardQ: 7,
+            name: 'Final',
+            easyQ: 20,
+            mediumQ: 20,
+            hardQ: 20,
             questions: {
-              create: generateQuestions('Round 3', 7, 6, 7),
+              create: generateQuestions(20, Difficulty.HARD),
             },
           },
         ],
@@ -45,56 +45,49 @@ export async function mainSeed() {
     },
   });
 
-  // Output result for confirmation
-  console.log('Test created:', test);
+  // Create 20 teams with 2 users each
+  for (let i = 1; i <= 20; i++) {
+    const team = await prisma.team.create({
+      data: {
+        name: `Team ${i}`,
+        testId: test.id,
+        users: {
+          create: [
+            { name: `User ${2 * i - 1}`, email: `user${2 * i - 1}@example.com` },
+            { name: `User ${2 * i}`, email: `user${2 * i}@example.com` },
+          ],
+        },
+      },
+    });
+  }
+
+  console.log('Database seeded successfully!');
 }
 
-function generateQuestions(roundName: string, easyCount: number, mediumCount: number, hardCount: number) {
-  const questions: any[] = [];
-  
-  // Easy questions
-  for (let i = 0; i < easyCount; i++) {
+// Function to generate questions for each round
+function generateQuestions(count: number, difficulty: Difficulty) {
+  const questions = [];
+  for (let i = 0; i < count; i++) {
     questions.push({
-      question: `${roundName} - Easy Question ${i + 1}`,
-      answer: ANSWER.OPTION1,
-      option1: 'Easy Option 1',
-      option2: 'Easy Option 2',
-      option3: 'Easy Option 3',
-      option4: 'Easy Option 4',
+      question: `Question ${i + 1} (${difficulty})`,
+      answer: ANSWER.OPTION1, // Example answer
+      option1: `Option 1 for Question ${i + 1}`,
+      option2: `Option 2 for Question ${i + 1}`,
+      option3: `Option 3 for Question ${i + 1}`,
+      option4: `Option 4 for Question ${i + 1}`,
       type: QuestionType.TEXT,
-      difficulty: Difficulty.EASY,
+      difficulty: difficulty,
     });
   }
-
-  // Medium questions
-  for (let i = 0; i < mediumCount; i++) {
-    questions.push({
-      question: `${roundName} - Medium Question ${i + 1}`,
-      answer: ANSWER.OPTION2,
-      option1: 'Medium Option 1',
-      option2: 'Medium Option 2',
-      option3: 'Medium Option 3',
-      option4: 'Medium Option 4',
-      type: QuestionType.TEXT,
-      difficulty: Difficulty.MEDIUM,
-    });
-  }
-
-  // Hard questions
-  for (let i = 0; i < hardCount; i++) {
-    questions.push({
-      question: `${roundName} - Hard Question ${i + 1}`,
-      answer: ANSWER.OPTION3,
-      option1: 'Hard Option 1',
-      option2: 'Hard Option 2',
-      option3: 'Hard Option 3',
-      option4: 'Hard Option 4',
-      type: QuestionType.TEXT,
-      difficulty: Difficulty.HARD,
-    });
-  }
-
   return questions;
 }
 
 // Run the seeding function
+// main()
+//   .catch(e => {
+//     console.error(e);
+//     process.exit(1);
+//   })
+//   .finally(async () => {
+//     await prisma.$disconnect();
+//   });
