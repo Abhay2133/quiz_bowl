@@ -6,7 +6,6 @@
     "start": "node dist/index.js",
     "build": "tsc",
     "prebuild": "npx prisma migrate deploy",
-    "predev": "npx prisma migrate dev --name dev",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "prepreview": "npm run build",
     "preview": "npm run start",
