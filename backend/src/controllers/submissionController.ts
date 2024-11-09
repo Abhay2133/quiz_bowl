@@ -1,18 +1,18 @@
 import { Request, Response } from "express";
 import prisma from "../prisma/client";
 
-// post test submission
-export const submitTest = async (req: Request, res: Response) => {
-  const { testId, teamId, userId, answers } = req.body;
+// post quiz submission
+export const submitQuiz = async (req: Request, res: Response) => {
+  const { quizId, teamId, userId, answers } = req.body;
 
   try {
-    // Verify that the test, team, and user exist
-    const test = await prisma.test.findUnique({ where: { id: testId } });
+    // Verify that the quiz, team, and user exist
+    const quiz = await prisma.quiz.findUnique({ where: { id: quizId } });
     const team = await prisma.team.findUnique({ where: { id: teamId } });
     const user = await prisma.user.findUnique({ where: { id: userId } });
 
-    if (!test) {
-      return res.status(404).json({ error: "Test not found" });
+    if (!quiz) {
+      return res.status(404).json({ error: "Quiz not found" });
     }
     if (!team) {
       return res.status(404).json({ error: "Team not found" });
@@ -24,7 +24,7 @@ export const submitTest = async (req: Request, res: Response) => {
     // Create a new submission
     const submission = await prisma.submission.create({
       data: {
-        testId,
+        quizId,
         teamId,
         userId,
         answers, // Store answers as JSON format, assuming they are already formatted as [{ questionId: answer }]
@@ -34,7 +34,7 @@ export const submitTest = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "Submission successful", submission });
   } catch (error) {
-    console.error("Error submitting test:", error);
-    res.status(500).json({ error: "An error occurred while submitting the test" });
+    console.error("Error submitting quiz:", error);
+    res.status(500).json({ error: "An error occurred while submitting the quiz" });
   }
 };

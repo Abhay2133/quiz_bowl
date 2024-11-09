@@ -2,7 +2,7 @@ import { Router } from "express";
 import ramRoutes from "./ramRoutes";
 import userRoutes from "./userRoutes";
 import teamRoutes from "./teamRoutes";
-import testRoutes from "./testRoutes"
+import testRoutes from "./quizRoutes"
 import roundRoutes from './roundRoutes'
 import questionRoutes from './questionRoutes'
 

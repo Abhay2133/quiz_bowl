@@ -22,23 +22,23 @@ model User {
 model Team {
   id        Int       @id @default(autoincrement()) // Unique identifier for each team
   name      String    // Name of the team
-  testId    Int       // Foreign key to the Test model
-  test      Test      @relation(fields: [testId], references: [id]) // Relationship to Test model
+  quizId    Int       // Foreign key to the Quiz model
+  quiz      Quiz      @relation(fields: [quizId], references: [id]) // Relationship to Quiz model
   users     User[]    // A team can have many users
   submissions Submission[] // Relation to Submissions
   createdAt DateTime  @default(now()) // Automatically set creation date
   updatedAt DateTime  @updatedAt // Automatically updated on changes
 }
 
-model Test {
-  id          Int       @id @default(autoincrement()) // Unique identifier for each test
-  name        String    @unique // Name of the test
-  testcode    String    @unique // TestCode for user login
+model Quiz {
+  id          Int       @id @default(autoincrement()) // Unique identifier for each quiz
+  name        String    @unique // Name of the quiz
+  quizcode    String    @unique // QuizCode for user login
   duration    Int       // Duration in minutes
-  startTiming DateTime  // Start time of the test
-  date        DateTime  // Date when the test is scheduled
-  rounds      Round[]   // A test can have multiple rounds
-  teams       Team[]    // A test can have many teams
+  startTiming DateTime  // Start time of the quiz
+  date        DateTime  // Date when the quiz is scheduled
+  rounds      Round[]   // A quiz can have multiple rounds
+  teams       Team[]    // A quiz can have many teams
   submissions Submission[] // Relation to Submissions
   scores      Score[]   // Relation to Scores
   createdAt   DateTime  @default(now()) // Automatically set creation date
@@ -47,13 +47,13 @@ model Test {
 
 model Round {
   id          Int       @id @default(autoincrement()) // Unique identifier for each round
-  testId      Int       // Foreign key linking to the Test table
+  quizId      Int       // Foreign key linking to the Quiz table
   name        String    // Name of the round (e.g., Screening, Pre-final, Final)
   easyQ       Int       @default(0)
   mediumQ     Int       @default(0)
   hardQ       Int       @default(0)
   questions   Question[] // a round has multiple questions
-  test        Test      @relation(fields: [testId], references: [id]) // Relationship with Test table
+  quiz        Quiz      @relation(fields: [quizId], references: [id]) // Relationship with Quiz table
   createdAt   DateTime  @default(now()) // Automatically set creation date
   updatedAt   DateTime  @updatedAt // Automatically updated on changes
 }
@@ -77,8 +77,8 @@ model Question {
 
 model Submission {
   id          Int       @id @default(autoincrement()) // Unique identifier for each submission
-  testId      Int       // Foreign key linking to the Test
-  test        Test      @relation(fields: [testId], references: [id]) // Relationship with Test
+  quizId      Int       // Foreign key linking to the Quiz
+  quiz        Quiz      @relation(fields: [quizId], references: [id]) // Relationship with Quiz
   teamId      Int       // Foreign key linking to the Team
   team        Team      @relation(fields: [teamId], references: [id]) // Relationship with Team
   userId      Int       // Foreign key linking to the User
@@ -93,9 +93,9 @@ model Score {
   id          Int       @id @default(autoincrement()) // Unique identifier for each score entry
   userId      Int       // Foreign key linking to the User
   user        User      @relation(fields: [userId], references: [id]) // Relationship with User
-  testId      Int       // Foreign key linking to the Test
-  test        Test      @relation(fields: [testId], references: [id]) // Relationship with Test
-  score       Int       // Stores the score for each test
+  quizId      Int       // Foreign key linking to the Quiz
+  quiz        Quiz      @relation(fields: [quizId], references: [id]) // Relationship with Quiz
+  score       Int       // Stores the score for each quiz
   createdAt   DateTime  @default(now()) // Automatically set creation date
   updatedAt   DateTime  @updatedAt // Automatically updated on changes
 }

@@ -4,26 +4,26 @@ import { generateToken } from '../utils/jwt';
 import { comparePasswords, hashPassword } from '../utils/password';
 
 export async function userLogin(req: Request, res: Response) {
-  const { email, team, testcode } = req.body;
+  const { email, team, quizcode } = req.body;
   try {
     const user: any = await prisma.user.findUnique({
       where: {
         email,
         team: {
-          test: {
-            testcode
+          quiz: {
+            quizcode
           },
         },
       },
       include: {
         team: {
           include: {
-            test: true, // Include the test details if needed
+            quiz: true, // Include the quiz details if needed
           },
         },
       },
     });
-    if (!user) return res.status(401).json({ error: "User or testcode doesn't exists" });
+    if (!user) return res.status(401).json({ error: "User or quizcode doesn't exists" });
     const token = generateToken({ userId: user.id });
     return res.status(200).json({ token });
 

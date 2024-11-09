@@ -3,11 +3,11 @@ import { PrismaClient, Difficulty, QuestionType, ANSWER } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function mainSeed() {
-  // Create one test
-  const test = await prisma.test.create({
+  // Create one quiz
+  const quiz = await prisma.quiz.create({
     data: {
       name: 'Sample Test',
-      testcode: 'TEST123',
+      quizcode: 'TEST123',
       duration: 120, // 2 hours
       startTiming: new Date('2024-11-10T09:00:00Z'),
       date: new Date('2024-11-10T09:00:00Z'),
@@ -50,7 +50,7 @@ export async function mainSeed() {
     const team = await prisma.team.create({
       data: {
         name: `Team ${i}`,
-        testId: test.id,
+        quizId: quiz.id,
         users: {
           create: [
             { name: `User ${2 * i - 1}`, email: `user${2 * i - 1}@example.com` },
