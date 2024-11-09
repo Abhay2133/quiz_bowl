@@ -11,7 +11,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(morgan("common"));
+app.use(morgan(process.env.NODE_ENV === "production" ? "common" : "dev"));
 app.use(cors())
 // Middleware setup
 app.use(express.json());
@@ -20,12 +20,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
-app.get("/seed", async (req, res)=>{
-  try{
+app.get("/seed", async (req, res) => {
+  try {
     await mainSeed();
-    res.json({message:"seeding completed"})
-  }catch(e:any){
-    res.status(500).json({error:e.message});
+    res.json({ message: "seeding completed" })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
   }
 })
 

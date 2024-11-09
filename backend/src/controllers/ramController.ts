@@ -17,10 +17,13 @@ export const getRamUsage = (req: Request, res: Response): void => {
   const usedMemory = totalMemory - freeMemory; // Used system memory
   const memoryUsagePercentage = (usedMemory / totalMemory) * 100; // Percentage of memory used
 
-  res.json({
+  const data = {
     totalMemory: formatBytes(totalMemory),
     freeMemory: formatBytes(freeMemory),
     usedMemory: formatBytes(usedMemory),
     memoryUsagePercentage: memoryUsagePercentage.toFixed(2) + '%',
-  });
+  }
+
+  console.table(data);
+  res.json();
 };
