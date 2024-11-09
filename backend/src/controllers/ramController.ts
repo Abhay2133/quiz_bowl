@@ -25,5 +25,5 @@ export const getRamUsage = (req: Request, res: Response): void => {
   }
 
   console.table(data);
-  res.json();
+  res.json(data);
 };
