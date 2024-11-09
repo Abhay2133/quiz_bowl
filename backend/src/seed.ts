@@ -13,19 +13,6 @@ export async function mainSeed() {
         duration: 60,
         startTiming: new Date(),
         date: new Date(),
-        rounds: {
-          create: [
-            {
-              name: 'Screening',
-            },
-            {
-              name: 'Pre-final',
-            },
-            {
-              name: 'Final',
-            },
-          ],
-        },
       },
     });
 

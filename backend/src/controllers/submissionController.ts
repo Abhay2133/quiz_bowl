@@ -5,6 +5,7 @@ import prisma from "../prisma/client";
 export const submitQuiz = async (req: Request, res: Response) => {
   const { quizId, teamId, userId, answers } = req.body;
 
+  if (!(quizId && teamId && userId && answers)) return res.status(400).json({ error: `data not in format ({ quizId, teamId, userId, answers })` })
   try {
     // Verify that the quiz, team, and user exist
     const quiz = await prisma.quiz.findUnique({ where: { id: quizId } });
