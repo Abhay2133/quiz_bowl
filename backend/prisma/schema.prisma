@@ -8,59 +8,96 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement()) // Unique identifier for each user
-  name      String // Name of the user
-  email     String   @unique // Email of the user, must be unique
-  teamId    Int? // Foreign key to the Team model (nullable, as user might not belong to a team yet)
-  // testId    Int? // Foreign key to the Test model (nullable, as user might not belong to a test yet)
-  team      Team?    @relation(fields: [teamId], references: [id]) // Relationship to Team (optional)
-  // test      Test?    @relation(fields: [testId], references: [id]) // Relationship to Team (optional)
-  createdAt DateTime @default(now()) // Automatically set creation date
-  updatedAt DateTime @updatedAt // Automatically updated on changes
+  id        Int       @id @default(autoincrement()) // Unique identifier for each user
+  name      String    // Name of the user
+  email     String    @unique // Email of the user, must be unique
+  teamId    Int?      // Foreign key to the Team model (nullable, as user might not belong to a team yet)
+  team      Team?     @relation(fields: [teamId], references: [id]) // Relationship to Team (optional)
+  submissions Submission[] // A user can have multiple submissions
+  scores     Score[]   // Relation to Scores
+  createdAt DateTime   @default(now()) // Automatically set creation date
+  updatedAt DateTime   @updatedAt // Automatically updated on changes
 }
 
 model Team {
-  id     Int    @id @default(autoincrement()) // Unique identifier for each team
-  name   String // Name of the team
-  testId Int // Foreign key to the Test model
-  test   Test   @relation(fields: [testId], references: [id]) // Relationship to Test model
-  users  User[] // A team can have many users
-
-  createdAt DateTime @default(now()) // Automatically set creation date
-  updatedAt DateTime @updatedAt // Automatically updated on changes
+  id        Int       @id @default(autoincrement()) // Unique identifier for each team
+  name      String    // Name of the team
+  testId    Int       // Foreign key to the Test model
+  test      Test      @relation(fields: [testId], references: [id]) // Relationship to Test model
+  users     User[]    // A team can have many users
+  submissions Submission[] // Relation to Submissions
+  createdAt DateTime  @default(now()) // Automatically set creation date
+  updatedAt DateTime  @updatedAt // Automatically updated on changes
 }
 
 model Test {
-  id          Int      @id @default(autoincrement()) // Unique identifier for each test
-  name        String   @unique // Name of the test
-  testcode    String   @unique // TestCode for user login
-  duration    Int // Duration in minutes
-  startTiming DateTime // Start time of the test
-  date        DateTime // Date when the test is scheduled
-  createdAt   DateTime @default(now()) // Automatically set the creation date
-  updatedAt   DateTime @updatedAt // Automatically updated on any change
-
-  rounds Round[] // A test can have multiple rounds
-  teams  Team[] // A test can have many teams
-  // users  User[] // A test can have many teams
+  id          Int       @id @default(autoincrement()) // Unique identifier for each test
+  name        String    @unique // Name of the test
+  testcode    String    @unique // TestCode for user login
+  duration    Int       // Duration in minutes
+  startTiming DateTime  // Start time of the test
+  date        DateTime  // Date when the test is scheduled
+  rounds      Round[]   // A test can have multiple rounds
+  teams       Team[]    // A test can have many teams
+  submissions Submission[] // Relation to Submissions
+  scores      Score[]   // Relation to Scores
+  createdAt   DateTime  @default(now()) // Automatically set creation date
+  updatedAt   DateTime  @updatedAt // Automatically updated on changes
 }
 
 model Round {
-  id          Int      @id @default(autoincrement()) // Unique identifier for each round
-  testId      Int // Foreign key linking to the Test table
-  name        String // Name of the round (e.g., Screening, Pre-final, Final)
-  // order       Int      @unique // The order in which the round occurs (1 for Screening, 2 for Pre-final, etc.)
-  // duration    Int // Duration of the round in minutes
-  // startTiming DateTime // Start time of the round
-  createdAt   DateTime @default(now()) // Automatically set the creation date
-  updatedAt   DateTime @updatedAt // Automatically updated on any change
-  easyQ       Int      @default(0)
-  mediumQ     Int      @default(0)
-  hardQ       Int      @default(0)
-  // questionCount Int // number of question in current Round
+  id          Int       @id @default(autoincrement()) // Unique identifier for each round
+  testId      Int       // Foreign key linking to the Test table
+  name        String    // Name of the round (e.g., Screening, Pre-final, Final)
+  easyQ       Int       @default(0)
+  mediumQ     Int       @default(0)
+  hardQ       Int       @default(0)
+  questions   Question[] // a round has multiple questions
+  test        Test      @relation(fields: [testId], references: [id]) // Relationship with Test table
+  createdAt   DateTime  @default(now()) // Automatically set creation date
+  updatedAt   DateTime  @updatedAt // Automatically updated on changes
+}
 
-  questions Question[] // a round has multiple questions
-  test      Test       @relation(fields: [testId], references: [id]) // Relationship with Test table
+model Question {
+  id          Int          @id @default(autoincrement()) // Unique identifier for each question
+  question    String       // The question text
+  answer      ANSWER       // The correct answer
+  option1     String       // Option 1
+  option2     String       // Option 2
+  option3     String       // Option 3
+  option4     String       // Option 4
+  type        QuestionType // Type of question (enum: TEXT, AUDIO, IMAGE, VIDEO)
+  link        String?      // Optional link for reference (nullable)
+  difficulty  Difficulty   // Difficulty level (e.g., "easy", "medium", "hard")
+  roundId     Int          // Foreign key to the Round model
+  round       Round        @relation(fields: [roundId], references: [id]) // Relationship to Round model
+  createdAt   DateTime     @default(now()) // Automatically set creation date
+  updatedAt   DateTime     @updatedAt // Automatically updated on changes
+}
+
+model Submission {
+  id          Int       @id @default(autoincrement()) // Unique identifier for each submission
+  testId      Int       // Foreign key linking to the Test
+  test        Test      @relation(fields: [testId], references: [id]) // Relationship with Test
+  teamId      Int       // Foreign key linking to the Team
+  team        Team      @relation(fields: [teamId], references: [id]) // Relationship with Team
+  userId      Int       // Foreign key linking to the User
+  user        User      @relation(fields: [userId], references: [id]) // Relationship with User
+  answers     Json      // Stores answers as JSON string format like [{ questionId : answer }]
+  submittedAt DateTime  @default(now()) // Submission timestamp
+  createdAt   DateTime  @default(now()) // Automatically set creation date
+  updatedAt   DateTime  @updatedAt // Automatically updated on changes
+}
+
+model Score {
+  id          Int       @id @default(autoincrement()) // Unique identifier for each score entry
+  userId      Int       // Foreign key linking to the User
+  user        User      @relation(fields: [userId], references: [id]) // Relationship with User
+  testId      Int       // Foreign key linking to the Test
+  test        Test      @relation(fields: [testId], references: [id]) // Relationship with Test
+  score       Int       // Stores the score for each test
+  createdAt   DateTime  @default(now()) // Automatically set creation date
+  updatedAt   DateTime  @updatedAt // Automatically updated on changes
 }
 
 // Define the enum for question types
@@ -82,23 +119,4 @@ enum ANSWER {
   OPTION2
   OPTION3
   OPTION4
-}
-
-model Question {
-  id         Int          @id @default(autoincrement()) // Unique identifier for each question
-  question   String // The question text
-  answer     ANSWER // The correct answer
-  option1    String // Option 1
-  option2    String // Option 2
-  option3    String // Option 3
-  option4    String // Option 4
-  type       QuestionType // Type of question (enum: TEXT, AUDIO, IMAGE, VIDEO)
-  link       String? // Optional link for reference (nullable)
-  difficulty Difficulty // Difficulty level (e.g., "easy", "medium", "hard")
-
-  roundId Int // Foreign key to the Round model
-  round   Round @relation(fields: [roundId], references: [id]) // Relationship to Round model
-
-  createdAt DateTime @default(now()) // Automatically set creation date
-  updatedAt DateTime @updatedAt // Automatically updated on changes
 }

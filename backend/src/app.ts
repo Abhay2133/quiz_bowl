@@ -2,8 +2,8 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import apiRoutes from "./routes/api"
-import authRoutes from "./routes/auth"
-import userRoutes from "./routes/user"
+import authRoutes from "./routes/authRoutes"
+import userRoutes from "./routes/userRoutes"
 
 import cors from "cors"
 import { mainSeed } from "./seed";

@@ -71,17 +71,22 @@ export const deleteTest = async (req: Request, res: Response) => {
 };
 
 // get test by testcode
-export const getTestByCode = async (req: Request, res: Response) => {
+export const getTestByTestcode = async (req: Request, res: Response) => {
   const { testcode } = req.params;
   try {
-    const test = await prisma.test.findUnique({ where: { testcode } });
+    const test = await prisma.test.findUnique({ where: { testcode }, include:{rounds:true} });
     if (!test) return res.status(404).json({ error: "no test found by testcode : " + testcode });
-    const usertest: any = { ...test };
-    delete usertest.createdAt;
-    delete usertest.updatedAt;
-    res.status(200).json(usertest);
+    // const usertest: any = { ...test };
+    // delete usertest.createdAt;
+    // delete usertest.updatedAt;
+    res.status(200).json(test);
   } catch (e: any) {
     console.error(e);
     res.status(500).json({ error: `Error fetching test by testcode "${testcode}"`, message: e.message })
   }
+}
+
+// post test submission
+export const postSubmissionBy = async (req: Request, res: Response) => {
+
 }
