@@ -1,11 +1,14 @@
 // src/routes/quizRoutes.ts
 import express from 'express';
-import { createQuiz, getQuizs, getQuizById, updateQuiz, deleteQuiz } from '../../controllers/quizController';
+import { createQuiz, getQuizs, getQuizById, updateQuiz, deleteQuiz, getAllDataByQuizId } from '../../controllers/quizController';
 
 const router = express.Router();
 
 // Route to create a quiz
 router.post('/quizs', createQuiz);
+
+// get all data
+router.get("/quizs/data/:id", getAllDataByQuizId)
 
 // Route to get all quizs
 router.get('/quizs', getQuizs);
