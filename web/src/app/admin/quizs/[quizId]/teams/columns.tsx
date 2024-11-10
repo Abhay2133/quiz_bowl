@@ -11,7 +11,7 @@ import Link from "next/link"
 export type Team = {
   id: number,
   name: string,
-  // quizId: number,
+  quizId: number,
   createdAt: string,
   updatedAt: string,
 }
@@ -51,7 +51,7 @@ export const columns: ColumnDef<Team>[] = [
             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href={"/admin/teams/" + team.id + "/members"}>
+              <Link href={`/admin/quizs/${team.quizId}/teams/${team.id}/members`}>
                 Members
               </Link>
             </DropdownMenuItem>

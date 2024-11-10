@@ -40,6 +40,7 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   flutter_dotenv: ^5.2.1
   window_manager: ^0.3.4  # Check for the latest version
+  logger: ^2.4.0
   
 
 dev_dependencies:
@@ -67,6 +68,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - .env
+    - assets/images/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

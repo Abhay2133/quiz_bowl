@@ -23,7 +23,10 @@ export async function userLogin(req: Request, res: Response) {
         },
       },
     });
-    if (!user) return res.status(401).json({ error: "User or quizcode doesn't exists" });
+    if (!user) {
+      console.log({ email, quizcode })
+      return res.status(401).json({ error: "User or quizcode doesn't exists" });
+    }
     const token = generateToken({ userId: user.id });
     return res.status(200).json({ token });
 
@@ -37,9 +40,9 @@ export async function adminLogin(req: Request, res: Response) {
   try {
     const { password = "" } = req.body;
     const hash = await hashPassword(process.env.ADMIN_PASSWORD || "ROOT");
-    if (! await comparePasswords(password, hash)) return res.status(401).json({error:"Wrong password"});
-    const token = generateToken({userId : "admin"});
-    return res.json({token});
+    if (! await comparePasswords(password, hash)) return res.status(401).json({ error: "Wrong password" });
+    const token = generateToken({ userId: "admin" });
+    return res.json({ token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Admin Login Failed", message: (error as any).message });

@@ -6,7 +6,7 @@ import AdminNav from "@/components/admin-navbar";
 import { formatISODate } from "@/util/datetime";
 
 export default function TestsPage({ params }: any) {
-  const { testId } = params;
+  const { quizId } = params;
   const [data, setData] = useState<Team[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -22,15 +22,15 @@ export default function TestsPage({ params }: any) {
   }, []);
 
   return (
-    <div>
+    <div className="pb-5">
       <AdminNav backHref={'/admin'} 
       path={[
         { label: "Admin", href: "/admin" },
         { label: "Teams", href: "/admin/teams" },
       ]} 
       />
-      <div className="w-full h-screen flex justify-center">
-        {loading ? "Loading" : <DataTable columns={columns} data={data} />}
+      <div className="w-full min-h-screen flex justify-center pb-5">
+        {loading ? "Loading :)" : <DataTable columns={columns} data={data} />}
       </div>
     </div>
   )

@@ -36,7 +36,7 @@ export default function AdminLogin() {
       .catch((error)=>console.error(error))
   }
   return (
-    <form onSubmit={onSubmit} method="POST" className="w-full h-screen flex items-center justify-center">
+    <form onSubmit={onSubmit} method="POST" className="w-full min-h-screen flex items-center justify-center">
 
       <Card className="mx-auto max-w-sm">
         <CardHeader>

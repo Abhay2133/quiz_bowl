@@ -9,9 +9,9 @@ export default function AdminPage() {
     <>
       <div className="text-2xl py-10 text-center">ADMIN DASHBOARD</div>
       <div className="flex flex-wrap justify-center gap-5 flex-col md:flex-row px-5">
-        {/* <Link href={"/admin/tests"} className="flex"><Button>Tests</Button></Link>
+        {/* <Link href={"/admin/quizs"} className="flex"><Button>Tests</Button></Link>
         <Link href={"/admin/teams"} className="flex"><Button>Teams</Button></Link> */}
-        <LinkCard href="/admin/tests" title="Tests" subtitle="Create and Edit Tests" icon={<TextSelectionIcon size={40} />} />
+        <LinkCard href="/admin/quizs" title="Quizs" subtitle="Create and Edit Quizs" icon={<TextSelectionIcon size={40} />} />
         <LinkCard href="/admin/teams" title="Teams" subtitle="Create and Manage Teams" icon={<Users size={40} />} />
       </div>
     </>)

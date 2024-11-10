@@ -1,6 +1,7 @@
 // src/controllers/roundController.ts
 import { Request, Response } from 'express';
 import prisma from '../prisma/client';
+import { errorResponse } from '../utils/prisma';
 
 // Create a new round
 export const createRound = async (req: Request, res: Response) => {
@@ -65,8 +66,9 @@ export const deleteRound = async (req: Request, res: Response) => {
   try {
     await prisma.round.delete({ where: { id: parseInt(id) } });
     res.status(204).send();
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    res.status(404).json({ error: 'Round not found' });
+    // res.status(500).json({ error: 'Failed to Delete Round', message: error.message, code: error.code, meta: error.meta });
+    errorResponse(error, res)
   }
 };
