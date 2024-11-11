@@ -1,6 +1,15 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:desktop/appstate.dart';
+import 'package:desktop/main.dart';
+import 'package:desktop/screens/login/login_screen.dart';
 import 'package:desktop/screens/rounds/rounds_screen.dart';
+import 'package:desktop/widgets/quiz_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 class _StartScreen_ extends StatelessWidget {
   @override
@@ -22,8 +31,57 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-  bool choose = true;
+  bool _isLoading = true;
   final _storage = FlutterSecureStorage();
+  late Map<String, dynamic> data;
+
+  // get http => null;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchQuizInfo();
+  }
+
+  Future<void> fetchQuizInfo() async {
+    final quizState = Provider.of<MyAppState>(context, listen: false);
+
+    final baseUrl = dotenv.env["BASE_URL"];
+    final url =
+        Uri.parse('$baseUrl/user/quizInfo'); // replace with your API endpoint
+    final headers = {"Content-Type": "application/json"};
+    final body = jsonEncode({
+      "email": quizState.email,
+      "quizcode": quizState.quizcode
+    }); // Add your request payload here
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        quizState.setQuizData(
+            data["userName"],
+            data["teammateName"],
+            data["duration"],
+            data["teamName"],
+            DateTime.parse(data["timing"]),
+            data["quizId"]);
+
+        setState(() {
+          _isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      // Handle errors
+      print('Error: $e');
+      setState(() {
+        // _isLoading = false;
+      });
+    }
+  }
 
   Future<void> _logout() async {
     // Delete the JWT token from secure storage
@@ -37,54 +95,24 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<MyAppState>();
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isSmallScreen = constraints.maxWidth < 600;
           return Column(
             children: [
-              // sidebar + body (rules || rounds)
+              // sidebar + (rules)
               Expanded(
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
                       width:
                           350, //isSmallScreen ? constraints.maxWidth * 0.4 : 300,
                       color: const Color(0xFFF0F0FF),
                       padding: const EdgeInsets.all(24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Quiz Bowl Challenge',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 32),
-                          buildDetailSection('Participant Name', 'Abhay Bisht'),
-                          const SizedBox(height: 24),
-                          buildDetailSection('Team name', 'Conqueror 101'),
-                          const SizedBox(height: 24),
-                          const Text(
-                            'Members',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text('Abhay Bisht'),
-                          const Text('Shivani Tomar'),
-                          const SizedBox(height: 24),
-                          buildDetailSection('Duration', '60 mins'),
-                          const SizedBox(height: 24),
-                          buildDetailSection('Timing', '11:00 AM - 01:00 PM'),
-                        ],
-                      ),
+                      child: SingleChildScrollView(child: _isLoading ? QuizInfoSkeleton():QuizInfo()),
                     ),
 
                     //rules and info
@@ -165,7 +193,8 @@ class _StartScreenState extends State<StartScreen> {
           ElevatedButton(
             onPressed: () async {
               await _logout();
-              Navigator.pushReplacementNamed(context, "/login");
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
               return;
               // if (_formKey.currentState!
               //     .validate()) {
@@ -244,3 +273,4 @@ class _StartScreenState extends State<StartScreen> {
     );
   }
 }
+

@@ -1,6 +1,7 @@
 // src/controllers/quizController.ts
 import { Request, Response } from "express";
 import prisma from "../prisma/client";
+import { errorResponse } from "../utils/prisma";
 
 // Create a new quiz
 export const createQuiz = async (req: Request, res: Response) => {
@@ -94,12 +95,10 @@ export const getQuizByQuizcode = async (req: Request, res: Response) => {
     res.status(200).json(quiz);
   } catch (e: any) {
     console.error(e);
-    res
-      .status(500)
-      .json({
-        error: `Error fetching quiz by quizcode "${quizcode}"`,
-        message: e.message,
-      });
+    res.status(500).json({
+      error: `Error fetching quiz by quizcode "${quizcode}"`,
+      message: e.message,
+    });
   }
 };
 
@@ -128,3 +127,45 @@ export const getAllDataByQuizId = async (req: Request, res: Response) => {
       .json({ error: "failed to query test data", message: e.message });
   }
 };
+
+// get quiz info
+export async function getQuizInfo(req: Request, res: Response) {
+  const { email, quizcode } = req.body;
+  if (!email || !quizcode)
+    return res
+      .status(401)
+      .json({ error: `email (${email}) or quizcode (${quizcode}) missing !` });
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    const team = await prisma.team.findUnique({
+      where: { id: user?.teamId as any },
+    });
+    const teammate = await prisma.user.findFirst({
+      where: { teamId: user?.teamId, NOT: { email: email } },
+    });
+    const quiz = await prisma.quiz.findUnique({ where: { quizcode } });
+
+    if (!user || !team || !quiz) {
+      console.error({ user, team, quiz });
+      return res
+        .status(400)
+        .json({ error: "User or Team or Quiz var is falsy" });
+    }
+
+    return res.json({
+      userName: user.name,
+      quizId: quiz.id,
+      teamName: team.name,
+      teammateName: teammate?.name,
+      teamId: team.id,
+      userId: user.id,
+      duration: quiz.duration,
+      timing: quiz.startTiming,
+      date: quiz.date,
+      quizcode: quiz.quizcode,
+    });
+  } catch (e: any) {
+    console.error(e, req.body);
+    errorResponse(e, res);
+  }
+}

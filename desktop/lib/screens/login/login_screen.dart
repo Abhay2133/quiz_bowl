@@ -1,3 +1,6 @@
+import 'package:desktop/appstate.dart';
+import 'package:desktop/main.dart';
+import 'package:desktop/screens/home/home_screen.dart';
 import 'package:desktop/screens/start/start_screen.dart';
 import 'package:logger/logger.dart';
 import 'dart:convert';
@@ -7,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 // class LoginScreen extends StatelessWidget {
 //   @override
@@ -36,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // get http => null;
 
-  Future<void> _login() async {
+  Future<void> _login(MyAppState appState) async {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text;
       final quizCode = _quizCodeController.text;
@@ -64,18 +68,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
           // Save JWT token to secure storage
           await _storage.write(key: 'jwtToken', value: jwtToken);
+          appState.setLoginData(email, quizCode, jwtToken);
 
-          // Display a success message
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(content: Text("Login successful! Token saved securely.")),
-          // );
-          // Navigator.pushNamed(context, "/start");
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const StartScreen(),
             ),
           );
+
+          // save login data here
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -102,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<MyAppState>();
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0FF),
       body: LayoutBuilder(
@@ -131,8 +134,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: IconButton(
                                     icon: Icon(Icons.arrow_back),
                                     onPressed: () {
-                                      Navigator.pushReplacementNamed(
-                                          context, "/");
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomeScreen(),
+                                        ),
+                                      );
                                     },
                                   ),
                                 ),
@@ -197,7 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 SizedBox(
                                                   width: 130,
                                                   child: ElevatedButton(
-                                                    onPressed: _login,
+                                                    onPressed: () {
+                                                      _login(appState);
+                                                    },
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       backgroundColor:

@@ -1,3 +1,4 @@
+import 'package:desktop/screens/rounds/rounds_screen.dart';
 import 'package:flutter/material.dart';
 
 class QuizQuestionScreen extends StatelessWidget {
@@ -20,7 +21,14 @@ class QuizQuestionScreen extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RoundsScreen(),
+                          ),
+                        )
+                      },
                     ),
                     const Text(
                       'Round Name',
@@ -29,40 +37,44 @@ class QuizQuestionScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    
                     Expanded(
                       child: Center(
                         child: Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                          decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: Colors.grey.withOpacity(0.5),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                                          ),
-                                          child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset("assets/images/timer.gif",height: 30,width: 30,),
-                          const Text(
-                            '59 m : 00s',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(0.5),
                             ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
-                        ],
-                                          ),
-                                        ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                "assets/images/timer.gif",
+                                height: 30,
+                                width: 30,
+                              ),
+                              const Text(
+                                '59 m : 00s',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -93,37 +105,72 @@ class QuizQuestionScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 16),
-                            GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 5,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 8,
-                                childAspectRatio: 1,
-                              ),
-                              itemCount: 30,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.grey.withOpacity(0.3),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '${index + 1}',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
+
+                            // GridView.builder(
+                            //   shrinkWrap: true,
+                            //   physics: const NeverScrollableScrollPhysics(),
+                            //   gridDelegate:
+                            //       const SliverGridDelegateWithFixedCrossAxisCount(
+                            //     crossAxisCount: 5,
+                            //     crossAxisSpacing: 8,
+                            //     mainAxisSpacing: 8,
+                            //     childAspectRatio: 1,
+                            //   ),
+                            //   itemCount: 30,
+                            //   itemBuilder: (context, index) {
+                            //     return Container(
+                            //       decoration: BoxDecoration(
+                            //         color: Colors.white,
+                            //         shape: BoxShape.circle,
+                            //         border: Border.all(
+                            //           color: Colors.grey.withOpacity(0.3),
+                            //         ),
+                            //       ),
+                            //       child: Center(
+                            //         child: Text(
+                            //           '${index + 1}',
+                            //           style: const TextStyle(
+                            //             fontWeight: FontWeight.w500,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     );
+                            //   },
+                            // ),
+
+                            Wrap(
+                              // alignment: WrapAlignment.start,
+                              direction: Axis.horizontal,
+                              // spacing: 10.0,
+                              children: [
+                                ...List.generate(
+                                    30,
+                                    (index) => Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.black,
+                                            backgroundColor:
+                                                Colors.white, // Text color
+                                            // fixedSize: const Size(30,30), // Set width and height to 30
+                                            side: BorderSide(
+                                                color: Colors.black
+                                                    .withOpacity(0.7),
+                                                width: 1.0), // Black border
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  800.0), // Optional: rounded corners
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            // Define your onPressed action here
+                                          },
+                                          child: Text(
+                                              '${index + 1}'), // Empty text or icon as needed
+                                        ))),
+                              ],
                             ),
+
                             const SizedBox(height: 24),
                             const Text(
                               'Attempted: 20/30',
@@ -214,7 +261,13 @@ class _QuestionCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(question),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15.0),
+              child: Text(
+                question,
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ),
             const SizedBox(height: 16),
             // Options
             ...List.generate(
