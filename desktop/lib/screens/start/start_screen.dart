@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -32,6 +34,10 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
   bool _isLoading = true;
+  bool isStartEnabled = false;
+  late DateTime startTime;
+  late Timer _timer;
+
   final _storage = FlutterSecureStorage();
   late Map<String, dynamic> data;
 
@@ -41,6 +47,25 @@ class _StartScreenState extends State<StartScreen> {
   void initState() {
     super.initState();
     fetchQuizInfo();
+  }
+
+  void _checkStartButtonState() {
+    DateTime now = DateTime.now();
+
+    // If the target datetime has already passed, enable the button immediately
+    if (now.isAfter(startTime)) {
+      setState(() {
+        isStartEnabled = true;
+      });
+    } else {
+      // Set up a timer to enable the button at the target datetime
+      Duration timeDifference = startTime.difference(now);
+      _timer = Timer(timeDifference, () {
+        setState(() {
+          isStartEnabled = true;
+        });
+      });
+    }
   }
 
   Future<void> fetchQuizInfo() async {
@@ -60,17 +85,21 @@ class _StartScreenState extends State<StartScreen> {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body);
-        quizState.setQuizData(
-            data["userName"],
-            data["teammateName"],
-            data["duration"],
-            data["teamName"],
-            DateTime.parse(data["timing"]),
-            data["quizId"]);
+        DateTime date = DateTime.parse(data["date"]).toLocal();
+        DateTime time = DateTime.parse(data['timing']).toLocal();
+
+        DateTime datetime = DateTime(date.year, date.month, date.day, time.hour,
+            time.minute, time.second, time.millisecond, time.microsecond);
+
+        quizState.setQuizData(data["userName"], data["teammateName"],
+            data["duration"], data["teamName"], datetime, data["quizId"]);
 
         setState(() {
           _isLoading = false;
         });
+        // handling start button timer
+        startTime = datetime;
+        _checkStartButtonState();
       } else {
         throw Exception('Failed to load data');
       }
@@ -112,7 +141,8 @@ class _StartScreenState extends State<StartScreen> {
                           350, //isSmallScreen ? constraints.maxWidth * 0.4 : 300,
                       color: const Color(0xFFF0F0FF),
                       padding: const EdgeInsets.all(24),
-                      child: SingleChildScrollView(child: _isLoading ? QuizInfoSkeleton():QuizInfo()),
+                      child: SingleChildScrollView(
+                          child: _isLoading ? QuizInfoSkeleton() : QuizInfo()),
                     ),
 
                     //rules and info
@@ -125,7 +155,7 @@ class _StartScreenState extends State<StartScreen> {
               ),
 
               // Bottom Bar
-              buildBottomBar(context)
+              buildBottomBar(context, appState)
             ],
           );
         },
@@ -133,7 +163,7 @@ class _StartScreenState extends State<StartScreen> {
     );
   }
 
-  Widget buildBottomBar(BuildContext context) {
+  Widget buildBottomBar(BuildContext context, MyAppState appState) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 24,
@@ -153,21 +183,20 @@ class _StartScreenState extends State<StartScreen> {
         children: [
           ElevatedButton.icon(
             onPressed: () {
-              // Navigator.pushNamed(context, "/rounds");
+              if (!isStartEnabled) return;
+              appState.setStartTime(DateTime.now());
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const RoundsScreen(),
                 ),
               );
-              // setState(() {
-              //   choose = false;
-              // });
             },
             icon: const Icon(Icons.play_arrow),
             label: const Text('Start Test'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey[800],
+              backgroundColor:
+                  isStartEnabled ? Colors.blue[500] : Colors.grey[800],
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(
                 horizontal: 24,
@@ -178,10 +207,11 @@ class _StartScreenState extends State<StartScreen> {
           const SizedBox(width: 16),
           Row(
             children: [
-              const Icon(Icons.refresh, size: 16),
               const SizedBox(width: 8),
               Text(
-                'Test will start soon',
+                isStartEnabled
+                    ? 'Click to Start the Test'
+                    : 'Test will start soon',
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 14,
@@ -273,4 +303,3 @@ class _StartScreenState extends State<StartScreen> {
     );
   }
 }
-

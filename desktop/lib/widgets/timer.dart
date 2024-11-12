@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class CountdownTimer extends StatefulWidget {
   final DateTime time; // Starting value for the countdown
+  final void Function() onFinish;
 
-  CountdownTimer({required this.time});
+  CountdownTimer({required this.time, required this.onFinish});
 
   @override
   _CountdownTimerState createState() => _CountdownTimerState();
@@ -29,6 +30,8 @@ class _CountdownTimerState extends State<CountdownTimer> {
         if (DateTime.now().isBefore(_initTime)) {
           _currentValue = remainingTime(DateTime.now(), _initTime);
         } else {
+          widget.onFinish();
+          _currentValue = "Times Up";
           _timer?.cancel(); // Stop the timer when it reaches 0
         }
       });
@@ -44,10 +47,11 @@ class _CountdownTimerState extends State<CountdownTimer> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 160.0,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(105),
         border: Border.all(
           color: Colors.grey.withOpacity(0.5),
         ),
@@ -60,22 +64,25 @@ class _CountdownTimerState extends State<CountdownTimer> {
           ),
         ],
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            "assets/images/timer.gif",
-            height: 30,
-            width: 30,
-          ),
-          Text(
-            '$_currentValue',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
+      child: Center(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              "assets/images/timer.gif",
+              height: 30,
+              width: 30,
             ),
-          ),
-        ],
+            SizedBox(width: 5),
+            Text(
+              _currentValue,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -105,4 +112,3 @@ String remainingTime(DateTime dateTime1, DateTime dateTime2) {
     return "${minutes}m : ${seconds}s";
   }
 }
-

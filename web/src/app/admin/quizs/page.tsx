@@ -57,6 +57,7 @@ export default function TestsPage() {
         setData(
           newdata.map((dataitem) => ({
             ...dataitem,
+            // date: dataitem.startTiming,
             delete: () => handleDelete(dataitem.id, newdata),
             edit: () => showUpdateDialog(dataitem.id, newdata),
           }))

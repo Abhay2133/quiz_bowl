@@ -9,6 +9,11 @@ class TimerScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text("COUNTDOWN TIMER"),
         ),
-        body: CountdownTimer(time: DateTime.now().add(Duration(seconds: 1))));
+        body: CountdownTimer(
+          time: DateTime.now().add(Duration(seconds: 1)),
+          onFinish: () {
+            
+          },
+        ));
   }
 }
