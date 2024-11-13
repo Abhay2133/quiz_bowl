@@ -37,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // final _teamController = TextEditingController();
   final _quizCodeController = TextEditingController();
   final _storage = FlutterSecureStorage();
+  bool isSpinning = false;
 
   // get http => null;
 
@@ -45,12 +46,14 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
 
     Future.delayed(Duration.zero, () {
-      final appState = Provider.of<MyAppState>(context, listen:false);
+      final appState = Provider.of<MyAppState>(context, listen: false);
       appState.reset();
     });
   }
 
   Future<void> _login(MyAppState appState) async {
+    if (!_formKey.currentState!.validate()) return;
+    _showSpinner();
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text;
       final quizCode = _quizCodeController.text;
@@ -80,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await _storage.write(key: 'jwtToken', value: jwtToken);
           appState.setLoginData(email, quizCode, jwtToken);
 
+          _hideSpinner();
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -89,12 +93,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
           // save login data here
         } else {
+          _hideSpinner();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text("Login failed! Please check your credentials.")),
           );
         }
       } catch (e) {
+        _hideSpinner();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("An error occurred: $e")),
         );
@@ -102,6 +108,26 @@ class _LoginScreenState extends State<LoginScreen> {
         logger.e("an error occurerd: $e");
       }
     }
+  }
+
+  void _showSpinner() {
+    this.isSpinning = true;
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              child: Container(
+            child: Center(child: CircularProgressIndicator()),
+            height: 200.0,
+            width: 200.0,
+          ));
+        });
+  }
+
+  void _hideSpinner() {
+    Navigator.of(context).pop();
+    this.isSpinning = false;
   }
 
   @override
