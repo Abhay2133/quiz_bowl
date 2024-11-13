@@ -2,9 +2,16 @@
 
 import { Router } from "express";
 // import quizRoutes from "./quizRoutes"
-import { getQuizByQuizcode, getQuizInfo } from "../controllers/quizController";
+import {
+  generateQuiz,
+  getQuizByQuizcode,
+  getQuizInfo,
+} from "../controllers/quizController";
 import { getRoundsByQuizId } from "../controllers/roundController";
-import { generateRound, getUserQuestion } from "../controllers/questionController";
+import {
+  generateRound,
+  getUserQuestion,
+} from "../controllers/questionController";
 import { submitQuiz } from "../controllers/submissionController";
 
 const router = Router();
@@ -22,21 +29,26 @@ router.post("/quizInfo", (req, res) => {
 // get rounds details for user
 router.get("/rounds/quiz/:quizId", (req, res) => {
   getRoundsByQuizId(req, res);
-})
+});
 
 // get list of questions for a quiz round
 router.get("/questions/round/:roundId", (req, res) => {
   generateRound(req, res);
-})
+});
 
 // get a single question for a user
 router.get("/questions/:id", (req, res) => {
   getUserQuestion(req, res);
-})
+});
 
 // submit quiz
 router.post("/submit", (req, res) => {
-  submitQuiz(req, res)
-})
+  submitQuiz(req, res);
+});
 
-export default router
+// generate quiz
+router.get("/generate-quiz/:quizcode", (req, res) => {
+  generateQuiz(req, res);
+});
+
+export default router;

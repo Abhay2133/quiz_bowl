@@ -3,13 +3,19 @@ import 'package:desktop/screens/home/home_screen.dart';
 import 'package:desktop/screens/question/question_screen.dart';
 import 'package:desktop/screens/rounds/rounds_screen.dart';
 import 'package:desktop/screens/start/start_screen.dart';
+import 'package:desktop/screens/submission/submission_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
-  await dotenv.load(fileName: '.env');
+  // await dotenv.load(fileName: '.env');
+  if (const bool.fromEnvironment('dart.vm.product')) {
+    await dotenv.load(fileName: ".env.prod"); // For release builds
+  } else {
+    await dotenv.load(fileName: ".env.dev"); // For development builds
+  }
 
   // WidgetsFlutterBinding.ensureInitialized();
   // await windowManager.ensureInitialized();
@@ -38,10 +44,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context)=>MyAppState(),
+      create: (context) => MyAppState(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: StartScreen(),
+        home: HomeScreen(),
       ),
     );
   }

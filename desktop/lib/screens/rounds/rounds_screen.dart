@@ -8,18 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
-class _StartScreen_ extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      body: Center(
-        child: Text("Start Screen"),
-      ),
-    );
-  }
-}
-
 class RoundsScreen extends StatefulWidget {
   const RoundsScreen({super.key});
 
@@ -157,108 +145,106 @@ class QuizRounds extends StatelessWidget {
   Widget build(BuildContext context) {
     final appState = context.watch<MyAppState>();
 
-    return Expanded(
-      child: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                    child: CountdownTimer(
-                  time: appState.startTime
-                      .add(Duration(minutes: appState.duration)),
-                  onFinish: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SubmissionScreen()));
-                  },
-                )),
-                const SizedBox(height: 24),
-                const Text(
-                  'Rounds',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                  child: CountdownTimer(
+                time: appState.startTime
+                    .add(Duration(minutes: appState.duration)),
+                onFinish: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubmissionScreen()));
+                },
+              )),
+              const SizedBox(height: 24),
+              const Text(
+                'Rounds',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(height: 16),
-                ...List.generate(
-                    appState.rounds.length,
-                    (index) => Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5.0, horizontal: 20.0),
-                          child: Card(
-                            elevation: 2,
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              side: const BorderSide(
-                                color: Colors.grey,
-                                width: 0.5,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '${index + 1}. ${appState.rounds[index].name}',
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Answered: ${appState.rounds[index].answers.length} / ${appState.rounds[index].questions.length}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Navigator.pushNamed(context, "/question");
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              QuizQuestionScreen(
-                                            roundId: appState.rounds[index].id,
-                                          ),
-                                        ),
-                                      );
-                                      // Navigator.push(context,
-                                      // MaterialPageRoute(builder: (context) => const QuizQuestionScreen()));
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue,
-                                      foregroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    child: const Text('OPEN'),
-                                  ),
-                                ],
-                              ),
+              ),
+              const SizedBox(height: 16),
+              ...List.generate(
+                  appState.rounds.length,
+                  (index) => Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5.0, horizontal: 20.0),
+                        child: Card(
+                          elevation: 2,
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            side: const BorderSide(
+                              color: Colors.grey,
+                              width: 0.5,
                             ),
                           ),
-                        ))
-              ],
-            ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${index + 1}. ${appState.rounds[index].name}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Answered: ${appState.rounds[index].answers.length} / ${appState.rounds[index].questions.length}',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Navigator.pushNamed(context, "/question");
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            QuizQuestionScreen(
+                                          roundId: appState.rounds[index].id,
+                                        ),
+                                      ),
+                                    );
+                                    // Navigator.push(context,
+                                    // MaterialPageRoute(builder: (context) => const QuizQuestionScreen()));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Text('OPEN'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ))
+            ],
           ),
         ),
       ),

@@ -40,6 +40,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // get http => null;
 
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () {
+      final appState = Provider.of<MyAppState>(context, listen:false);
+      appState.reset();
+    });
+  }
+
   Future<void> _login(MyAppState appState) async {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text;

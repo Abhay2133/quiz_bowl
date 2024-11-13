@@ -2,6 +2,8 @@
 import { Request, Response } from "express";
 import prisma from "../prisma/client";
 import { errorResponse } from "../utils/prisma";
+import { Question, Round } from "@prisma/client";
+import { shuffleArray } from "../utils/array";
 
 // Create a new quiz
 export const createQuiz = async (req: Request, res: Response) => {
@@ -169,3 +171,93 @@ export async function getQuizInfo(req: Request, res: Response) {
     errorResponse(e, res);
   }
 }
+
+export const generateQuiz = async (req: Request, res: Response) => {
+  const { quizcode } = req.params;
+  // console.log("quizcode:", quizcode)
+  try {
+    // verify quizcode
+    const quiz = await prisma.quiz.findUnique({
+      where: { quizcode },
+      include: { rounds: { include: { questions: true } } },
+    });
+
+    if (!quiz)
+      return res
+        .status(404)
+        .json({ error: `Quiz not found (quizcode:'${quizcode}')` });
+
+    const responseData = { quizcode, rounds: Array<any>() };
+    for (const round of quiz.rounds) {
+      responseData.rounds.push(generateRound(round));
+    }
+    res.json(responseData);
+  } catch (e) {
+    console.error(e);
+    errorResponse(e, res);
+  }
+};
+
+const generateRound = (round: Round & { questions: Question[] }) => {
+  // filtering questions based on difficulty
+  // then checking if we have enough questions
+
+  const easyQs = round.questions
+    .filter((q) => q.difficulty == "EASY")
+    .map((q) => ({
+      id: q.id,
+      question: q.question,
+      option1: q.option1,
+      option2: q.option2,
+      option3: q.option3,
+      option4: q.option4,
+      type: q.type,
+      link: q.link,
+    }));
+
+  if (easyQs.length < round.easyQ)
+    throw new Error(`Less no. of easy questions (required:${round.easyQ}) (got:${easyQs.length}) (round:${round.name})`);
+
+  const mediumQs = round.questions
+    .filter((q) => q.difficulty == "MEDIUM")
+    .map((q) => ({
+      id: q.id,
+      question: q.question,
+      option1: q.option1,
+      option2: q.option2,
+      option3: q.option3,
+      option4: q.option4,
+      type: q.type,
+      link: q.link,
+    }));
+
+  if (mediumQs.length < round.mediumQ)
+    throw new Error(
+      `Less no. of Mediums questions (required:${round.mediumQ}) (got:${mediumQs.length}) (round:${round.name})`
+    );
+
+  const hardQs = round.questions
+    .filter((q) => q.difficulty == "HARD")
+    .map((q) => ({
+      id: q.id,
+      question: q.question,
+      option1: q.option1,
+      option2: q.option2,
+      option3: q.option3,
+      option4: q.option4,
+      type: q.type,
+      link: q.link,
+    }));
+  if (hardQs.length < round.hardQ)
+    throw new Error(`Less no. of hard questions (required:${round.hardQ}) (got:${hardQs.length}) (round:${round.name})`);
+
+  return {
+    id: round.id,
+    name: round.name,
+    questions: shuffleArray([
+      ...shuffleArray(easyQs).slice(0, round.easyQ),
+      ...shuffleArray(mediumQs).slice(0, round.mediumQ),
+      ...shuffleArray(hardQs).slice(0, round.hardQ),
+    ]),
+  };
+};

@@ -31,7 +31,7 @@ export async function mainSeed() {
     // Create Questions for each Round
     rounds.forEach(async ({ id: roundId }) => {
 
-      for (let i = 1; i <= 20; i++) {
+      for (let i = 1; i <= 100; i++) {
         await prisma.question.create({
           data: {
             question: `Sample Question ${i} for Round ${roundId}`,
@@ -73,32 +73,13 @@ export async function mainSeed() {
         await prisma.user.create({
           data: {
             name: userNames[userIndex],
-            email: `${userNames[userIndex].toLowerCase()}@example.com`,
+            email: `${userNames[userIndex]?.toLowerCase()}@example.com`,
             teamId: team.id,
           },
         });
         userIndex++;
       }
     }
-
-    // Create Submissions (mock example)
-    // for (const team of teams) {
-    //   for (let i = 1; i <= 2; i++) {
-    //     await prisma.submission.create({
-    //       data: {
-    //         quizId: quiz.id,
-    //         teamId: team.id,
-    //         userId: team.users[i - 1].id, // Referencing user created in the previous step
-    //         answers: JSON.stringify(
-    //           Array.from({ length: 20 }, (_, idx) => ({
-    //             questionId: idx + 1,
-    //             answer: 'OPTION1', // Placeholder answer
-    //           }))
-    //         ),
-    //       },
-    //     });
-    //   }
-    // }
 
     console.log('Seeding completed!');
 

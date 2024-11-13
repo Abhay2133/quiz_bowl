@@ -23,8 +23,9 @@ class QuizQuestionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<MyAppState>();
-    Round currentRound =
-        appState.rounds.firstWhere((Round round) => (round.id == roundId));
+    Round? currentRound = appState.rounds.length == 0
+        ? null
+        : appState.rounds.firstWhere((Round round) => (round.id == roundId));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -73,7 +74,7 @@ class QuizQuestionScreen extends StatelessWidget {
                           fontSize: 20.0, fontWeight: FontWeight.w400)),
                 ),
                 SizedBox(height: 20.0),
-                Expanded(child: qList(currentRound.questions))
+                Expanded(child: qList(currentRound?.questions))
               ],
             ),
           ))
@@ -82,31 +83,29 @@ class QuizQuestionScreen extends StatelessWidget {
     );
   }
 
-  Widget qList(List<Question> questions) {
+  Widget qList(List<Question>? questions) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         child: ScrollablePositionedList.builder(
-            itemCount: questions.length,
+            itemCount: questions?.length ?? 0,
             itemScrollController: itemScrollController,
             itemBuilder: (context, index) => QuestionCard(
-                index: index + 1, question: questions[index], roundId: roundId))
-        // child: Column(
-        //     children: List.generate(
-        //         questions.length,
-        //         (index) => QuestionCard(
-        //             index: index + 1,
-        //             question: questions[index],
-        //             roundId: roundId))),
-        );
+                  index: index + 1,
+                  question: questions?[index] ?? Question.emty(),
+                  roundId: roundId,
+                )));
   }
 
-  // Widget quesitonUI(){
-  //   return
-  // }
-
-  Widget sidePanel(BuildContext context, Round currentRound) {
-    final appState = Provider.of<MyAppState>(context, listen:false);
-
+  Widget sidePanel(BuildContext context, Round? currentRound) {
+    final appState = Provider.of<MyAppState>(context, listen: false);
+    currentRound ??= Round(
+        answers: {},
+        total: 0,
+        id: 0,
+        name: "Round-Name",
+        questions: [],
+        quizcode: "quizcode",
+        quizId: 0);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -126,7 +125,8 @@ class QuizQuestionScreen extends StatelessWidget {
               },
             ),
             SizedBox(width: 10.0),
-            Text(currentRound.name, style: TextStyle(fontSize: 24.0))
+            Text(currentRound != null ? currentRound.name : "Round-Name",
+                style: TextStyle(fontSize: 24.0))
           ],
         ),
 
@@ -155,7 +155,7 @@ class QuizQuestionScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500, color: Color(0xFF333333)),
               ),
               const SizedBox(height: 16),
-              _InfoRow(title: 'Participant Name', value: appState.userName ),
+              _InfoRow(title: 'Participant Name', value: appState.userName),
               const SizedBox(height: 8),
               _InfoRow(title: 'Team Name', value: appState.teamname),
             ],
@@ -289,7 +289,8 @@ class QuestionCard extends StatelessWidget {
                         value: index + 1,
                         groupValue: appState.rounds
                             .firstWhere((round) => round.id == roundId)
-                            .answers[question.id],
+                            .answers[question.id]
+                            ?.ans,
                         onChanged: (value) {
                           appState.setAnswer(roundId, question.id, index + 1);
                         },

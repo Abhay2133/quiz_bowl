@@ -1,5 +1,10 @@
+import 'package:desktop/appstate.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:desktop/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SubmissionScreen extends StatefulWidget {
   const SubmissionScreen({super.key});
@@ -9,7 +14,97 @@ class SubmissionScreen extends StatefulWidget {
 }
 
 class _SubmissionScreenState extends State<SubmissionScreen> {
-  bool _isUploaded = true;
+  bool _isUploaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // _uploadQuiz();
+    Future.delayed(Duration.zero, () {
+      this._uploadQuiz();
+    });
+  }
+
+  Future<void> _uploadQuiz() async {
+    final appState = Provider.of<MyAppState>(context, listen: false);
+    // Define the URL of your backend API
+    final String baseUrl = dotenv.env["BASE_URL"]!;
+    final url = "$baseUrl/user/submit";
+
+    Map<String, Map<String, int?>?> answers =
+        {}; // {roundId:{answers:{qid, optionIndex}}}
+
+    for (var round in appState.rounds) {
+      // Map<String, int> _ans = ;
+      // for(var )
+      answers[round.id.toString()] =
+          round.answers.map((key, ans) => MapEntry(ans.qid.toString(), ans.ans));
+    }
+
+    // Define the body of the POST request
+    final Map<String, dynamic> requestBody = {
+      "quizId": appState.quizId,
+      "teamId": appState.teamId,
+      "userId": appState.userId,
+      "answers": answers,
+    };
+
+    try {
+      // Make the POST request
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(requestBody),
+      );
+
+      // Check the response status
+      if (response.statusCode < 300) {
+        setState(() {
+          _isUploaded = true;
+        });
+        // Handle success, maybe parse response.body if needed
+      } else {
+        _showRetry();
+        print('Failed to submit quiz: ${response.statusCode}');
+        // Handle error, maybe parse response.body for more details
+      }
+    } catch (e) {
+      _showRetry();
+      print('Error submitting quiz: $e');
+    }
+  }
+
+  void _showRetry() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Upload"),
+            content: Text("Check you internet connection"),
+            actions: [
+              // TextButton(
+              //   onPressed: () {
+              //     Navigator.of(context).pop(); // Close the dialog
+              //   },
+              //   child: Text("No"),
+              // ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[800],
+                    foregroundColor: Colors.white),
+                onPressed: () {
+                  // Add your submission logic here
+                  _uploadQuiz();
+                  Navigator.of(context).pop(); // Close the dialog
+                  // Navigator.pop(context);|
+                },
+                child: Text("Retry"),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -127,9 +222,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-        child: const Text(
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.0),
+        child: Text(
           'Logout',
           style: TextStyle(
             fontSize: 16,

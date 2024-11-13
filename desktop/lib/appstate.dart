@@ -21,17 +21,28 @@ class Question {
     required this.type,
     required this.link,
   });
+
+  static Question emty(){
+    return Question(id: 0, question: "Empty Question", option1: "option1", option2: "option2", option3: "option3", option4: "option4", type: "TEXT", link: null);
+  }
+}
+
+class Answer {
+  final int qid;
+  final int ans;
+
+  Answer({required this.qid, required this.ans});
 }
 
 class Round {
   final int id;
   final String name;
   final List<Question> questions;
-  final int attempted;
+  // final int attempted;
   final int total;
   final String quizcode;
   final int quizId;
-  final Map<int, int?> answers;
+  final Map<int, Answer> answers;
 
   // Constructor for Round
   Round({
@@ -40,7 +51,7 @@ class Round {
     required this.id,
     required this.name,
     required this.questions,
-    required this.attempted,
+    // required this.attempted,
     required this.quizcode,
     required this.quizId,
   });
@@ -96,31 +107,31 @@ List<Round> sampleRounds = [
     id: 1,
     name: "Screening Round",
     questions: sampleQuestions,
-    attempted: 2,
+    // attempted: 2,
     total: sampleQuestions.length,
     quizcode: "ABC123",
     quizId: 101,
-    answers: {1: 3, 2: 3}, // Maps questionId to selected option
+    answers: {}, // Maps questionIndex to Answer
   ),
   Round(
     id: 2,
     name: "Pre-final Round",
     questions: sampleQuestions,
-    attempted: 3,
+    // attempted: 3,
     total: sampleQuestions.length,
     quizcode: "DEF456",
     quizId: 102,
-    answers: {1: 2, 2: 3, 3: 2},
+    answers: {},
   ),
   Round(
     id: 3,
     name: "Final Round",
     questions: sampleQuestions,
-    attempted: 4,
+    // attempted: 4,
     total: sampleQuestions.length,
     quizcode: "GHI789",
     quizId: 103,
-    answers: {1: 3, 2: 3, 3: 2, 4: 3},
+    answers: {1: Answer(qid: 31, ans: 1)},
   ),
 ];
 
@@ -128,19 +139,22 @@ class MyAppState extends ChangeNotifier {
   DateTime startTime = DateTime.now();
   String email = 'alice@example.com';
   String quizcode = 'FESTLA-2024';
-  int quizId = 0;
+  int quizId = 1;
   DateTime datetime = DateTime.now();
   String teamname = 'Conquorer 101';
-  List<Round> rounds = sampleRounds;
+  List<Round> rounds = [];//sampleRounds;
   String jwtToken = '';
   String userName = 'Abhay';
   String teammateName = 'Shivani';
   int duration = 60;
   bool isQuizLoaded = false;
+  int teamId = 1;
+  int userId = 1;
 
   void reset() {
     startTime = DateTime.now();
     email = '';
+    teamId = 0;
     quizcode = '';
     quizId = 0;
     datetime = DateTime.now();
@@ -151,6 +165,8 @@ class MyAppState extends ChangeNotifier {
     teammateName = '';
     duration = 1;
     isQuizLoaded = false;
+    userId = 0;
+
     notifyListeners();
   }
 
@@ -168,7 +184,7 @@ class MyAppState extends ChangeNotifier {
   }
 
   void setQuizData(String userName, String teammateName, int duration,
-      String teamname, DateTime datetime, int quizId) {
+      String teamname, DateTime datetime, int quizId, int teamId, int userId) {
     this.userName = userName;
     this.teammateName = teammateName;
     this.duration = duration;
@@ -176,6 +192,8 @@ class MyAppState extends ChangeNotifier {
     this.datetime = datetime;
     this.quizId = quizId;
     this.isQuizLoaded = true;
+    this.teamId = teamId;
+    this.userId = userId;
 
     notifyListeners();
   }
@@ -186,15 +204,57 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setAnswer(int roundId, int qid, int? answer) {
+  void setAnswer(int roundId, int qid, int answer) {
     this.rounds.firstWhere((round) => round.id == roundId).answers[qid] =
-        answer;
+        Answer(qid: qid, ans: answer);
 
     notifyListeners();
   }
 
   void removeAnswer(int roundId, int qid) {
     this.rounds.firstWhere((round) => round.id == roundId).answers.remove(qid);
+
+    notifyListeners();
+  }
+
+  void setRounds(Map<String, dynamic> data) {
+    final List<Round> newRounds = [];
+    final List<dynamic> rounds = data["rounds"];
+
+    // populating rounds from data
+    for (var round in rounds) {
+      int id = round['id'];
+      String name = round['name'];
+      List<dynamic> questions = round['questions'];
+      List<Question> newQuestions = [];
+
+      // populating questions for each round
+      for (final q in questions) {
+        Question question = Question(
+            id: q["id"],
+            question: q["question"],
+            option1: q["option1"],
+            option2: q["option2"],
+            option3: q["option3"],
+            option4: q["option4"],
+            type: q["type"],
+            link: q["link"]);
+        newQuestions.add(question);
+      }
+
+      final newRound = Round(
+          answers: {},
+          total: questions.length,
+          id: id,
+          name: name,
+          questions: newQuestions,
+          quizcode: quizcode,
+          quizId: quizId);
+        
+      newRounds.add(newRound);
+    }
+
+    this.rounds = newRounds;
 
     notifyListeners();
   }

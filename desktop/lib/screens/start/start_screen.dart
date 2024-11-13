@@ -37,6 +37,7 @@ class _StartScreenState extends State<StartScreen> {
   bool isStartEnabled = false;
   late DateTime startTime;
   late Timer _timer;
+  bool isStarting = false;
 
   final _storage = FlutterSecureStorage();
   late Map<String, dynamic> data;
@@ -91,8 +92,15 @@ class _StartScreenState extends State<StartScreen> {
         DateTime datetime = DateTime(date.year, date.month, date.day, time.hour,
             time.minute, time.second, time.millisecond, time.microsecond);
 
-        quizState.setQuizData(data["userName"], data["teammateName"],
-            data["duration"], data["teamName"], datetime, data["quizId"]);
+        quizState.setQuizData(
+            data["userName"],
+            data["teammateName"],
+            data["duration"],
+            data["teamName"],
+            datetime,
+            data["quizId"],
+            data["teamId"],
+            data["userId"]);
 
         setState(() {
           _isLoading = false;
@@ -104,11 +112,41 @@ class _StartScreenState extends State<StartScreen> {
         throw Exception('Failed to load data');
       }
     } catch (e) {
+      // dialog
       // Handle errors
       print('Error: $e');
       setState(() {
         // _isLoading = false;
       });
+
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Requset Failed"),
+              content: Text("Unable to load quiz data"),
+              actions: [
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.of(context).pop(); // Close the dialog
+                //   },
+                //   child: Text("No"),
+                // ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[800],
+                      foregroundColor: Colors.white),
+                  onPressed: () {
+                    // Add your submission logic here
+                    fetchQuizInfo();
+                    Navigator.of(context).pop(); // Close the dialog
+                    // Navigator.pop(context);|
+                  },
+                  child: Text("Retry"),
+                ),
+              ],
+            );
+          });
     }
   }
 
@@ -120,6 +158,91 @@ class _StartScreenState extends State<StartScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Logged out successfully")),
     );
+  }
+
+  Future<void> _onStartClicked() async {
+    _showStartingSpinner();
+    // return;
+    final appState = Provider.of<MyAppState>(context, listen: false);
+    final baseUrl = dotenv.env["BASE_URL"];
+    final url = Uri.parse('$baseUrl/user/generate-quiz/${appState.quizcode}');
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+
+        appState.setRounds(data);
+
+        // after loading rounds data succesfully
+        appState.setStartTime(DateTime.now());
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const RoundsScreen(),
+          ),
+        );
+      } // endif
+      else {
+        _showRetryStart(response.statusCode);
+      }
+    } catch (error) {
+      print('$error');
+      _showRetryStart(error);
+    }
+  }
+
+  void _showStartingSpinner() {
+    this.isStarting = true;
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              child: Container(
+            child: Center(child: CircularProgressIndicator()),
+            height: 200.0,
+            width: 200.0,
+          ));
+        });
+  }
+
+  void _hideStartingSpinner() {
+    Navigator.of(context).pop();
+    this.isStarting = false;
+  }
+
+  void _showRetryStart([Object? error]) {
+    if (this.isStarting) _hideStartingSpinner();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Failed to Start Quiz"),
+            content: Text(
+                "Retry after some time${error != null ? "\nError : $error" : ""}"),
+            actions: [
+              // TextButton(
+              //   onPressed: () {
+              //     Navigator.of(context).pop(); // Close the dialog
+              //   },
+              //   child: Text("No"),
+              // ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[800],
+                    foregroundColor: Colors.white),
+                onPressed: () {
+                  // Add your submission logic here
+                  _onStartClicked();
+                  Navigator.of(context).pop(); // Close the dialog
+                  // Navigator.pop(context);|
+                },
+                child: Text("Retry"),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -184,13 +307,7 @@ class _StartScreenState extends State<StartScreen> {
           ElevatedButton.icon(
             onPressed: () {
               if (!isStartEnabled) return;
-              appState.setStartTime(DateTime.now());
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RoundsScreen(),
-                ),
-              );
+              _onStartClicked();
             },
             icon: const Icon(Icons.play_arrow),
             label: const Text('Start Test'),

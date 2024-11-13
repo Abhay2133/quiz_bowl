@@ -1,6 +1,6 @@
 export function shuffleArray<T>(array: T[]): T[] {
   // Create a copy of the array to avoid mutating the original
-  const shuffledArray = array.slice();
+  const shuffledArray = Array.from(array);
   
   for (let i = shuffledArray.length - 1; i > 0; i--) {
     // Pick a random index from 0 to i
