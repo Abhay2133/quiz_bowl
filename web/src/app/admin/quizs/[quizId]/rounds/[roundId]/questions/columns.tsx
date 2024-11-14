@@ -1,30 +1,37 @@
-"use client"
-
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
-import Link from "next/link"
+"use client";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Question = {
-  id: number,
-  question: string,
-  answer: "OPTION1" | "OPTION2" | "OPTION3" | "OPTION4",
-  option1: string,
-  option2: string,
-  option3: string,
-  option4: string,
-  type: "TEXT" | "IMAGE" | "AUDIO" | "VIDEO",
-  link: string,
-  difficulty: "EASY" | "MEDIUM" | "HARD",
-  roundId: number,
-  quizId: number,
+  id: number;
+  question: string;
+  answer: "OPTION1" | "OPTION2" | "OPTION3" | "OPTION4";
+  option1: string;
+  option2: string;
+  option3: string;
+  option4: string;
+  type: "TEXT" | "IMAGE" | "AUDIO" | "VIDEO";
+  link: string;
+  difficulty: "EASY" | "MEDIUM" | "HARD";
+  roundId: number;
+  quizId: number;
 
-  createdAt: string,
-  updatedAt: string,
-}
+  createdAt: string;
+  updatedAt: string;
+};
 
 export const columns: ColumnDef<Question>[] = [
   {
@@ -33,11 +40,22 @@ export const columns: ColumnDef<Question>[] = [
   },
   {
     accessorKey: "question",
-    header: "Question",
-    cell:({row})=>{
-      const question = row.original
-      return (<div className="max-w-[200px]">{question.question}</div>)
-    }
+    // header: "Question",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Question
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const question = row.original;
+      return <div className="max-w-[200px] mr-5 ">{question.question}</div>;
+    },
   },
   {
     accessorKey: "option1",
@@ -85,14 +103,14 @@ export const columns: ColumnDef<Question>[] = [
   },
   {
     accessorKey: "updatedAt",
-    header: "Updated At"
+    header: "Updated At",
   },
   {
     header: "actions",
     id: "actions",
     cell: ({ row }) => {
-      const question = row.original
-      // const base_url = 
+      const question = row.original;
+      // const base_url =
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -104,13 +122,11 @@ export const columns: ColumnDef<Question>[] = [
           <DropdownMenuContent align="end">
             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
             <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>
-              Delete
-            </DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
             {/* <DropdownMenuSeparator /> */}
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];

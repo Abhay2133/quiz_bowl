@@ -67,22 +67,36 @@ export const getSubmissions = async (req: Request, res: Response) => {
 };
 
 // Get submission by quiz code
-export const getSubmissionByQuizCode = async (req: Request, res: Response) => {
+export const getSubmissionsByQuizCode = async (req: Request, res: Response) => {
   const { quizcode } = req.params;
 
   try {
+    // Find the quiz by the provided quizcode
     const quiz = await prisma.quiz.findUnique({
       where: { quizcode },
-      include: { submissions: true },
+      select: { id: true },
     });
 
     if (!quiz) {
       return res.status(404).json({ error: "Quiz not found" });
     }
 
-    res.json(quiz.submissions);
-  } catch (e: any) {
-    errorResponse(e, res);
+    // Fetch all submissions associated with the found quiz ID
+    const submissions = await prisma.submission.findMany({
+      where: { quizId: quiz.id },
+      include: {
+        user: { select: { name: true, email: true } },
+        team: { select: { name: true } },
+      },
+    });
+    res.json(submissions);
+    
+  } catch (error) {
+    console.error(error);
+    // res
+    //   .status(500)
+    //   .json({ error: "An error occurred while fetching submissions" });
+    errorResponse(error, res);
   }
 };
 

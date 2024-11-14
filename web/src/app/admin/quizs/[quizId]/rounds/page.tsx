@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Round, columns } from "./columns";
-import { DataTable } from "./data-table";
+import { DataTable } from "@/components/data-table";
 import AdminNav from "@/components/admin-navbar";
 import { formatISODate } from "@/util/datetime";
 import {
@@ -230,7 +230,13 @@ export default function TestsPage({ params }: any) {
       });
     } finally {
       setDelDialog({ ...delDialog, name: "", id: -1, open: false });
+      fetchAllRounds();
     }
+  };
+
+  
+  const deleteMany = ({ rows }: any) => {
+    console.log(rows);
   };
 
   return (
@@ -248,10 +254,9 @@ export default function TestsPage({ params }: any) {
           loading
         ) : (
           <DataTable
-            openCreateDialog={showCreateDialog}
-            columns={columns}
-            data={data}
-          />
+              openCreateDialog={showCreateDialog}
+              columns={columns}
+              data={data} onSelectedDelete={deleteMany}          />
         )}
       </div>
 

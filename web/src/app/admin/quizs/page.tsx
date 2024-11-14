@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Test, columns } from "./columns";
-import { DataTable } from "./data-table";
+import { DataTable } from "@/components/data-table";
 import AdminNav from "@/components/admin-navbar";
 import {
   convertIsoToDate,
@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { TestForm } from "./form";
+import { RowModel } from "@tanstack/react-table";
 
 export default function TestsPage() {
   const [data, setData] = useState<Test[]>([]);
@@ -229,6 +230,10 @@ export default function TestsPage() {
     });
   }
 
+  const deleteMany = ({ rows }: any) => {
+    console.log(rows);
+  };
+
   return (
     <div>
       <AdminNav
@@ -251,6 +256,7 @@ export default function TestsPage() {
               startTiming: convertIsoToTime(item.startTiming),
               date: convertIsoToDate(item.date),
             }))}
+            onSelectedDelete={deleteMany}
           />
         )}
       </div>

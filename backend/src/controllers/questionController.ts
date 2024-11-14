@@ -1,12 +1,24 @@
 // src/controllers/questionController.ts
-import { Request, Response } from 'express';
-import prisma from '../prisma/client';
-import { Question, QuestionType } from '@prisma/client';
-import { shuffleArray } from '../utils/array';
+import { Request, Response } from "express";
+import prisma from "../prisma/client";
+import { Question, QuestionType } from "@prisma/client";
+import { shuffleArray } from "../utils/array";
+import { errorResponse } from "../utils/prisma";
 
 // Create a new question
 export const createQuestion = async (req: Request, res: Response) => {
-  const { question, answer, option1, option2, option3, option4, type, link, difficulty, roundId } = req.body;
+  const {
+    question,
+    answer,
+    option1,
+    option2,
+    option3,
+    option4,
+    type,
+    link,
+    difficulty,
+    roundId,
+  } = req.body;
   try {
     const newQuestion = await prisma.question.create({
       data: {
@@ -19,13 +31,13 @@ export const createQuestion = async (req: Request, res: Response) => {
         type,
         link,
         difficulty,
-        roundId
+        roundId,
       },
     });
     res.status(201).json(newQuestion);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ error: 'Error creating question' });
+    res.status(400).json({ error: "Error creating question" });
   }
 };
 
@@ -36,7 +48,7 @@ export const getQuestions = async (req: Request, res: Response) => {
     res.json(questions);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error fetching questions' });
+    res.status(500).json({ error: "Error fetching questions" });
   }
 };
 
@@ -48,12 +60,12 @@ export const getQuestionById = async (req: Request, res: Response) => {
       where: { id: parseInt(id) },
     });
     if (!question) {
-      return res.status(404).json({ error: 'Question not found' });
+      return res.status(404).json({ error: "Question not found" });
     }
     res.json(question);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error fetching question' });
+    res.status(500).json({ error: "Error fetching question" });
   }
 };
 
@@ -65,19 +77,29 @@ export const getQuestionByRoundId = async (req: Request, res: Response) => {
       where: { roundId: parseInt(roundId) },
     });
     if (!questions) {
-      return res.status(404).json({ error: 'Questions not found' });
+      return res.status(404).json({ error: "Questions not found" });
     }
     res.json(questions);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error fetching questions' });
+    res.status(500).json({ error: "Error fetching questions" });
   }
 };
 
 // Update a question by ID
 export const updateQuestion = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { question, answer, option1, option2, option3, option4, type, link, difficulty } = req.body;
+  const {
+    question,
+    answer,
+    option1,
+    option2,
+    option3,
+    option4,
+    type,
+    link,
+    difficulty,
+  } = req.body;
   try {
     const updatedQuestion = await prisma.question.update({
       where: { id: parseInt(id) },
@@ -90,13 +112,13 @@ export const updateQuestion = async (req: Request, res: Response) => {
         option4,
         type,
         link,
-        difficulty
+        difficulty,
       },
     });
     res.json(updatedQuestion);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ error: 'Error updating question' });
+    res.status(400).json({ error: "Error updating question" });
   }
 };
 
@@ -110,7 +132,7 @@ export const deleteQuestion = async (req: Request, res: Response) => {
     res.status(204).send();
   } catch (error) {
     console.error(error);
-    res.status(404).json({ error: 'Question not found' });
+    res.status(404).json({ error: "Question not found" });
   }
 };
 
@@ -120,36 +142,85 @@ export const deleteQuestion = async (req: Request, res: Response) => {
 export const generateRound = async (req: Request, res: Response) => {
   try {
     const roundId = parseInt(req.params.roundId);
-    // const questions = 
+    // const questions =
     const round = await prisma.round.findUnique({ where: { id: roundId } });
-    if (!round) return res.status(404).json({ error: `no round (id:${roundId}) found` });
+    if (!round)
+      return res.status(404).json({ error: `no round (id:${roundId}) found` });
     const { easyQ, mediumQ, hardQ } = round;
-    const easyQuestions = shuffleArray(await prisma.question.findMany({ where: { roundId, difficulty: "EASY" } })).slice(0, easyQ).map(toUserQ)
-    const mediumQuestions = shuffleArray(await prisma.question.findMany({ where: { roundId, difficulty: "MEDIUM" } })).slice(0, mediumQ).map(toUserQ)
-    const hardQuestions = shuffleArray(await prisma.question.findMany({ where: { roundId, difficulty: "HARD" } })).slice(0, hardQ).map(toUserQ)
+    const easyQuestions = shuffleArray(
+      await prisma.question.findMany({ where: { roundId, difficulty: "EASY" } })
+    )
+      .slice(0, easyQ)
+      .map(toUserQ);
+    const mediumQuestions = shuffleArray(
+      await prisma.question.findMany({
+        where: { roundId, difficulty: "MEDIUM" },
+      })
+    )
+      .slice(0, mediumQ)
+      .map(toUserQ);
+    const hardQuestions = shuffleArray(
+      await prisma.question.findMany({ where: { roundId, difficulty: "HARD" } })
+    )
+      .slice(0, hardQ)
+      .map(toUserQ);
 
-    return res.json([...easyQuestions, ...mediumQuestions, ...hardQuestions])
+    return res.json([...easyQuestions, ...mediumQuestions, ...hardQuestions]);
   } catch (e: any) {
     console.error(e);
-    res.status(500).json({ error: "Error generating test", message: e.message });
+    res
+      .status(500)
+      .json({ error: "Error generating test", message: e.message });
   }
-}
+};
 
 const toUserQ = (q: Question) => {
   const userQ: any = { ...q };
   delete userQ.answer;
-  return userQ
-}
+  return userQ;
+};
 
 export const getUserQuestion = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const question = await prisma.question.findUnique({ where: { id: parseInt(id) } });
-    if (!question) return res.status(404).json({ error: `Question not found (id:${id})` })
+    const question = await prisma.question.findUnique({
+      where: { id: parseInt(id) },
+    });
+    if (!question)
+      return res.status(404).json({ error: `Question not found (id:${id})` });
 
     res.json(toUserQ(question));
   } catch (e: any) {
     console.error(e);
-    res.status(500).json({ error: `Error getting question (id:${id})`, message: e.message })
+    res
+      .status(500)
+      .json({ error: `Error getting question (id:${id})`, message: e.message });
   }
-}
+};
+
+// hanlde delete-many
+export const deleteManyHandler = async (req: Request, res: Response) => {
+  try {
+    const { ids } = req.body;
+    // Check if ids is an array and has at least one item
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ error: "Invalid 'ids' array provided." });
+    }
+
+    // Delete questions with the given IDs
+    const deleteResult = await prisma.question.deleteMany({
+      where: {
+        id: { in: ids },
+      },
+    });
+
+    // Respond with the result
+    res.status(200).json({
+      message: `${deleteResult.count} questions deleted successfully.`,
+      deletedCount: deleteResult.count,
+    });
+  } catch (error) {
+    console.error(error);
+    errorResponse(error, res);
+  }
+};
