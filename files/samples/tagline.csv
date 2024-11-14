@@ -1,0 +1,88 @@
+id,question,answer,option1,option2,option3,option4,type,link,difficulty
+1,"Which brand uses the slogan I'm livin it""?",McDonald's,HP,COCA COLA,McDonald's,Walmart,text,,Easy
+2,"Which brand is associated with the slogan ""JUST DO IT""?",Nike,Nike,Adidas,Reebok,Goodyear,text,,Easy
+3,"Which brand uses the slogan ""It's Finger-Lickin Good""?",KFC,Popeye's ,Mrs. Winters,KFC,ChikFila,text,,Easy
+4,"Which brand uses the slogan ""Strong enough for a man, made for a women""?",Secret,Degree,Secret,Mitchum,Old Spice,text,,Easy
+5,"Which brand is associated with the slogan ""Melt in your mouth, not in your hand""?",M&M's,Hershey's,M&M's,Reese's,Milky Way,text,,Easy
+6,"Which brand is represented by the slogan ""Snap, crackle, pop""?",Kellogs,Frosted Flakes,Cinnamon Toast Crunch,Cheerios,Kellogs,text,,Easy
+7,"Which brand uses the slogan ""When you care enough to send the very best""?",Hallmark,FTD Flowers,FedEx,Hallmark,UPS,text,,Easy
+8,"Which brand is associated with the slogan ""Always low prices""?",Wal-Mart,Kmart,Wal-Mart,Low's,The Home Depot,text,,Easy
+9,"Which brand uses the slogan ""Zoom, Zoom, Zoom.""?",Mazda,Mazda,Toyota,Subaru,Kia,text,,Easy
+10,"Which brand is represented by the slogan ""Maybe she's born with it, may be it's …..""?",Maybelline,Degree,Revlon,Maybelline,Maxim,text,,Easy
+11,"Which brand uses the slogan ""Betcha can't eat just one""?",Lay's,Lay's,Fritos,Doritos,Grippos,text,,Easy
+12,"Which brand is associated with the slogan ""Eat Fresh""?",Subway,Panera,Subway,KFC,Jimmy John's,text,,Easy
+13,"Which brand is represented by the slogan ""There are something money can't buy. For everything else, there's …...""?",Mastercard,Visa,American Express,Mastercard,Discover,text,,Easy
+14,"Which airline uses the slogan ""You are now free to move about the country""?",Southwest,Southwest,American ,Continental,Delta,text,,Easy
+15,"Which brand is represented by the slogan ""Because You're Worth it""?",L'Oreal,Maybelline,L'Oreal,Olay,Revlon,text,,Easy
+16,"Which company is represented by the slogan ""There is a little bit of ….. in everybody's life""?",SAIL,SAIL,Iron,NTPC,HAL,text,,Easy
+17,"""Connecting India"" is a Tagline of …..?",BSNL,Airtel,Vodafone Idea,BSNL,Reliance Jio,text,,Easy
+18,"""Think Different"" is the Slogan of …..""?",Apple,HP,Dell,Apple,Samsung,text,,Easy
+19,"""Are yahi to hai desh ki dhadkan"" is the slogan of ….?",Hero Honda,Honda,Hero,Hero Honda,TVS,text,,Easy
+20,"""The future of computing"" is the tagline of …..?",AMD,Samsung,Apple,LG,AMD,text,,Easy
+21,"""Imagine the possibilities"" is the tagline of …..?",Samsung,Samsung,Atari,MicroMax,Nokia,text,,Easy
+22,"""The power of dreams"" is the Tagline of …..?",Honda,TVS,Bajaj,Hero Honda,Honda,text,,Easy
+23,"""Hum me hai …."" is the Tagline of ",Hero,Honda,Hero,Yamaha,Royal Enfield,text,,Easy
+24,"""Connecting People"" is the tagline of …..?",Nokia,eKart,FedEx,Nokia,Vivo,text,,Easy
+25,"""Connecting People Improving Lives"" is the Tagline of …...?",DHL,BlueDart,DTDC,Nokia,DHL,text,,Easy
+26,"""Delivering Value"" is the tagline of …..?",DTDC,eCom,Ekart Logistics,DHL,DTDC,text,,Easy
+27,"""The energy of India"" is the Tagline of …....?",IOCL,HAL,NTPC,IOCL,Bharat Petroleum,text,,Easy
+28,"""We also make tomorrow"" is the tagline of ….?",TISCO,TISCO,TELCO,SAIL,BHEL,text,,Easy
+29,"""Alarm Bajne se pahle jago re"" is the Tagline of …..?",Tata Tea,Ajanta Watches,Titan Watches,Tata Tea,Wagh Bakri Chay,text,,Easy
+30,"""Taaza ho le"" is the Tagline of …..?",Taaza Tea,Reliance Fresh,Taaza Tea,Upper Assam Tea,Tata Tea,text,,Easy
+31,The Tagline of Indian Tourism is …..?,Incredible India,Padharo Mahare Desh,Incredible India,Just Imagine,Rang Biranga Desh,text,,Easy
+32,"""The man your man could smell like"" is the Tagline of …...?",Old Spice,Gillette,Park Avenue,Old Spice,Axe,text,,Easy
+33,Think Different is the Tagline of …...?,Apple,Orange,Apple,Grapes,Banana,text,,Easy
+34,"""Twist, Lick, Dunk"" is the Tagline of …..?",Oreo,Skittles,Rainbow,Oreo,Kellogs,text,,Easy
+35,"""The ultimate driving machine"" is the tagline of ….?",BMW,Maruti Suzuki,BMW,Innova,Skoda,text,,Easy
+36,"""Made from the best stuff on earth"" is the tagline of ….?",Snapple,Snapple,Apple,Axe,Ozone,text,,Easy
+37,"""Get your own box"" is the tagline of …..?",Cheez it,Cheez it,Kellogs,McDonalds,None of these,text,,Easy
+38,"""Dirty Mouth? Clean it up"" is the tagline of ….?",Orbit,Colgate,Sensodyne,Orbit,Dabur Red Tooth Paste,text,,Easy
+39,"""Taste of Feelinf"" is the Tagline of …..?",Coca Cola,Coca Cola,Pepsi,Mirinda,7' UP,text,,Easy
+40,"""A passion for the road"" is the tagline of …..?",Tata Safari,Mazda,Tata Safari,BMW,MRF Tyres,text,,Easy
+41,"""We know money"" is the tagline of …..?",AIG,AXA,AIG,Lombard,Dai Echi,text,,Easy
+42,"""Dimag ki batti jala de"" is the tagline of …....?",Mentos,Mentos,Cadbury,Dairy Milk,Nutrine,text,,Easy
+43,"""The taste of India"" id the tagline of …...?",Amul,Mother Dairy,Sudha,Amul,Ananda,text,,Easy
+44,"""Tyres with muscles"" is the tagline of ….?",MRF Tyres,Micheline,MRF Tyres,Apollo Tyres,Bridgestone,text,,Easy
+45,"""Whenever you go, your network follows"" is the tagline is…...?",Hutchison Essar,Aircel,Airtel,,Reliance Jio,text,,Easy
+46,"""Pure Banking, nothing else"" is the tagline of …..?",State Bank of India,Punjan National Bank,Bsnk of Baroda,Axis Bank,State Bank of India,text,,Easy
+47,"""Life's Good is the tagline of …..?",LG,Samsung,Havells,Philips,LG,text,,Easy
+48,"""Bajate Raho"" is the tagline of ….. ?",Red FM 93.5 ,Red FM 93.5 ,All India Radio,Radio Mirchi,Vividh Bharti,text,,Easy
+49,"""India's International Bank"" is the tagline of …. ?",Bank of Baroda,HDFC Bank Ltd.,ICICI Bank Lrd.,Bank of Baroda,Axis Bank,text,,Easy
+50,"""Impossible is nothing"" is the tagline of … ?",Adidas,Puma,Adidas,Nike,Wildcraft,text,,Easy
+51,"""Born tough"" is the tagline of … ?",CEAT,JK Tyres,Micheline,Good Year India,CEAT,text,,Easy
+52,"""Experience Change"" is the tagline of …. ?",Videocon,Acer,Bosch,BPL,Videocon,text,,Easy
+53,"""Just do it"" is the tagline of … ?",Nike,Adidas,Nike,Wildcraft,Philips,text,,Easy
+54,"""Value for Money"" is the tagline of … ?",Vishal Mega Mart,Vishal Mega Mart,Decathalon,Big Bazar,Lu lu Mall,text,,Easy
+55,"""Har needs ke liye best deals"" is the tagline of …. ?",Flipkart,Flipkart,Amazon,OLX,CarDekho.com,text,,Easy
+56,"""High Performance Delivered"" is the tagline of …. ?",Accenture,HCL,TCS,Accenture,EXL,text,,Easy
+57,"""Fly the new feelings"" is the tagline of ….? ",Vistara,Yellow Pages,Vistara,Air India,Indigo,text,,Easy
+58,"""Zindagi ke sath bhi zindagi ke bad bhi"" is the tagline of …..?",LIC,Bharti Axa Life Insurance,Star Union Dai Ichi,ICICI Prudential,LIC,text,,Easy
+59,"""The engineers choice"" is the tagline of …..?",Ultra Tech Cement,ACC Cement,Shree Cement,Ultra Tech Cement,None of these,text,,Easy
+60,"""Happiest place on earth"" is the tagline of …. ?",Disneyland,Switzerland,Kashmir,Disneyland,France,text,,Easy
+61,"""American by birth, Rebel by choice"" is the tagline of …. ?",Harley Davidson,Harley Davidson,Royal Enfield,Yezdi,Yamaha,text,,Easy
+62,"""Supercharging progress"" is the tagline of .'… ?",HCL Tech,IBM,HCL Tech,TCS,Satyam,text,,Easy
+63,"""Share Moments Share Life"" is the tagline of …. ?",Kodak,Kodak,Fuji,Konica,Kowa,text,,Easy
+64,"""….... Gives you wings"" is the tagline of ….?",Red Bull,Red Bull,Biman Bangladesh,PIA,Saudia,text,,Easy
+65,"""Khayal Apka"" is the tagline of …..?",ICICI Bank Ltd.,PIA,ICICI Bank Ltd.,Saudia,HDFC Bank,text,,Easy
+66,"""We understabd your world"" is the tagline of ….?",HDFC Bank,Axis Bank,British Airways,HDFC Bank,Punjab and Sind Bank,text,,Easy
+67,"""Better World"" is the tagline of ….. ?",British Airways,UNO,IMF,British Airways,Biman Bangladesh,text,,Easy
+68,"""Service Before Help"" is the tagline of ….?",IndiaPost,IndiaPost,DTDC,US Airways,Sri Lankan Airlines,text,,Easy
+69,"""Lets go places"" is the tagline of … ?",Toyota,Innova,Toyota,Thar,BMW,text,,Easy
+70,"""Everyone's invited"" is the tagline of … ?",Samsung,Samsung,LG,Videocon,Havells,text,,Easy
+71,"""More creations, More possibilities"" is the tagline of … ?",Haier,Kenstar,Blue Star,Voltas,Haier,text,,Easy
+72,"""The worlds local bank"" is the tagline of … ?",HSBC,HSBC,Standard Chartered Bank,Deutche Bank,Citibank,text,,Easy
+73,"""The steel of India"" is the tagline of … ?",Jindal Steel,Tata Steel,Larsen and Toubro,Jindal Steel,SAIL,text,,Easy
+74,"""Dobara mat puchhna"" is the punchline of ... ?",ChlorMint,ChlorMint,Dark Chocolates,Lindt Excellence,None of these,text,,Easy
+75,"""Drivers wanted"" is the tagline of ….?",Volkswagen,Innova,BMW,Maruti Suzuki,Volkswagen,text,,Easy
+76,"""Always low prices"" is the tagline of …... ?",Wall Mart,Big Bazar,Wall Mart,Vishal Mega Mart,None of these,text,,Easy
+77,"""The jeans that built America"" is the tagline of … ?",Lee,Levis,Lee,Allen Solly,Wrangler,text,,Easy
+78,"""The edge is efficiency"" is the tagline of …. ?",Bombay Stock Exchange,National Stock Exchange,Bombay Stock Exchange,OTC Exchange of India,Bangalore Stock Exchange,text,,Easy
+79,"""The tasty healthy food: World's largest selling biscuit"" is the tagline of … ?",Parle,Britannia,Parle,Oreo,Sunfeast,text,,Easy
+80,"""The good food, good life company"" is the tagline of …. ?",Nestle,Sunfeast,Britannia,Nestle,The pizza hut,text,,Easy
+81,"""Rise up baby"" is the tagline of ….. ?",Pepsico,Pepsico,Mirinda,7 UP,Limca,text,,Easy
+82,"""Celebrate Life"" is the tagline of …. ?",Dabur,Patanjali,Dabur,Himalya,None of these,text,,Easy
+83,"""Discover a passion"" is the tagline of …. ?",ITC Wills Classic Cigarrette,Gold Flake,ITC Wills Classic Cigarrette,,None of these,text,,Easy
+84,"""Small actions big difference"" is the tagline of   ?",Hindustan Uniliver Limited,ITC Ltd.,Hindustan Uniliver Limited,Reliance Indistries,Adani Edible Oils,text,,Easy
+85,"""Highest Grade Honest Weight"" is the tagline of …. ?",P & G,P & G,ITC Kitchens of India,Sunfeast,Oreo,text,,Easy
+86,"""Ek Balm Teen Kaam"" is the tagline of … ?",Zandu Balm,Amrutanjan Balm,Patanjali Balm,Zandu Balm,Dabur Balm,text,,Easy
+87,"""Goodness of 7 natural oils"" is the tagline of …. ?",Emami Hair Oil,Keo Karpin,Emami Hair Oil,Patanjali Hair Oil,None of these,text,,Easy
