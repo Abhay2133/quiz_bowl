@@ -27,7 +27,7 @@ export default function TestsPage({ params }: any) {
       <AdminNav backHref={`/admin/quizs/${quizId}/teams`} 
       path={[
         { label: "Admin", href: "/admin" },
-        { label: "Tests", href: "/admin/quizs" },
+        { label: "Quizzes", href: "/admin/quizs" },
         { label: "Teams", href: `/admin/quizs/${quizId}/teams` },
         { label: "Members" }
       ]} 

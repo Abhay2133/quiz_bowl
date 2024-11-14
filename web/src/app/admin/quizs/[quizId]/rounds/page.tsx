@@ -239,7 +239,7 @@ export default function TestsPage({ params }: any) {
         backHref={"/admin/quizs"}
         path={[
           { label: "Admin", href: "/admin" },
-          { label: "Tests", href: "/admin/quizs" },
+          { label: "Quizzes", href: "/admin/quizs" },
           { label: "Rounds", href: `/admin/quizs/${quizId}/rounds` },
         ]}
       />
