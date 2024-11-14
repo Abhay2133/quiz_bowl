@@ -235,7 +235,7 @@ export default function TestsPage() {
         backHref={"/admin"}
         path={[
           { label: "Admin", href: "/admin" },
-          { label: "Tests", href: "/admin/quizs" },
+          { label: "Quizzes", href: "/admin/quizs" },
         ]}
       />
       <div className="w-full h-screen flex justify-center pb-5">
