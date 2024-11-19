@@ -34,50 +34,50 @@ export const calculateScores = ({
   return score;
 };
 
-export const setScoreBySubmissionData = async (
-  _prisma: any,
-  {
-    teamId,
-    userId,
-    quizId,
-    answers,
-  }: {
-    teamId?: number;
-    userId: number;
-    quizId: number;
-    answers: any;
-  }
-) => {
-  try {
-    const answersJson =
-      typeof answers == "string" ? JSON.parse(answers) : answers;
-    const questions = await fetchAllQuestions();
-    const { positiveScore, negativeScore } = (await prisma.quiz.findUnique({
-      where: { id: quizId },
-    })) as Quiz;
+// export const setScoreBySubmissionData = async (
+//   _prisma: any,
+//   {
+//     teamId,
+//     userId,
+//     quizId,
+//     answers,
+//   }: {
+//     teamId?: number;
+//     userId: number;
+//     quizId: number;
+//     answers: any;
+//   }
+// ) => {
+//   try {
+//     const answersJson =
+//       typeof answers == "string" ? JSON.parse(answers) : answers;
+//     const questions = await fetchAllQuestions();
+//     const { positiveScore, negativeScore } = (await prisma.quiz.findUnique({
+//       where: { id: quizId },
+//     })) as Quiz;
 
-    const score = calculateScores({
-      positiveScore,
-      negativeScore,
-      answersJson,
-      questions,
-    });
+//     const score = calculateScores({
+//       positiveScore,
+//       negativeScore,
+//       answersJson,
+//       questions,
+//     });
 
-    let _prisma_ = _prisma || prisma;
-    const _score = await _prisma_.score.create({
-      data: {
-        quizId,
-        score,
-        userId,
-      },
-    });
+//     let _prisma_ = _prisma || prisma;
+//     const _score = await _prisma_.score.create({
+//       data: {
+//         quizId,
+//         score,
+//         userId,
+//       },
+//     });
 
-    return _score;
-  } catch (e: any) {
-    console.error(e);
-    throw e;
-  }
-};
+//     return _score;
+//   } catch (e: any) {
+//     console.error(e);
+//     throw e;
+//   }
+// };
 
 // export const setScore = async ({quizId, userId, }) => {
 

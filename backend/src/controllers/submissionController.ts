@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import prisma from "../prisma/client";
 import { errorResponse } from "../utils/prisma";
-import { setScoreBySubmissionData } from "../services/scoreService";
+import { calculateScores } from "../services/scoreService";
+import { fetchAllQuestions } from "../services/questionService";
 
 // Post quiz submission : by user
 export const submitQuiz = async (req: Request, res: Response) => {
@@ -24,7 +25,6 @@ export const submitQuiz = async (req: Request, res: Response) => {
     const quiz = await prisma.quiz.findUnique({ where: { id: quizId } });
     const team = await prisma.team.findUnique({ where: { id: teamId } });
     const user = await prisma.user.findUnique({ where: { id: userId } });
-
     if (!quiz) {
       console.log(`Quiz not found (quizId: ${quizId})`);
       return res.status(404).json({ error: "Quiz not found" });
@@ -37,29 +37,34 @@ export const submitQuiz = async (req: Request, res: Response) => {
       console.log(`User not found (userId: ${userId})`);
       return res.status(404).json({ error: "User not found" });
     }
+    const questions = await fetchAllQuestions();
+    const score = calculateScores({
+      answersJson: answers,
+      positiveScore: quiz.positiveScore,
+      negativeScore: quiz.negativeScore,
+      questions,
+    });
 
-    // Create a new submission
-    await prisma.$transaction(async (prismaTransition) => {
-      const submission = await prismaTransition.submission.create({
-        data: {
-          quizId,
-          teamId,
-          userId,
-          answers, // Store answers as JSON format, assuming they are already formatted as [{ questionId: answer }]
-          // submittedAt: new Date(),
-        },
-      });
-
-      // generate score
-      const _score = await setScoreBySubmissionData(prismaTransition, {
+    const submission = await prisma.submission.create({
+      data: {
+        quizId,
         teamId,
         userId,
-        quizId,
-        answers,
-      });
-
-      res.status(201).json({ message: "Submission successful", submission });
+        score,
+        answers, // Store answers as JSON format, assuming they are already formatted as [{ questionId: answer }]
+        // submittedAt: new Date(),
+      },
     });
+
+    // // generate score
+    // const _score = await setScoreBySubmissionData(prismaTransition, {
+    //   teamId,
+    //   userId,
+    //   quizId,
+    //   answers,
+    // });
+
+    res.status(201).json({ message: "Submission successful", submission });
   } catch (error) {
     console.error("Error submitting quiz:", error);
     // res.status(500).json({ error: "An error occurred while submitting the quiz" });

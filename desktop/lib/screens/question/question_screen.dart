@@ -1,6 +1,7 @@
 import 'package:desktop/appstate.dart';
 import 'package:desktop/screens/rounds/rounds_screen.dart';
 import 'package:desktop/screens/submission/submission_screen.dart';
+import 'package:desktop/widgets/network_image.dart';
 import 'package:desktop/widgets/timer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -269,6 +270,8 @@ class QuestionCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
+            buildMedia(question.type, question.link),
+
             // Options
             // ...List.generate(
             //   4,
@@ -333,6 +336,16 @@ class QuestionCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget buildMedia(String type, String? link) {
+    Widget widget = const SizedBox();
+    if (type == "TEXT") return widget;
+    if (type == "IMAGE" && link != null) widget = QuestionImage(url: link);
+    // if(type == )
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [widget, const SizedBox(height: 16.0)]);
+  }
 }
 
 class _InfoRow extends StatelessWidget {
@@ -365,6 +378,68 @@ class _InfoRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class QuestionImage extends StatefulWidget {
+  final String url;
+  const QuestionImage({super.key, required this.url});
+
+  @override
+  State<QuestionImage> createState() => _QuestionImageState();
+}
+
+class _QuestionImageState extends State<QuestionImage> {
+  // State variable to trigger a reload
+  int _retryKey = 0;
+
+  void _retryLoadingImage() {
+    setState(() {
+      _retryKey++; // Changing the key forces the widget to reload
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.network(
+      widget.url,
+      key: ValueKey(_retryKey), // Ensures a new instance is created on retry
+      width: 300.0,
+      loadingBuilder:
+          (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        } else {
+          return Center(
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      (loadingProgress.expectedTotalBytes ?? 1)
+                  : null,
+            ),
+          );
+        }
+      },
+      errorBuilder:
+          (BuildContext context, Object error, StackTrace? stackTrace) {
+        return Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Failed to load image',
+                style: TextStyle(color: Colors.red),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: _retryLoadingImage,
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

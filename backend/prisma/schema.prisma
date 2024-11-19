@@ -14,7 +14,7 @@ model User {
   teamId      Int?
   team        Team?        @relation(fields: [teamId], references: [id], onDelete: Cascade)
   submissions Submission[]
-  scores      Score[]
+  // scores      Score[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -40,7 +40,7 @@ model Quiz {
   date          DateTime
   rounds        Round[]
   submissions   Submission[]
-  scores        Score[]
+  // scores        Score[]
   teamQuizzes   TeamQuiz[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
@@ -100,18 +100,21 @@ model Submission {
   submittedAt DateTime @default(now())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  score       Int      @default(0)
 }
 
-model Score {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  quizId    Int
-  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  score     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// model Score {
+//   id           Int        @id @default(autoincrement())
+//   userId       Int
+//   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   quizId       Int
+//   quiz         Quiz       @relation(fields: [quizId], references: [id], onDelete: Cascade)
+//   score        Int
+//   submissionId Int
+//   submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+//   createdAt    DateTime   @default(now())
+//   updatedAt    DateTime   @updatedAt
+// }
 
 enum QuestionType {
   TEXT

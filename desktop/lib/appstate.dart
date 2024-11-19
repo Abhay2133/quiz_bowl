@@ -66,8 +66,8 @@ List<Question> sampleQuestions = [
     option2: "Madrid",
     option3: "Paris",
     option4: "Rome",
-    type: "MCQ",
-    link: null,
+    type: "IMAGE",
+    link: "https://cdn.pixabay.com/photo/2022/11/10/20/29/snowman-7583640_1280.jpg",
   ),
   Question(
     id: 2,
@@ -76,7 +76,7 @@ List<Question> sampleQuestions = [
     option2: "11",
     option3: "12",
     option4: "13",
-    type: "MCQ",
+    type: "TEXT",
     link: null,
   ),
   Question(
@@ -86,7 +86,7 @@ List<Question> sampleQuestions = [
     option2: "William Shakespeare",
     option3: "J.K. Rowling",
     option4: "Mark Twain",
-    type: "MCQ",
+    type: "TEXT",
     link: null,
   ),
   Question(
@@ -96,8 +96,8 @@ List<Question> sampleQuestions = [
     option2: "Bird Image",
     option3: "Cat Image",
     option4: "Fish Image",
-    type: "Image",
-    link: "https://example.com/cat-image.jpg",
+    type: "IMAGE",
+    link: "https://cdn.pixabay.com/photo/2022/07/27/06/43/cat-7347316_1280.png",
   ),
 ];
 
@@ -142,7 +142,7 @@ class MyAppState extends ChangeNotifier {
   int quizId = 1;
   DateTime datetime = DateTime.now();
   String teamname = 'Conquorer 101';
-  List<Round> rounds = [];//sampleRounds;
+  List<Round> rounds = sampleRounds;
   String jwtToken = '';
   String userName = 'Abhay';
   String teammateName = 'Shivani';

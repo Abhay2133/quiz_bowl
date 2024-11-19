@@ -37,8 +37,8 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
     for (var round in appState.rounds) {
       // Map<String, int> _ans = ;
       // for(var )
-      answers[round.id.toString()] =
-          round.answers.map((key, ans) => MapEntry(ans.qid.toString(), ans.ans));
+      answers[round.id.toString()] = round.answers
+          .map((key, ans) => MapEntry(ans.qid.toString(), ans.ans));
     }
 
     // Define the body of the POST request
@@ -78,29 +78,32 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Upload"),
-            content: Text("Check you internet connection"),
-            actions: [
-              // TextButton(
-              //   onPressed: () {
-              //     Navigator.of(context).pop(); // Close the dialog
-              //   },
-              //   child: Text("No"),
-              // ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[800],
-                    foregroundColor: Colors.white),
-                onPressed: () {
-                  // Add your submission logic here
-                  _uploadQuiz();
-                  Navigator.of(context).pop(); // Close the dialog
-                  // Navigator.pop(context);|
-                },
-                child: Text("Retry"),
-              ),
-            ],
+          return PopScope(
+            canPop: false,
+            child: AlertDialog(
+              title: const Text("Upload Failed"),
+              content: const Text("Check you internet connection"),
+              actions: [
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.of(context).pop(); // Close the dialog
+                //   },
+                //   child: Text("No"),
+                // ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[800],
+                      foregroundColor: Colors.white),
+                  onPressed: () {
+                    // Add your submission logic here
+                    _uploadQuiz();
+                    Navigator.of(context).pop(); // Close the dialog
+                    // Navigator.pop(context);|
+                  },
+                  child: Text("Retry"),
+                ),
+              ],
+            ),
           );
         });
   }
@@ -196,13 +199,11 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
         Div("Participant Name", 14),
         // const SizedBox(height: 10,),
         Div(appState.userName),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
         Div("Team Name", 14),
         // const SizedBox(height: 10,),
         Div(appState.teamname),
-        SizedBox(height: 30.0),
+        const SizedBox(height: 30.0),
         bLogout()
       ],
     );
