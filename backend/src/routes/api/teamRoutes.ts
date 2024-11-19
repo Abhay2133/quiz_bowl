@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/teams', createTeam);
 router.get('/teams', getTeams);
 router.get('/teams/:id', getTeamById);
-router.get("/teams/quiz/:id", getTeamsByQuizId);
+router.get("/teams/quiz/:quizId", getTeamsByQuizId);
 router.put('/teams/:id', updateTeam);
 router.delete('/teams/:id', deleteTeam);
 

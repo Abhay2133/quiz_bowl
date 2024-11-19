@@ -72,3 +72,8 @@ export const deleteRound = async (req: Request, res: Response) => {
     errorResponse(error, res)
   }
 };
+
+// cascade delete a round by ID
+export const cascadeRound = async (req:Request, res: Response) => {
+  
+}

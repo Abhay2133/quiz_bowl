@@ -1,15 +1,16 @@
 // src/controllers/teamController.ts (similar structure for quizController.ts, roundController.ts, and questionController.ts)
-import { Request, Response } from 'express';
-import prisma from '../prisma/client';
+import { Request, Response } from "express";
+import prisma from "../prisma/client";
+import { Team } from "@prisma/client";
 
 // Create a new team
 export const createTeam = async (req: Request, res: Response) => {
-  const { name, quizId } = req.body;
+  const { name } = req.body;
   try {
-    const team = await prisma.team.create({ data: { name, quizId } });
+    const team = await prisma.team.create({ data: { name } });
     res.status(201).json(team);
   } catch (error) {
-    res.status(400).json({ error: 'Error creating team' });
+    res.status(400).json({ error: "Error creating team" });
   }
 };
 
@@ -18,7 +19,7 @@ export const getTeams = async (req: Request, res: Response) => {
     const teams = await prisma.team.findMany();
     res.json(teams);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching teams' });
+    res.status(500).json({ error: "Error fetching teams" });
   }
 };
 
@@ -29,33 +30,34 @@ export const getTeamById = async (req: Request, res: Response) => {
     const team = await prisma.team.findUnique({ where: { id: parseInt(id) } });
     res.json(team);
   } catch (error) {
-    res.status(404).json({ error: 'Team not found' });
+    res.status(404).json({ error: "Team not found" });
   }
 };
 
 // Get a team by quizid
 export const getTeamsByQuizId = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const quizId = parseInt(req.params.quizId);
   try {
-    const teams = await prisma.team.findMany({ where: { quizId: parseInt(id) } });
+    const teamquiz = await prisma.teamQuiz.findMany({where:{quizId}, select:{team:true}});;
+    const teams:Team[] = teamquiz.map(i => i.team);
     res.json(teams);
   } catch (error) {
-    res.status(404).json({ error: 'No team found in current Quiz' });
+    res.status(404).json({ error: "No team found in current Quiz" });
   }
 };
 
 // Update a Team
 export const updateTeam = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, quizId } = req.body;
+  const { name } = req.body;
   try {
     const updatedTeam = await prisma.team.update({
       where: { id: parseInt(id) },
-      data: { name, quizId },
+      data: { name },
     });
     res.json(updatedTeam);
   } catch (error) {
-    res.status(400).json({ error: 'Error updating team' });
+    res.status(400).json({ error: "Error updating team" });
   }
 };
 
@@ -66,6 +68,6 @@ export const deleteTeam = async (req: Request, res: Response) => {
     await prisma.team.delete({ where: { id: parseInt(id) } });
     res.status(204).send();
   } catch (error) {
-    res.status(404).json({ error: 'Team not found' });
+    res.status(404).json({ error: "Team not found" });
   }
 };

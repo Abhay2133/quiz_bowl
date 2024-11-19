@@ -7,10 +7,26 @@ import { shuffleArray } from "../utils/array";
 
 // Create a new quiz
 export const createQuiz = async (req: Request, res: Response) => {
-  const { name, duration, startTiming, date, quizcode } = req.body;
+  const {
+    name,
+    duration,
+    startTiming,
+    date,
+    quizcode,
+    positiveScore,
+    negativeScore,
+  } = req.body;
   try {
     const quiz = await prisma.quiz.create({
-      data: { name, duration, startTiming, date, quizcode },
+      data: {
+        name,
+        duration,
+        startTiming,
+        date,
+        quizcode,
+        positiveScore,
+        negativeScore,
+      },
     });
     res.status(201).json(quiz);
   } catch (error: any) {
@@ -107,29 +123,6 @@ export const getQuizByQuizcode = async (req: Request, res: Response) => {
 // post quiz submission
 export const postSubmissionBy = async (req: Request, res: Response) => {};
 
-// get all data of quiz i.e., quiz > (team > user , rounds) > questions
-export const getAllDataByQuizId = async (req: Request, res: Response) => {
-  try {
-    const id = parseInt(req.params.id);
-
-    const data = await prisma.quiz.findUnique({
-      where: { id },
-      include: {
-        rounds: { include: { questions: true } },
-        submissions: true,
-        teams: true,
-      },
-    });
-
-    res.json(data);
-  } catch (e: any) {
-    console.error(e);
-    res
-      .status(500)
-      .json({ error: "failed to query test data", message: e.message });
-  }
-};
-
 // get quiz info
 export async function getQuizInfo(req: Request, res: Response) {
   const { email, quizcode } = req.body;
@@ -216,7 +209,9 @@ const generateRound = (round: Round & { questions: Question[] }) => {
     }));
 
   if (easyQs.length < round.easyQ)
-    throw new Error(`Less no. of easy questions (required:${round.easyQ}) (got:${easyQs.length}) (round:${round.name})`);
+    throw new Error(
+      `Less no. of easy questions (required:${round.easyQ}) (got:${easyQs.length}) (round:${round.name})`
+    );
 
   const mediumQs = round.questions
     .filter((q) => q.difficulty == "MEDIUM")
@@ -249,7 +244,9 @@ const generateRound = (round: Round & { questions: Question[] }) => {
       link: q.link,
     }));
   if (hardQs.length < round.hardQ)
-    throw new Error(`Less no. of hard questions (required:${round.hardQ}) (got:${hardQs.length}) (round:${round.name})`);
+    throw new Error(
+      `Less no. of hard questions (required:${round.hardQ}) (got:${hardQs.length}) (round:${round.name})`
+    );
 
   return {
     id: round.id,

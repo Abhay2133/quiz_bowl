@@ -29,6 +29,9 @@ export type Question = {
   roundId: number;
   quizId: number;
 
+  edit:any;
+  delete:any;
+
   createdAt: string;
   updatedAt: string;
 };
@@ -36,6 +39,7 @@ export type Question = {
 export const columns: ColumnDef<Question>[] = [
   {
     accessorKey: "id",
+    accessorFn: (row) => row?.id?.toString(),
     header: "ID",
   },
   {
@@ -121,8 +125,8 @@ export const columns: ColumnDef<Question>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>question.edit()}>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>question.delete()}>Delete</DropdownMenuItem>
             {/* <DropdownMenuSeparator /> */}
           </DropdownMenuContent>
         </DropdownMenu>

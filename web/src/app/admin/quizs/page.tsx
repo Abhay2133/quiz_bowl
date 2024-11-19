@@ -249,7 +249,7 @@ export default function TestsPage() {
         ) : (
           // Main Data table
           <DataTable
-            openCreateDialog={openCreateDialog}
+            onCreate={openCreateDialog}
             columns={columns}
             data={data.map((item) => ({
               ...item,

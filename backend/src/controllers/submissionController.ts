@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import prisma from "../prisma/client";
 import { errorResponse } from "../utils/prisma";
+import { setScoreBySubmissionData } from "../services/scoreService";
 
-// Post quiz submission
+// Post quiz submission : by user
 export const submitQuiz = async (req: Request, res: Response) => {
   const { quizId, teamId, userId, answers } = req.body;
 
@@ -38,17 +39,27 @@ export const submitQuiz = async (req: Request, res: Response) => {
     }
 
     // Create a new submission
-    const submission = await prisma.submission.create({
-      data: {
-        quizId,
+    await prisma.$transaction(async (prismaTransition) => {
+      const submission = await prismaTransition.submission.create({
+        data: {
+          quizId,
+          teamId,
+          userId,
+          answers, // Store answers as JSON format, assuming they are already formatted as [{ questionId: answer }]
+          // submittedAt: new Date(),
+        },
+      });
+
+      // generate score
+      const _score = await setScoreBySubmissionData(prismaTransition, {
         teamId,
         userId,
-        answers, // Store answers as JSON format, assuming they are already formatted as [{ questionId: answer }]
-        // submittedAt: new Date(),
-      },
-    });
+        quizId,
+        answers,
+      });
 
-    res.status(201).json({ message: "Submission successful", submission });
+      res.status(201).json({ message: "Submission successful", submission });
+    });
   } catch (error) {
     console.error("Error submitting quiz:", error);
     // res.status(500).json({ error: "An error occurred while submitting the quiz" });
@@ -90,7 +101,6 @@ export const getSubmissionsByQuizCode = async (req: Request, res: Response) => {
       },
     });
     res.json(submissions);
-    
   } catch (error) {
     console.error(error);
     // res

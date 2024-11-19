@@ -173,6 +173,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   }
 
   Widget Uploaded() {
+    final appState = context.watch<MyAppState>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -194,13 +195,13 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
         ),
         Div("Participant Name", 14),
         // const SizedBox(height: 10,),
-        Div("Abhay Bisht"),
+        Div(appState.userName),
         const SizedBox(
           height: 10,
         ),
         Div("Team Name", 14),
         // const SizedBox(height: 10,),
-        Div("Conqueror 101"),
+        Div(appState.teamname),
         SizedBox(height: 30.0),
         bLogout()
       ],

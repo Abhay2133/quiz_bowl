@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -51,11 +51,13 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  openCreateDialog,
-  onSelectedDelete,
+  onCreate,
+  onSelectUI,
+  setSelected,
 }: DataTableProps<TData, TValue> & {
-  openCreateDialog: any;
-  onSelectedDelete: any;
+  onCreate: any;
+  onSelectUI?: ReactNode | ReactNode[];
+  setSelected?: any;
 }) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -112,9 +114,12 @@ export function DataTable<TData, TValue>({
     },
   });
   const filterList: string[] = columns.map((item: any) => item.accessorKey);
-  const [filter, setFilter] = useState(filterList[0]);
+  const [filter, setFilter] = useState(filterList[0] || "id");
   const [pageIndex, setPageIndex] = useState<number>(1);
-  const [infoHeader, setInfoHeader] = useState<string>("");
+
+  useEffect(() => {
+    if (setSelected) setSelected(table.getSelectedRowModel());
+  }, [table.getSelectedRowModel().rows.length, table.getRowCount()]);
 
   return (
     <div className="flex flex-col min-w-full px-3 md:min-w-[80%] ">
@@ -176,7 +181,7 @@ export function DataTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
           {/* New Button */}
-          <Button onClick={openCreateDialog}>New</Button>
+          <Button onClick={onCreate}>New</Button>
         </div>
       </div>
 
@@ -187,14 +192,7 @@ export function DataTable<TData, TValue>({
             table.getSelectedRowModel().rows.length
           } of ${table.getRowCount()}`}
         </div>
-        {table.getSelectedRowModel().rows.length > 0 && (
-          <Button
-            variant={"outline"}
-            onClick={() => onSelectedDelete(table.getSelectedRowModel())}
-          >
-            <TrashIcon size={20} />
-          </Button>
-        )}
+        {table.getSelectedRowModel().rows.length > 0 && onSelectUI}
       </div>
 
       {/* Table Continaer */}

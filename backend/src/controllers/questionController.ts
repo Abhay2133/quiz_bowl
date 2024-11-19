@@ -4,6 +4,7 @@ import prisma from "../prisma/client";
 import { Question, QuestionType } from "@prisma/client";
 import { shuffleArray } from "../utils/array";
 import { errorResponse } from "../utils/prisma";
+import { fetchAllQuestionsByRoundId } from "../services/questionService";
 
 // Create a new question
 export const createQuestion = async (req: Request, res: Response) => {
@@ -73,9 +74,7 @@ export const getQuestionById = async (req: Request, res: Response) => {
 export const getQuestionByRoundId = async (req: Request, res: Response) => {
   const { roundId } = req.params;
   try {
-    const questions = await prisma.question.findMany({
-      where: { roundId: parseInt(roundId) },
-    });
+    const questions = fetchAllQuestionsByRoundId(parseInt(roundId));
     if (!questions) {
       return res.status(404).json({ error: "Questions not found" });
     }
@@ -213,6 +212,11 @@ export const deleteManyHandler = async (req: Request, res: Response) => {
         id: { in: ids },
       },
     });
+
+    if (deleteResult.count == 0)
+      return res.status(404).json({
+        error: `no questions found with ids(${JSON.stringify({ ids })})`,
+      });
 
     // Respond with the result
     res.status(200).json({

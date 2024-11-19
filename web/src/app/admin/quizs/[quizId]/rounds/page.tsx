@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Round, columns } from "./columns";
 import { DataTable } from "@/components/data-table";
 import AdminNav from "@/components/admin-navbar";
@@ -15,26 +15,26 @@ import {
 import { FormType, RoundForm } from "./form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { TrashIcon } from "lucide-react";
+import { RowModel } from "@tanstack/react-table";
+
+const defaultFormData = {
+  name: "",
+  easyQ: 0,
+  mediumQ: 0,
+  hardQ: 0,
+};
 
 export default function TestsPage({ params }: any) {
   const { quizId } = params;
   const [data, setData] = useState<Round[]>([]);
   // console.log(JSON.stringify(data));
-  const [loading, setLoading] = useState<string>("Loading ...");
+  const [loading, setLoading] = useState<ReactNode>(<div>Loading ...</div>);
   const [delDialog, setDelDialog] = useState({
     name: "",
     id: -1,
     open: false,
   });
-
-  const dfd = {
-    // default form data
-    name: "",
-    // order: 0,
-    easyQ: 0,
-    mediumQ: 0,
-    hardQ: 0,
-  };
 
   const [formDialog, setFormDialog] = useState<{
     open: boolean;
@@ -45,8 +45,9 @@ export default function TestsPage({ params }: any) {
     open: false,
     variant: "create",
     id: -1,
-    defaultData: dfd,
+    defaultData: defaultFormData,
   });
+
   // const [retry, setRetry] = useState(1);
 
   // get all rounds for current quiz
@@ -60,14 +61,20 @@ export default function TestsPage({ params }: any) {
             // startTiming: formatISODate(dataitem.startTiming),
             createdAt: formatISODate(dataitem.createdAt),
             updatedAt: formatISODate(dataitem.updatedAt),
-            edit: () => openEditDialog(dataitem.id, newdata),
-            delete: () => openDeleteDialog(dataitem.id, newdata),
+            edit: () => onEdit(dataitem.id, newdata),
+            delete: () => onDelete(dataitem.id, newdata),
           }))
         );
         setLoading("");
       })
       .catch((e) => {
-        setLoading(`Error while fetching Rounds`);
+        setLoading(
+          <div>
+            {`Error while fetching Rounds`}
+            <br />
+            <Button className="rounded-full">Retry</Button>
+          </div>
+        );
         // setRetry(retry + 1);
         // setTimeout(() => fetchAllRounds(), 1000);
         console.error(e);
@@ -111,29 +118,21 @@ export default function TestsPage({ params }: any) {
         open: false,
         variant: "create",
         id: -1,
-        defaultData: dfd,
+        defaultData: defaultFormData,
       });
     }
   };
 
-  const showCreateDialog = () => {
+  const onCreate = () => {
     setFormDialog({
       open: true,
       variant: "create",
       id: -1,
-      defaultData: dfd,
+      defaultData: { ...defaultFormData },
     });
   };
 
-  const openDeleteDialog = (id: number, data: Round[]) => {
-    setDelDialog({
-      open: true,
-      name: data.find((item) => item.id == id)?.name || "",
-      id,
-    });
-  };
-
-  function openEditDialog(id: number, data: Round[]) {
+  function onEdit(id: number, data: Round[]) {
     // const openEditDialog = (id: number) => {
     const d = data.find((item) => item.id == id) as FormType;
     // console.log("id:", id, "data:", d, data);
@@ -185,7 +184,7 @@ export default function TestsPage({ params }: any) {
         open: false,
         id: -1,
         variant: "update",
-        defaultData: dfd,
+        defaultData: defaultFormData,
       });
     }
   };
@@ -233,10 +232,57 @@ export default function TestsPage({ params }: any) {
       fetchAllRounds();
     }
   };
-
   
-  const deleteMany = ({ rows }: any) => {
-    console.log(rows);
+  const onDelete = (id: number, data: Round[]) => {
+    setDelDialog({
+      open: true,
+      name: data.find((item) => item.id == id)?.name || "",
+      id,
+    });
+  };
+
+  // ------ STATE FOR DELETE MANY ------
+
+  const [delManyDialog, setDelManyDialog] = useState({
+    open: false,
+    ids: Array<number>(),
+  });
+
+  const [selected, setSelected] = useState<RowModel<any>>();
+
+  const onDeleteMany = async () => {
+    if (!selected) return;
+    const { rows } = selected;
+    // console.log(rows);
+    const ids = rows.map((row) => row.original.id);
+    setDelManyDialog({ open: true, ids });
+  };
+
+  const doDeleteMany = async () => {
+    try {
+      const { ids } = delManyDialog;
+      const idsSet = new Set(ids);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/rounds/delete-many`,
+        {
+          method: "POST",
+          body: JSON.stringify({ ids }),
+          headers: { "content-type": "application/json" },
+        }
+      );
+      if (response.status < 400) {
+        setData(data.filter((item: any) => !idsSet.has(item.id)));
+        toast(`Deleted ${ids.length} records`);
+      } else {
+        const json = await response.json();
+        toast("Failed to delete selected rows : " + json.error);
+      }
+    } catch (e) {
+      console.error(e);
+      toast("Failed to delete selected rows");
+    } finally {
+      setDelManyDialog({ open: false, ids: [] });
+    }
   };
 
   return (
@@ -254,9 +300,16 @@ export default function TestsPage({ params }: any) {
           loading
         ) : (
           <DataTable
-              openCreateDialog={showCreateDialog}
-              columns={columns}
-              data={data} onSelectedDelete={deleteMany}          />
+            onCreate={onCreate}
+            columns={columns}
+            data={data}
+            onSelectUI={
+              <Button variant={"destructive"} onClick={() => onDeleteMany()}>
+                <TrashIcon size={20} />
+              </Button>
+            }
+            setSelected={setSelected}
+          />
         )}
       </div>
 
@@ -296,6 +349,33 @@ export default function TestsPage({ params }: any) {
             defaultData={formDialog.defaultData}
             handleSubmit={formDialog.variant == "create" ? doCreate : doEdit}
           />
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Many Dialog */}
+      <Dialog
+        open={delManyDialog.open}
+        onOpenChange={(open) => setDelManyDialog({ ...delManyDialog, open })}
+      >
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Delete Selected</DialogTitle>
+            <DialogDescription>
+              Confirm to delete all the selected questions.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-2">
+            <Button type="submit" variant={"outline"}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant={"destructive"}
+              onClick={doDeleteMany}
+            >
+              Delete Selected
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Quiz" ADD COLUMN     "negativeScore" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "positiveScore" INTEGER NOT NULL DEFAULT 1;

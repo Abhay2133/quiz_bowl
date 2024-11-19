@@ -12,5 +12,5 @@ router.post('/user', (req: express.Request, res: express.Response) => {
 
 router.post("/admin", (req: express.Request, res: express.Response) => {
   adminLogin(req, res);
-});
+}); 
 export default router;

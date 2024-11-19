@@ -40,33 +40,17 @@ export const columns: ColumnDef<Round>[] = [
     accessorKey: "name",
     header: "Name",
   },
-  // {
-  //   accessorKey: "quizId",
-  //   header: "Test ID",
-  // },
-  // {
-  //   accessorKey: "order",
-  //   header: "Order",
-  // },
-  // {
-  //   accessorKey: "duration",
-  //   header: "Duration (min)",
-  // },
-  // {
-  //   accessorKey: "startTiming",
-  //   header: "Start Time",
-  // },
   {
     accessorKey: "easyQ",
-    header: "Easy Questions",
+    header: "Easy",
   },
   {
     accessorKey: "mediumQ",
-    header: "Medium Questions",
+    header: "Medium",
   },
   {
     accessorKey: "hardQ",
-    header: "Hard Questions",
+    header: "Hard",
   },
   {
     accessorKey: "createdAt",

@@ -1,37 +1,49 @@
-import { Request, Response } from 'express'
+import { Request, Response } from "express";
 import prisma from "../prisma/client";
-import { generateToken } from '../utils/jwt';
-import { comparePasswords, hashPassword } from '../utils/password';
+import { generateToken } from "../utils/jwt";
+import { comparePasswords, hashPassword } from "../utils/password";
+import { Quiz } from "@prisma/client";
 
 export async function userLogin(req: Request, res: Response) {
-  const { email, team, quizcode } = req.body;
-  try {
-    const user: any = await prisma.user.findUnique({
-      where: {
-        email,
-        team: {
-          quiz: {
-            quizcode
-          },
-        },
-      },
-      include: {
-        team: {
-          include: {
-            quiz: true, // Include the quiz details if needed
-          },
-        },
-      },
+  const { email, quizcode } = req.body;
+  if (!email || !quizcode)
+    return res.status(400).json({
+      error: `Incomplete data (email:${email}) (quizcode:${quizcode})`,
     });
-    if (!user) {
-      console.log({ email, quizcode })
-      return res.status(401).json({ error: "User or quizcode doesn't exists" });
+  try {
+    // const teamquiz = await prisma.teamQuiz.findUnique({include:})
+    const quiz = await prisma.quiz.findUnique({ where: { quizcode } });
+    if (!quiz) {
+      console.log(`quizcode(${quizcode}) doesn't exists`);
+      return res.status(401).json({ error: "quizcode doesn't exists" });
     }
-    const token = generateToken({ userId: user.id });
-    return res.status(200).json({ token });
+    const team = await prisma.team.findFirst({
+      include: { users: { where: { email } } },
+    });
 
+    if (!team) {
+      console.error(`user emaill (${email}) doesn't exists in any team`);
+      return res
+        .status(401)
+        .json({ error: "user emaill doesn't exists in any team" });
+    }
+
+    const teamquiz = await prisma.teamQuiz.findFirst({
+      where: { teamId: team.id, quizId: quiz.id },
+    });
+    if (!teamquiz) {
+      console.error(`team (${team.name}) is not in quiz (${quiz.name})`);
+      return res
+        .status(400)
+        .json({ error: `team (${team.name}) is not in quiz (${quiz.name})` });
+    }
+
+    const token = generateToken({ userId: team.users.at(0)?.id });
+    return res.status(200).json({ token });
   } catch (error) {
-    res.status(500).json({ error: "Login Failed", message: (error as any).message });
+    res
+      .status(500)
+      .json({ error: "Login Failed", message: (error as any).message });
     console.error(error);
   }
 }
@@ -40,11 +52,14 @@ export async function adminLogin(req: Request, res: Response) {
   try {
     const { password = "" } = req.body;
     const hash = await hashPassword(process.env.ADMIN_PASSWORD || "ROOT");
-    if (! await comparePasswords(password, hash)) return res.status(401).json({ error: "Wrong password" });
+    if (!(await comparePasswords(password, hash)))
+      return res.status(401).json({ error: "Wrong password" });
     const token = generateToken({ userId: "admin" });
     return res.json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Admin Login Failed", message: (error as any).message });
+    res
+      .status(500)
+      .json({ error: "Admin Login Failed", message: (error as any).message });
   }
 }

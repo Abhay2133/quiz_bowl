@@ -1,122 +1,134 @@
-  generator client {
-    provider = "prisma-client-js"
-  }
+generator client {
+  provider = "prisma-client-js"
+}
 
-  datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
-  }
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
-  model User {
-    id        Int       @id @default(autoincrement()) // Unique identifier for each user
-    name      String    // Name of the user
-    email     String    @unique // Email of the user, must be unique
-    teamId    Int?      // Foreign key to the Team model (nullable, as user might not belong to a team yet)
-    team      Team?     @relation(fields: [teamId], references: [id]) // Relationship to Team (optional)
-    submissions Submission[] // A user can have multiple submissions
-    scores     Score[]   // Relation to Scores
-    createdAt DateTime   @default(now()) // Automatically set creation date
-    updatedAt DateTime   @updatedAt // Automatically updated on changes
-  }
+model User {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String       @unique
+  teamId      Int?
+  team        Team?        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  submissions Submission[]
+  scores      Score[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
 
-  model Team {
-    id        Int       @id @default(autoincrement()) // Unique identifier for each team
-    name      String    // Name of the team
-    quizId    Int       // Foreign key to the Quiz model
-    quiz      Quiz      @relation(fields: [quizId], references: [id]) // Relationship to Quiz model
-    users     User[]    // A team can have many users
-    submissions Submission[] // Relation to Submissions
-    createdAt DateTime  @default(now()) // Automatically set creation date
-    updatedAt DateTime  @updatedAt // Automatically updated on changes
-  }
+model Team {
+  id          Int          @id @default(autoincrement())
+  name        String
+  users       User[]
+  submissions Submission[]
+  teamQuizzes TeamQuiz[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
 
-  model Quiz {
-    id          Int       @id @default(autoincrement()) // Unique identifier for each quiz
-    name        String    @unique // Name of the quiz
-    quizcode    String    @unique // QuizCode for user login
-    duration    Int       // Duration in minutes
-    startTiming DateTime  // Start time of the quiz
-    date        DateTime  // Date when the quiz is scheduled
-    rounds      Round[]   // A quiz can have multiple rounds
-    teams       Team[]    // A quiz can have many teams
-    submissions Submission[] // Relation to Submissions
-    scores      Score[]   // Relation to Scores
-    createdAt   DateTime  @default(now()) // Automatically set creation date
-    updatedAt   DateTime  @updatedAt // Automatically updated on changes
-  }
+model Quiz {
+  id            Int          @id @default(autoincrement())
+  name          String       @unique
+  quizcode      String       @unique
+  positiveScore Int          @default(1)
+  negativeScore Int          @default(0)
+  duration      Int
+  startTiming   DateTime
+  date          DateTime
+  rounds        Round[]
+  submissions   Submission[]
+  scores        Score[]
+  teamQuizzes   TeamQuiz[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
 
-  model Round {
-    id          Int       @id @default(autoincrement()) // Unique identifier for each round
-    quizId      Int       // Foreign key linking to the Quiz table
-    name        String    // Name of the round (e.g., Screening, Pre-final, Final)
-    easyQ       Int       @default(0)
-    mediumQ     Int       @default(0)
-    hardQ       Int       @default(0)
-    questions   Question[] // a round has multiple questions
-    quiz        Quiz      @relation(fields: [quizId], references: [id]) // Relationship with Quiz table
-    createdAt   DateTime  @default(now()) // Automatically set creation date
-    updatedAt   DateTime  @updatedAt // Automatically updated on changes
-  }
+model TeamQuiz {
+  id        Int      @id @default(autoincrement())
+  teamId    Int
+  quizId    Int
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  model Question {
-    id          Int          @id @default(autoincrement()) // Unique identifier for each question
-    question    String       // The question text
-    answer      ANSWER       // The correct answer
-    option1     String       // Option 1
-    option2     String       // Option 2
-    option3     String       // Option 3
-    option4     String       // Option 4
-    type        QuestionType // Type of question (enum: TEXT, AUDIO, IMAGE, VIDEO)
-    link        String?      // Optional link for reference (nullable)
-    difficulty  Difficulty   // Difficulty level (e.g., "easy", "medium", "hard")
-    roundId     Int          // Foreign key to the Round model
-    round       Round        @relation(fields: [roundId], references: [id]) // Relationship to Round model
-    createdAt   DateTime     @default(now()) // Automatically set creation date
-    updatedAt   DateTime     @updatedAt // Automatically updated on changes
-  }
+  @@unique([teamId, quizId]) // Ensure that a team and quiz combination is unique
+}
 
-  model Submission {
-    id          Int       @id @default(autoincrement()) // Unique identifier for each submission
-    quizId      Int       // Foreign key linking to the Quiz
-    quiz        Quiz      @relation(fields: [quizId], references: [id]) // Relationship with Quiz
-    teamId      Int       // Foreign key linking to the Team
-    team        Team      @relation(fields: [teamId], references: [id]) // Relationship with Team
-    userId      Int       // Foreign key linking to the User
-    user        User      @relation(fields: [userId], references: [id]) // Relationship with User
-    answers     Json      // Stores answers as JSON string format like [{ questionId : answer }]
-    submittedAt DateTime  @default(now()) // Submission timestamp
-    createdAt   DateTime  @default(now()) // Automatically set creation date
-    updatedAt   DateTime  @updatedAt // Automatically updated on changes
-  }
+model Round {
+  id        Int        @id @default(autoincrement())
+  quizId    Int
+  name      String
+  easyQ     Int        @default(0)
+  mediumQ   Int        @default(0)
+  hardQ     Int        @default(0)
+  questions Question[]
+  quiz      Quiz       @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
 
-  model Score {
-    id          Int       @id @default(autoincrement()) // Unique identifier for each score entry
-    userId      Int       // Foreign key linking to the User
-    user        User      @relation(fields: [userId], references: [id]) // Relationship with User
-    quizId      Int       // Foreign key linking to the Quiz
-    quiz        Quiz      @relation(fields: [quizId], references: [id]) // Relationship with Quiz
-    score       Int       // Stores the score for each quiz
-    createdAt   DateTime  @default(now()) // Automatically set creation date
-    updatedAt   DateTime  @updatedAt // Automatically updated on changes
-  }
+model Question {
+  id         Int          @id @default(autoincrement())
+  question   String
+  answer     ANSWER
+  option1    String
+  option2    String
+  option3    String
+  option4    String
+  type       QuestionType
+  link       String?
+  difficulty Difficulty
+  roundId    Int
+  round      Round        @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
 
-  // Define the enum for question types
-  enum QuestionType {
-    TEXT
-    AUDIO
-    IMAGE
-    VIDEO
-  }
+model Submission {
+  id          Int      @id @default(autoincrement())
+  quizId      Int
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  teamId      Int
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers     Json
+  submittedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
 
-  enum Difficulty {
-    EASY
-    MEDIUM
-    HARD
-  }
+model Score {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId    Int
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  score     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
-  enum ANSWER {
-    OPTION1
-    OPTION2
-    OPTION3
-    OPTION4
-  }
+enum QuestionType {
+  TEXT
+  AUDIO
+  IMAGE
+  VIDEO
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum ANSWER {
+  OPTION1
+  OPTION2
+  OPTION3
+  OPTION4
+}
