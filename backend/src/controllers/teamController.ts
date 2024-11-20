@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import prisma from "../prisma/client";
 import { Team } from "@prisma/client";
+import { errorResponse } from "../utils/prisma";
 
 // Create a new team
 export const createTeam = async (req: Request, res: Response) => {
@@ -42,6 +43,7 @@ export const getTeamsByQuizId = async (req: Request, res: Response) => {
     const teams:Team[] = teamquiz.map(i => i.team);
     res.json(teams);
   } catch (error) {
+    errorResponse(error, res);
     res.status(404).json({ error: "No team found in current Quiz" });
   }
 };

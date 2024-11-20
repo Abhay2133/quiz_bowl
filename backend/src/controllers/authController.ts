@@ -17,10 +17,13 @@ export async function userLogin(req: Request, res: Response) {
       console.log(`quizcode(${quizcode}) doesn't exists`);
       return res.status(401).json({ error: "quizcode doesn't exists" });
     }
-    const team = await prisma.team.findFirst({
-      include: { users: { where: { email } } },
-    });
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user || !user?.teamId)
+      return res
+        .status(401)
+        .json({ error: `user email (${email}) isn't registered !` });
 
+    const team = await prisma.team.findUnique({ where: { id: user.teamId } });
     if (!team) {
       console.error(`user emaill (${email}) doesn't exists in any team`);
       return res
@@ -38,7 +41,7 @@ export async function userLogin(req: Request, res: Response) {
         .json({ error: `team (${team.name}) is not in quiz (${quiz.name})` });
     }
 
-    const token = generateToken({ userId: team.users.at(0)?.id });
+    const token = generateToken({ userId: user?.id });
     return res.status(200).json({ token });
   } catch (error) {
     res
