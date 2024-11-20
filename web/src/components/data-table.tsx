@@ -55,7 +55,7 @@ export function DataTable<TData, TValue>({
   onSelectUI,
   setSelected,
 }: DataTableProps<TData, TValue> & {
-  onCreate: any;
+  onCreate?: any;
   onSelectUI?: ReactNode | ReactNode[];
   setSelected?: any;
 }) {

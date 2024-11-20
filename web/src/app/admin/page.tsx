@@ -13,6 +13,7 @@ export default function AdminPage() {
         <Link href={"/admin/teams"} className="flex"><Button>Teams</Button></Link> */}
         <LinkCard href="/admin/quizs" title="Quizs" subtitle="Create and Edit Quizs" icon={<TextSelectionIcon size={40} />} />
         <LinkCard href="/admin/teams" title="Teams" subtitle="Create and Manage Teams" icon={<Users size={40} />} />
+        <LinkCard href="/admin/submissions" title="Submissions" subtitle="View Submissions and Scores" icon={<Users size={40} />} />
       </div>
     </>)
 }

@@ -82,6 +82,16 @@ export const getSubmissions = async (req: Request, res: Response) => {
   }
 };
 
+// Get all submissions
+export const getNamedSubmissions = async (req: Request, res: Response) => {
+  try {
+    const submissions = await prisma.submission.findMany();
+    res.json(submissions);
+  } catch (e: any) {
+    errorResponse(e, res);
+  }
+};
+
 // Get submission by quiz code
 export const getSubmissionsByQuizCode = async (req: Request, res: Response) => {
   const { quizcode } = req.params;
@@ -183,5 +193,48 @@ export const deleteSubmission = async (req: Request, res: Response) => {
     res.json({ message: "Submission deleted successfully" });
   } catch (e: any) {
     errorResponse(e, res);
+  }
+};
+
+export const getAllSubmissions = async (req: any, res: any) => {
+  try {
+    const submissions = await prisma.submission.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        team: {
+          select: {
+            name: true,
+          },
+        },
+        quiz: {
+          select: {
+            name: true,
+            quizcode: true,
+          },
+        },
+      },
+    });
+
+    const result = submissions.map((submission) => ({
+      id: submission.id,
+      userName: submission.user.name,
+      userEmail: submission.user.email,
+      teamName: submission.team?.name || "No Team",
+      quizName: submission.quiz.name,
+      quizCode: submission.quiz.quizcode,
+      score: submission.score,
+      answers: submission.answers,
+      submittedAt: submission.submittedAt,
+    }));
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching submissions: ", error);
+    res.status(500).json({ error: "An error occurred while fetching submissions." });
   }
 };

@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { TestForm } from "./form";
 import { RowModel } from "@tanstack/react-table";
+import { TrashIcon } from "lucide-react";
 
 export default function TestsPage() {
   const [data, setData] = useState<Test[]>([]);
@@ -256,7 +257,8 @@ export default function TestsPage() {
               startTiming: convertIsoToTime(item.startTiming),
               date: convertIsoToDate(item.date),
             }))}
-            onSelectedDelete={deleteMany}
+            // onSelectedDelete={deleteMany}
+            onSelectUI={null}
           />
         )}
       </div>

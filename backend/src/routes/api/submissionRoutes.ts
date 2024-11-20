@@ -2,6 +2,7 @@
 
 import { Router } from "express";
 import {
+  getAllSubmissions,
   getSubmissionById,
   getSubmissions,
   getSubmissionsByQuizCode,
@@ -10,7 +11,9 @@ import {
 const router = Router();
 
 // get all submissions
-router.get("/submissions", getSubmissions);
+router.get("/submissions", getAllSubmissions);
+// router.get("/namedSubmissions", getSubmissions);
+// router.get("/all-submission")
 
 // get submission by quizcode
 router.get("/submissions/quizcode/:quizcode", (req, res) => {

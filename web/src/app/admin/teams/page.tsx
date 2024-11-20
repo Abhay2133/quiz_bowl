@@ -1,37 +1,82 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Team, columns } from "./columns"
-import { DataTable } from "./data-table"
+import { Team, columns } from "./columns";
+import { DataTable } from "@/components/data-table";
 import AdminNav from "@/components/admin-navbar";
 import { formatISODate } from "@/util/datetime";
+import { fetchAllTeams } from "@/services/teamService";
+import ConfirmDialog from "@/components/confirm-dialog";
+import { RowModel } from "@tanstack/react-table";
+
+
+const defaultFormData = {
+  name:"",
+
+};
 
 export default function TestsPage({ params }: any) {
   const { quizId } = params;
   const [data, setData] = useState<Team[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<string>("Fetching Teams Data ...");
+  const [selected, setSelected] = useState<RowModel<any>>();
+  const [delManyDialog, setDelManyDialog] = useState({
+    open: false,
+    ids: Array<number>(),
+  });
+  const [formDialog, setFormDialog] = useState<{
+    open: boolean;
+    variant: "create" | "update";
+    id: number;
+    // defaultData: FormType;
+  }>({
+    open: false,
+    variant: "create",
+    id: -1,
+    // defaultData: { ...defaultFormData },
+  });
+  const [delDialog, setDelDialog] = useState({
+    name: "",
+    id: -1,
+    open: false,
+  });
 
-  useEffect(() => {
-    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/teams")
-      .then(res => res.json())
-      .then((newdata: Team[]) => [setData(newdata.map((dataitem: Team) => ({
-        ...dataitem,
-        createdAt: formatISODate(dataitem.createdAt),
-        updatedAt: formatISODate(dataitem.updatedAt),
-      }))),
-      setLoading(false)])
-  }, []);
+  const loadData = () => {
+    fetchAllTeams()
+      .then((teams) => {
+        setData(teams);
+        setLoading("");
+      })
+      .catch((e) => {
+        console.error(e);
+        setLoading("Error Loading Teams ...");
+      });
+  };
+
+  useEffect(loadData, []);
+
+  const onCreate = (id:number) =>{}
+  const doCreate = () => {}
+
+  const onEdit = (id:number) => {}
+  const doEdit = ()=>{}
+
+  const onDelete = (id:number) => {}
+  const doDelete = () => {}
 
   return (
     <div className="pb-5">
-      <AdminNav backHref={'/admin'} 
-      path={[
-        { label: "Admin", href: "/admin" },
-        { label: "Teams", href: "/admin/teams" },
-      ]} 
+      <AdminNav
+        backHref={"/admin"}
+        path={[
+          { label: "Admin", href: "/admin" },
+          { label: "Teams", href: "/admin/teams" },
+        ]}
       />
       <div className="w-full min-h-screen flex justify-center pb-5">
-        {loading ? "Loading :)" : <DataTable columns={columns} data={data} />}
+        {loading ? loading : <DataTable columns={columns} data={data} onCreate={null} />}
       </div>
+
+      <ConfirmDialog title={undefined} body={undefined} footer={undefined} open={false} onOpenChange={undefined} />
     </div>
-  )
+  );
 }

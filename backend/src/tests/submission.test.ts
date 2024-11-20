@@ -17,8 +17,13 @@ const generateAnswers = (questions: Question[], questionsCount: number) => {
   return answersJson;
 };
 
-describe("---- Submission Tests ----", async () => {
+describe(" ---- Submission Tests ---- ", async () => {
   const questions = await fetchAllQuestions();
+
+  test("GET /api/submissions", async () => {
+    const res = await request(app).get("/api/submissions").send();
+    assert.strictEqual(res.statusCode, 200);
+  });
 
   test("Score Calculation - When all are Right -", async () => {
     const questionsCount = 20;
@@ -42,5 +47,4 @@ describe("---- Submission Tests ----", async () => {
     const res = await request(app).post("/user/submit").send(submissionData);
     assert.strictEqual(res.body.submission.score, 20);
   });
-  
 });
