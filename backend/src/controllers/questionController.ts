@@ -74,7 +74,8 @@ export const getQuestionById = async (req: Request, res: Response) => {
 export const getQuestionByRoundId = async (req: Request, res: Response) => {
   const { roundId } = req.params;
   try {
-    const questions = fetchAllQuestionsByRoundId(parseInt(roundId));
+    const questions = await fetchAllQuestionsByRoundId(parseInt(roundId));
+    // console.log(questions);
     if (!questions) {
       return res.status(404).json({ error: "Questions not found" });
     }

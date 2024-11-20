@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
       <div className="[&>*]:flex [&>*]:gap-2 [&>*]:items-center py-4 flex gap-2 flex-col md:flex-row">
         <div className="flex-1">
           <Input
-            placeholder="Search Tests..."
+            placeholder="Search records..."
             value={(table.getColumn(filter)?.getFilterValue() as string) ?? ""}
             onChange={(event) => {
               // console.log(table.getColumn(filter));

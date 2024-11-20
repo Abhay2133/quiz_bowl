@@ -17,6 +17,7 @@ export default function TestsPage({ params }: any) {
         ...dataitem,
         createdAt: formatISODate(dataitem.createdAt),
         updatedAt: formatISODate(dataitem.updatedAt),
+        quizId
       }))),
       setLoading(false)])
   }, []);

@@ -226,7 +226,7 @@ export const getAllSubmissions = async (req: any, res: any) => {
       userEmail: submission.user.email,
       teamName: submission.team?.name || "No Team",
       quizName: submission.quiz.name,
-      quizCode: submission.quiz.quizcode,
+      quizcode: submission.quiz.quizcode,
       score: submission.score,
       answers: submission.answers,
       submittedAt: submission.submittedAt,

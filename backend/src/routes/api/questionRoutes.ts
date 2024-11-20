@@ -27,12 +27,9 @@ router.get(
 );
 
 // Route to get a specific question by its ID
-router.get(
-  "/questions/round/:roundId",
-  async (req: express.Request, res: express.Response) => {
-    await getQuestionByRoundId(req, res);
-  }
-);
+router.get("/questions/round/:roundId", (req, res) => {
+  getQuestionByRoundId(req, res);
+});
 
 // Error code
 // router.get('/questions/:id', getQuestionById);

@@ -3,8 +3,11 @@ export const fetchSubmissions = () =>
     res.json()
   );
 
-export const updateSubmission = async () =>{}
+export const updateSubmission = async () => {};
 
-export const createSubmission = async () =>{}
+export const createSubmission = async () => {};
 
-export const deleteSubmission = async () =>{}
+export const deleteSubmission = (id: number) =>
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/submissions/${id}`, {
+    method: "DELETE",
+  });

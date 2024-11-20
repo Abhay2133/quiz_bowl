@@ -2,6 +2,7 @@
 
 import { Router } from "express";
 import {
+  deleteSubmission,
   getAllSubmissions,
   getSubmissionById,
   getSubmissions,
@@ -21,5 +22,6 @@ router.get("/submissions/quizcode/:quizcode", (req, res) => {
 });
 
 router.get("/submissions/:id")
+router.delete("/submissions/:id", deleteSubmission);
 
 export default router;

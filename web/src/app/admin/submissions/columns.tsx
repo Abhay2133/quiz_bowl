@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,46 +13,79 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
+import { formatISODate } from "@/util/datetime";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Test = {
+export type Submission = {
   id: number;
-  name: string;
+  userName: string;
   quizcode: string;
-  duration: number;
-  startTiming: string;
-  date: string;
-  createdAt: string;
-  updatedAt: string;
+  quizName: string;
+  userEmail: string;
+  teamName: string;
+  score: number;
+  answers: any;
+  submittedAt: string;
+  // methods
   delete: any;
   edit: any;
 };
 
-export const columns: ColumnDef<Test>[] = [
+export const columns: ColumnDef<Submission>[] = [
   {
     accessorKey: "id",
-    header: "ID",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ID
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
-    accessorKey: "teamId",
-    header: "teamId",
+    accessorKey: "userName",
+    header: "User",
   },
   {
     accessorKey: "quizcode",
     header: "Quiz Code",
   },
   {
-    accessorKey: "duration",
-    header: "Duration",
+    accessorKey: "score",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Score
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
-    accessorKey: "date",
-    header: "Date",
+    accessorKey: "quizName",
+    header: "Quiz",
   },
   {
-    accessorKey: "startTiming",
-    header: "Start Time",
+    accessorKey: "userEmail",
+    header: "Email",
+  },
+  {
+    accessorKey: "teamName",
+    header: "Teaam",
+  },
+  {
+    accessorKey: "submittedAt",
+    accessorFn: (orginalRow: Submission) =>
+      formatISODate(orginalRow.submittedAt),
+    header: "Timing",
   },
   {
     header: "actions",
@@ -68,24 +102,6 @@ export const columns: ColumnDef<Test>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-            <DropdownMenuItem onClick={quiz.edit}>Edit</DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                href={"/admin/quizs/" + quiz.id + "/rounds"}
-                className="w-full"
-              >
-                Rounds
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                href={"/admin/quizs/" + quiz.id + "/teams"}
-                className="w-full"
-              >
-                Teams
-              </Link>
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={quiz.delete}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Test, columns } from "./columns";
+import { Submission, columns } from "./columns";
 import { DataTable } from "@/components/data-table";
 import AdminNav from "@/components/admin-navbar";
 import {
@@ -22,16 +22,21 @@ import { Button } from "@/components/ui/button";
 import { TestForm } from "./form";
 import { RowModel } from "@tanstack/react-table";
 import { TrashIcon } from "lucide-react";
-import { fetchSubmissions } from "@/services/submissionService";
+import {
+  deleteSubmission,
+  fetchSubmissions,
+} from "@/services/submissionService";
 import ConfirmDialog from "@/components/confirm-dialog";
+import { number } from "zod";
+import { errorToast } from "@/util/errors";
 
-export default function TestsPage() {
-  const [data, setData] = useState<Test[]>([]);
+export default function SubmissionsPage() {
+  const [data, setData] = useState<Submission[]>([]);
 
-  const [placeholder, setPlaceholder] = useState<string>("Loading ...");
+  const [loading, setLoading] = useState<string>("Loading ...");
   const [delDialog, setDelDialog] = useState({
-    name: "",
-    quizId: -1,
+    // name: "",
+    submissionId: -1,
     open: false,
   });
 
@@ -57,14 +62,15 @@ export default function TestsPage() {
   async function loadData() {
     fetchSubmissions()
       .then((submissions) => {
+        setLoading("");
         setData(
           submissions.map((sub: any) => {
-            return { ...sub,delete: ()=>onDelete(sub.id) };
+            return { ...sub, delete: () => onDelete(sub.id) };
           })
         );
       })
       .catch((e) => {
-        setPlaceholder("ERROR LOADING TESTs : " + e.message);
+        setLoading("ERROR LOADING TESTs : " + e.message);
       });
   }
 
@@ -79,9 +85,29 @@ export default function TestsPage() {
   const doEdit = async () => {};
 
   const onDelete = async (id: number) => {
-    // setDelDialog;
+    setDelDialog({
+      open: true,
+      submissionId: id,
+    });
   };
-  const doDelete = async () => {};
+  const doDelete = async () => {
+    try {
+      const res = await deleteSubmission(delDialog.submissionId);
+      if (res.status < 400) {
+        toast("Submission deleted successfully");
+      } else {
+        errorToast(
+          `Failed to Delete submission(id:${delDialog.submissionId})`,
+          { message: await res.text() }
+        );
+      }
+      loadData();
+    } catch (e: any) {
+      errorToast("Failed to delete submission", e);
+    } finally {
+      setDelDialog({ open: false, submissionId: -1 });
+    }
+  };
 
   return (
     <div>
@@ -89,12 +115,12 @@ export default function TestsPage() {
         backHref={"/admin"}
         path={[
           { label: "Admin", href: "/admin" },
-          { label: "Quizzes", href: "/admin/quizs" },
+          { label: "Submissions", href: "/admin/submissions" },
         ]}
       />
       <div className="w-full h-screen flex justify-center pb-5">
-        {placeholder ? (
-          placeholder
+        {loading ? (
+          loading
         ) : (
           // Main Data table
           <DataTable
@@ -102,8 +128,6 @@ export default function TestsPage() {
             columns={columns}
             data={data.map((item) => ({
               ...item,
-              startTiming: convertIsoToTime(item.startTiming),
-              date: convertIsoToDate(item.date),
             }))}
             // onSelectedDelete={deleteMany}
             onSelectUI={null}
@@ -115,7 +139,11 @@ export default function TestsPage() {
       <ConfirmDialog
         title={"Delete Submission"}
         body={`Deleted submission cannot be recovered again.`}
-        footer={<Button variant={"destructive"}>Delete</Button>}
+        footer={
+          <Button variant={"destructive"} onClick={doDelete}>
+            Delete
+          </Button>
+        }
         open={delDialog.open}
         onOpenChange={(open: boolean) => setDelDialog({ ...delDialog, open })}
       />
