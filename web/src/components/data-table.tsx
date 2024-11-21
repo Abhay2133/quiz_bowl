@@ -181,7 +181,7 @@ export function DataTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
           {/* New Button */}
-          <Button onClick={onCreate}>New</Button>
+          {onCreate && <Button onClick={onCreate}>New</Button>}
         </div>
       </div>
 

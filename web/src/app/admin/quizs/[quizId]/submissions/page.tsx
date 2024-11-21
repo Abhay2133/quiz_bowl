@@ -24,6 +24,7 @@ import {
   QuestionForm,
   QuestionType,
 } from "./form";
+import { headers } from "next/headers";
 
 const defaultFormData = {
   question: "",
@@ -65,7 +66,14 @@ export default function TestsPage({ params }: any) {
   });
 
   const fetchAllData = () => {
-    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/questions/round/" + roundId)
+    fetch(
+      process.env.NEXT_PUBLIC_BASE_URL + "/api/questions/round/" + roundId,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((newdata: Question[]) => {
         setData(
@@ -116,6 +124,7 @@ export default function TestsPage({ params }: any) {
           method: "POST",
           headers: {
             "content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
           body: JSON.stringify({ ...values, roundId: parseInt(roundId) }),
         }
@@ -210,7 +219,8 @@ export default function TestsPage({ params }: any) {
   const onDelete = (id: number, questions: Question[]) => {
     setDelDialog({
       open: true,
-      name: questions.find((item) => item.id == id)?.question.slice(0,20) || "",
+      name:
+        questions.find((item) => item.id == id)?.question.slice(0, 20) || "",
       id,
     });
   };
@@ -349,7 +359,6 @@ export default function TestsPage({ params }: any) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
 
       {/* Delete Many Dialog */}
       <Dialog

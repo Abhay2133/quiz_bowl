@@ -78,7 +78,9 @@ export default function SubmissionsPage() {
     loadData().catch(() => setTimeout(loadData, 500));
   }, []);
 
-  const onCreate = async () => {};
+  // const onCreate = async () => {
+  //   toast('You can't )
+  // };
   const doCreate = async () => {};
 
   const onEdit = async (id: number, _data: any) => {};
@@ -124,7 +126,7 @@ export default function SubmissionsPage() {
         ) : (
           // Main Data table
           <DataTable
-            onCreate={onCreate}
+            // onCreate={onCreate}
             columns={columns}
             data={data.map((item) => ({
               ...item,

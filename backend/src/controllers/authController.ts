@@ -50,19 +50,28 @@ export async function userLogin(req: Request, res: Response) {
     console.error(error);
   }
 }
-
+// import { Request, Response } from "express";
+// import { hashPassword, comparePasswords, generateToken } from "./authUtils"; // Replace with your actual utility imports
 export async function adminLogin(req: Request, res: Response) {
   try {
     const { password = "" } = req.body;
+
+    // Hash and compare the provided password with the stored admin password
     const hash = await hashPassword(process.env.ADMIN_PASSWORD || "ROOT");
-    if (!(await comparePasswords(password, hash)))
+    if (!(await comparePasswords(password, hash))) {
       return res.status(401).json({ error: "Wrong password" });
-    const token = generateToken({ userId: "admin" });
+    }
+
+    // Generate a JWT token for the admin
+    const token = generateToken({ userId: process.env.ADMIN_ID || "admin" });
+
+    // Respond with the token
     return res.json({ token });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: "Admin Login Failed", message: (error as any).message });
+    res.status(500).json({
+      error: "Admin Login Failed",
+      message: (error as any).message,
+    });
   }
 }

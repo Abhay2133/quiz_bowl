@@ -65,7 +65,14 @@ export default function TestsPage({ params }: any) {
   });
 
   const fetchAllData = () => {
-    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/questions/round/" + roundId)
+    fetch(
+      process.env.NEXT_PUBLIC_BASE_URL + "/api/questions/round/" + roundId,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((newdata: Question[]) => {
         setData(
@@ -116,6 +123,7 @@ export default function TestsPage({ params }: any) {
           method: "POST",
           headers: {
             "content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
           body: JSON.stringify({ ...values, roundId: parseInt(roundId) }),
         }
@@ -173,6 +181,7 @@ export default function TestsPage({ params }: any) {
           body: JSON.stringify(values),
           headers: {
             "content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
         }
       );
@@ -210,7 +219,8 @@ export default function TestsPage({ params }: any) {
   const onDelete = (id: number, questions: Question[]) => {
     setDelDialog({
       open: true,
-      name: questions.find((item) => item.id == id)?.question.slice(0,20) || "",
+      name:
+        questions.find((item) => item.id == id)?.question.slice(0, 20) || "",
       id,
     });
   };
@@ -219,7 +229,12 @@ export default function TestsPage({ params }: any) {
     try {
       const res = await fetch(
         process.env.NEXT_PUBLIC_BASE_URL + "/api/questions/" + id,
-        { method: "DELETE" }
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }
       );
       if (res.status < 400) {
         toast("Question deleted successfully");
@@ -278,7 +293,10 @@ export default function TestsPage({ params }: any) {
         {
           method: "POST",
           body: JSON.stringify({ ids }),
-          headers: { "content-type": "application/json" },
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
         }
       );
       if (response.status < 400) {
@@ -349,7 +367,6 @@ export default function TestsPage({ params }: any) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
 
       {/* Delete Many Dialog */}
       <Dialog

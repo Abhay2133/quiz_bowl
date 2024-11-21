@@ -4,14 +4,15 @@ import { Team, columns } from "./columns";
 import { DataTable } from "@/components/data-table";
 import AdminNav from "@/components/admin-navbar";
 import { formatISODate } from "@/util/datetime";
-import { fetchAllTeams } from "@/services/teamService";
+import { deleteTeam, fetchAllTeams } from "@/services/teamService";
 import ConfirmDialog from "@/components/confirm-dialog";
 import { RowModel } from "@tanstack/react-table";
-
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { errorToast } from "@/util/errors";
 
 const defaultFormData = {
-  name:"",
-
+  name: "",
 };
 
 export default function TestsPage({ params }: any) {
@@ -19,6 +20,7 @@ export default function TestsPage({ params }: any) {
   const [data, setData] = useState<Team[]>([]);
   const [loading, setLoading] = useState<string>("Fetching Teams Data ...");
   const [selected, setSelected] = useState<RowModel<any>>();
+
   const [delManyDialog, setDelManyDialog] = useState({
     open: false,
     ids: Array<number>(),
@@ -35,7 +37,7 @@ export default function TestsPage({ params }: any) {
     // defaultData: { ...defaultFormData },
   });
   const [delDialog, setDelDialog] = useState({
-    name: "",
+    // name: "",
     id: -1,
     open: false,
   });
@@ -43,7 +45,12 @@ export default function TestsPage({ params }: any) {
   const loadData = () => {
     fetchAllTeams()
       .then((teams) => {
-        setData(teams);
+        setData(
+          teams.map((team: Team) => ({
+            ...team,
+            delete: () => onDelete(team.id),
+          }))
+        );
         setLoading("");
       })
       .catch((e) => {
@@ -54,14 +61,37 @@ export default function TestsPage({ params }: any) {
 
   useEffect(loadData, []);
 
-  const onCreate = (id:number) =>{}
-  const doCreate = () => {}
+  const onCreate = (id: number) => {};
+  const doCreate = () => {};
 
-  const onEdit = (id:number) => {}
-  const doEdit = ()=>{}
+  const onEdit = (id: number) => {};
+  const doEdit = () => {};
 
-  const onDelete = (id:number) => {}
-  const doDelete = () => {}
+  const onDelete = (id: number) => {
+    setDelDialog({
+      open: true,
+      id,
+    });
+  };
+  const doDelete = async () => {
+    try {
+      const res = await deleteTeam(delDialog.id);
+      if (res.status < 400) {
+        toast("Team Deleted Successfully");
+      } else {
+        const body = await res.text();
+        errorToast("Failed to delete Team", {message: body})
+      }
+    } catch (e: any) {
+      errorToast("Failed to Delete Team", e);
+    } finally {
+      await loadData();
+      setDelDialog({
+        open: false,
+        id: -1,
+      });
+    }
+  };
 
   return (
     <div className="pb-5">
@@ -73,10 +103,25 @@ export default function TestsPage({ params }: any) {
         ]}
       />
       <div className="w-full min-h-screen flex justify-center pb-5">
-        {loading ? loading : <DataTable columns={columns} data={data} onCreate={null} />}
+        {loading ? (
+          loading
+        ) : (
+          <DataTable columns={columns} data={data} onCreate={null} />
+        )}
       </div>
 
-      <ConfirmDialog title={undefined} body={undefined} footer={undefined} open={false} onOpenChange={undefined} />
+      {/* Delete Dialog */}
+      <ConfirmDialog
+        title={"Delete Team"}
+        body={"Deleted team forever"}
+        footer={
+          <Button variant={"destructive"} onClick={doDelete}>
+            Delete Team
+          </Button>
+        }
+        open={delDialog.open}
+        onOpenChange={(open: boolean) => setDelDialog({ ...delDialog, open })}
+      />
     </div>
   );
 }

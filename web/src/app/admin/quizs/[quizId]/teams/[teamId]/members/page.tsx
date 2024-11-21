@@ -11,7 +11,7 @@ export default function TestsPage({ params }: any) {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/users/team/" + teamId)
+    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/users/team/" + teamId, {headers:{Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,}})
       .then(res => res.json())
       .then((newdata: Team[]) => [setData(newdata.map((dataitem: Team) => ({
         ...dataitem,

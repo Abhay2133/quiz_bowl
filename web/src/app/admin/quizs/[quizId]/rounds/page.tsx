@@ -52,7 +52,9 @@ export default function TestsPage({ params }: any) {
 
   // get all rounds for current quiz
   const fetchAllRounds = () => {
-    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/rounds/quiz/" + quizId)
+    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/rounds/quiz/" + quizId, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    })
       .then((res) => res.json())
       .then((newdata: Round[]) => {
         setData(
@@ -92,6 +94,7 @@ export default function TestsPage({ params }: any) {
           method: "POST",
           headers: {
             "content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
           body: JSON.stringify({ ...values, quizId: parseInt(quizId) }),
         }
@@ -155,6 +158,7 @@ export default function TestsPage({ params }: any) {
           body: JSON.stringify(values),
           headers: {
             "content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
         }
       );
@@ -193,7 +197,12 @@ export default function TestsPage({ params }: any) {
     try {
       const res = await fetch(
         process.env.NEXT_PUBLIC_BASE_URL + "/api/rounds/" + id,
-        { method: "DELETE" }
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }
       );
       if (res.status < 400) {
         toast("Round deleted successfully");
@@ -232,7 +241,7 @@ export default function TestsPage({ params }: any) {
       fetchAllRounds();
     }
   };
-  
+
   const onDelete = (id: number, data: Round[]) => {
     setDelDialog({
       open: true,
@@ -267,7 +276,10 @@ export default function TestsPage({ params }: any) {
         {
           method: "POST",
           body: JSON.stringify({ ids }),
-          headers: { "content-type": "application/json" },
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
         }
       );
       if (response.status < 400) {

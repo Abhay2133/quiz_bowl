@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { TestForm } from "./form";
 import { RowModel } from "@tanstack/react-table";
 import { TrashIcon } from "lucide-react";
+import { headers } from "next/headers";
 
 export default function TestsPage() {
   const [data, setData] = useState<Test[]>([]);
@@ -53,7 +54,9 @@ export default function TestsPage() {
 
   // get all quizs
   async function fetchAllTests() {
-    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/quizs")
+    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/quizs", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    })
       .then((res) => res.json())
       .then((newdata: Test[]) => {
         setData(
@@ -88,6 +91,7 @@ export default function TestsPage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
       },
       body: JSON.stringify(formData),
     })
@@ -147,6 +151,7 @@ export default function TestsPage() {
           method: "PUT",
           headers: {
             "content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
           body: JSON.stringify(formData),
         }
@@ -177,7 +182,12 @@ export default function TestsPage() {
     try {
       const res = await fetch(
         process.env.NEXT_PUBLIC_BASE_URL + "/api/quizs/" + quizId,
-        { method: "DELETE" }
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }
       );
       if (res.status < 400) {
         toast("Test deleted successfully");

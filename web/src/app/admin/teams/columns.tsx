@@ -1,20 +1,29 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Team = {
-  id: number,
-  name: string,
+  id: number;
+  name: string;
   // quizId: number,
-  createdAt: string,
-  updatedAt: string,
-}
+  createdAt: string;
+  updatedAt: string;
+  edit: any;
+  delete: any;
+};
 
 export const columns: ColumnDef<Team>[] = [
   {
@@ -37,7 +46,7 @@ export const columns: ColumnDef<Team>[] = [
     header: "actions",
     id: "actions",
     cell: ({ row }) => {
-      const team = row.original
+      const team = row.original;
 
       return (
         <DropdownMenu>
@@ -50,15 +59,17 @@ export const columns: ColumnDef<Team>[] = [
           <DropdownMenuContent align="end">
             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
             <DropdownMenuItem>Edit</DropdownMenuItem>
+            
             <DropdownMenuItem>
-              <Link href={"/admin/teams/" + team.id + "/members"}>
-                Members
-              </Link>
+              <Link href={"/admin/teams/" + team.id + "/members"}>Members</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => team.delete()}>
+              Delete
             </DropdownMenuItem>
             {/* <DropdownMenuSeparator /> */}
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
