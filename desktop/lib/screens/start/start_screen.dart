@@ -12,6 +12,7 @@ import 'package:desktop/widgets/quiz_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class _StartScreen_ extends StatelessWidget {
   @override
@@ -401,22 +402,97 @@ class _StartScreenState extends State<StartScreen> {
 
   Widget buildRules(BuildContext context) {
     // TODO: implement build
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Rules and Regulations ",
-              style: TextStyle(
-                fontSize: 24,
-                // fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Markdown(
+        styleSheet: MarkdownStyleSheet(textScaler: TextScaler.linear(1.2)),
+        data: rulesMD,
+        selectable: true, // Makes the text selectable
       ),
     );
   }
 }
+
+const rulesMD = """
+# Rules and Regulations
+
+The Screening Round serves as the initial phase to evaluate participants' basic knowledge and skills. Below are the detailed rules and regulations:
+
+## General Rules for All Participants
+
+1. **Eligibility**:  
+   - School students: Grade 9 to Grade 12.  
+   - College students: Undergraduate level.  
+
+2. **Individual Participation**:  
+   Each participant must register individually for the Screening Round. No team entries are allowed.
+
+3. **Format**:  
+   - The round consists of multiple-choice questions (MCQs).  
+   - Questions may cover topics like general knowledge, logical reasoning, and subject-specific content.  
+
+4. **Duration**:  
+   The time allotted for the round is **30 minutes**.
+
+5. **Scoring**:  
+   - Each correct answer awards **1 point**.  
+   - No negative marking for incorrect answers.  
+
+6. **Submission**:  
+   Participants must submit their answers within the allotted time. Late submissions will not be accepted.
+   
+
+## Specific Rules for School Students
+
+1. **Question Difficulty**:  
+   Questions are tailored to suit school-level curriculum and general knowledge.
+
+2. **Topics Covered**:  
+   - Science (basic concepts)  
+   - Mathematics (up to Grade 10 level)  
+   - Current Affairs  
+   - Logical Reasoning  
+
+3. **Allowed Materials**:  
+   - Students may use basic stationery (e.g., pens, pencils).  
+   - Calculators or electronic devices are **not** permitted.
+
+4. **Disqualification**:  
+   - Any attempt to cheat or seek external help will result in immediate disqualification.  
+
+## Specific Rules for College Students
+
+1. **Question Difficulty**:  
+   Questions will have moderate difficulty and may include advanced topics.
+
+2. **Topics Covered**:  
+   - General Knowledge (national and international)  
+   - Logical and Analytical Reasoning  
+   - Domain-Specific Questions (e.g., technical, humanities, etc.)  
+
+3. **Allowed Materials**:  
+   - Basic stationery (e.g., pens, pencils).  
+   - Scientific calculators are allowed **only if explicitly mentioned**.  
+
+4. **Disqualification**:  
+   - Using unauthorized materials or devices will lead to disqualification.
+
+
+## Additional Guidelines
+
+1. **Conduct**:  
+   Participants are expected to maintain decorum throughout the round.
+
+2. **Verification**:  
+   Participants must present a valid school/college ID during registration or before the round begins.
+
+3. **Decision Authority**:  
+   The organizing committee reserves the right to make final decisions regarding disputes or discrepancies.
+
+4. **Technical Issues** (for online rounds):  
+   - Participants are responsible for ensuring a stable internet connection.  
+   - In case of technical difficulties, contact the support team immediately.
+
+We wish all participants the best of luck for the Screening Round!
+
+""";

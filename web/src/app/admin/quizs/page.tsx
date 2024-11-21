@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Test, columns } from "./columns";
 import { DataTable } from "@/components/data-table";
 import AdminNav from "@/components/admin-navbar";
@@ -23,11 +23,15 @@ import { TestForm } from "./form";
 import { RowModel } from "@tanstack/react-table";
 import { TrashIcon } from "lucide-react";
 import { headers } from "next/headers";
+import { errorToast } from "@/util/errors";
+import Link from "next/link";
 
 export default function TestsPage() {
   const [data, setData] = useState<Test[]>([]);
 
-  const [placeholder, setPlaceholder] = useState<string>("Loading ...");
+  const [placeholder, setPlaceholder] = useState<string | ReactNode>(
+    "Loading ..."
+  );
   const [delDialog, setDelDialog] = useState({
     name: "",
     quizId: -1,
@@ -53,14 +57,17 @@ export default function TestsPage() {
   });
 
   // get all quizs
-  async function fetchAllTests() {
-    fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/quizs", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
-    })
-      .then((res) => res.json())
-      .then((newdata: Test[]) => {
+  async function loadData() {
+    try {
+      const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/quizs", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      });
+      if (res.status < 400) {
+        const newdata = await res.json();
         setData(
-          newdata.map((dataitem) => ({
+          newdata.map((dataitem: any) => ({
             ...dataitem,
             // date: dataitem.startTiming,
             delete: () => handleDelete(dataitem.id, newdata),
@@ -68,14 +75,32 @@ export default function TestsPage() {
           }))
         );
         setPlaceholder("");
-      })
-      .catch((e) => {
-        setPlaceholder("ERROR LOADING TESTs : " + e.message);
-      });
+      } else {
+        // text containing error message
+        const text = await res.text();
+        errorToast("Failed to load quiz data", { message: text });
+        if (res.status == 401) {
+          setPlaceholder(
+            <div>
+              Unauthorised user
+              <br />
+              <Link href="/login/admin">
+                <Button>Admin Login</Button>
+              </Link>
+            </div>
+          );
+        } else {
+          setPlaceholder("Error Loading Quizzes : " + text);
+        }
+      }
+    } catch (e: any) {
+      setPlaceholder("ERROR LOADING TESTs : " + e.message);
+    } finally {
+    }
   }
 
   useEffect(() => {
-    fetchAllTests().catch(() => setTimeout(fetchAllTests, 500));
+    loadData().catch(() => setTimeout(loadData, 500));
   }, []);
 
   // post quiz data to server
@@ -100,7 +125,7 @@ export default function TestsPage() {
         console.log(data);
         setFormDialog({ ...formDialog, open: false });
         toast(`Test "${data.name}" Create succesfully`);
-        fetchAllTests();
+        loadData();
         // fetchData();
       })
       .catch(() => {});
@@ -222,7 +247,7 @@ export default function TestsPage() {
       });
     }
     setDelDialog({ ...delDialog, name: "", quizId: -1, open: false });
-    fetchAllTests();
+    loadData();
   }
 
   //

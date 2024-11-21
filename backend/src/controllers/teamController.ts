@@ -15,6 +15,98 @@ export const createTeam = async (req: Request, res: Response) => {
   }
 };
 
+// create team with 2 users
+export const createTeamWithUsers = async (req: Request, res: Response) => {
+  const { name, user1name, user2name, user1email, user2email, quizId } =
+    req.body;
+  try {
+    await prisma.$transaction(async (tx) => {
+      const team = await tx.team.create({
+        data: {
+          name,
+        },
+      });
+      if (!team)
+        return res
+          .status(501)
+          .json({ error: `failed to create team (${name})` });
+
+      const user1 = { name: user1name, email: user1email, teamId: team.id };
+      const user2 = { name: user2name, email: user2email, teamId: team.id };
+
+      const users = await prisma.user.createMany({
+        data: [user1, user2],
+      });
+
+
+      res.status(201).json(team);
+    });
+  } catch (error) {
+    res.status(400).json({ error: "Error creating team" });
+  }
+};
+/**
+ * Controller to create a new team with two users.
+ */
+export const createTeamWithUserS = async (req: Request, res: Response) => {
+  try {
+    const { name, user1name, user2name, user1email, user2email } = req.body;
+
+    // Validate input
+    if (!name || !user1name || !user2name || !user1email || !user2email) {
+      return res.status(400).json({
+        error: "Team name, user names, and user emails are required.",
+      });
+    }
+
+    // Ensure unique emails for the two users
+    if (user1email === user2email) {
+      return res.status(400).json({
+        error: "Users must have unique email addresses.",
+      });
+    }
+
+    // Start a transaction
+    const result = await prisma.$transaction(async (prisma) => {
+      // Create the team
+      const team = await prisma.team.create({
+        data: {
+          name: name,
+        },
+      });
+
+      // Create two users and associate them with the team
+      const users = await prisma.user.createMany({
+        data: [
+          { name: user1name, email: user1email, teamId: team.id },
+          { name: user2name, email: user2email, teamId: team.id },
+        ],
+      });
+
+      return { team, users };
+    });
+
+    return res.status(201).json({
+      message: "Team created successfully!",
+      team: result.team,
+    });
+  } catch (error: any) {
+    console.error("Error creating team:", error);
+
+    // Handle unique constraint errors
+    if (error.code === "P2002") {
+      return res.status(400).json({
+        error: "One or both email addresses are already in use.",
+      });
+    }
+
+    return res.status(500).json({
+      error: "An unexpected error occurred while creating the team.",
+    });
+  }
+};
+
+
 export const getTeams = async (req: Request, res: Response) => {
   try {
     const teams = await prisma.team.findMany();
@@ -39,8 +131,11 @@ export const getTeamById = async (req: Request, res: Response) => {
 export const getTeamsByQuizId = async (req: Request, res: Response) => {
   const quizId = parseInt(req.params.quizId);
   try {
-    const teamquiz = await prisma.teamQuiz.findMany({where:{quizId}, select:{team:true}});;
-    const teams:Team[] = teamquiz.map(i => i.team);
+    const teamquiz = await prisma.teamQuiz.findMany({
+      where: { quizId },
+      select: { team: true },
+    });
+    const teams: Team[] = teamquiz.map((i) => i.team);
     res.json(teams);
   } catch (error) {
     errorResponse(error, res);

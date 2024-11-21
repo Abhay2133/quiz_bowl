@@ -22,18 +22,14 @@ import { useState } from "react";
  * { name, duration, startTiming, date, quizcode }
  */
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Username must be at least 2 characters." }),
-  duration: z.coerce.number().gte(1, "Must be 18 and above"),
-  // .min(1, { message: "Duration must be at lest 1 minute" })
-  // .refine(isNumber)
-  startTiming: z.string().refine(isValidTime),
-  date: z.string().refine(isValidDate),
-  quizcode: z.string(),
+  name: z.string().min(1),
+  user1name: z.string().min(1),
+  user2name: z.string().min(1),
+  user1email: z.string().email(),
+  user2email: z.string().email(),
 });
 
-export function TestForm({
+export function TeamForm({
   handleSubmit,
   defaultData,
 }: {
@@ -71,10 +67,10 @@ export function TestForm({
 
         <FormField
           control={form.control}
-          name="duration"
+          name="user1name"
           render={({ field }) => (
             <FormItem className="">
-              <FormLabel>Duration</FormLabel>
+              <FormLabel>Participant I name</FormLabel>
               <FormControl>
                 <Input placeholder={""} {...field} />
               </FormControl>
@@ -85,40 +81,10 @@ export function TestForm({
 
         <FormField
           control={form.control}
-          name="startTiming"
+          name="user2name"
           render={({ field }) => (
             <FormItem className="">
-              <FormLabel>Start Time</FormLabel>
-              <FormControl>
-                <Input placeholder={"eg. 12:30 PM"} {...field} />
-              </FormControl>
-              <FormDescription>Time format : HH:MM PM|AM</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem className="">
-              <FormLabel>Date</FormLabel>
-              <FormControl>
-                <Input placeholder={"eg. 19/11/2024"} {...field} />
-              </FormControl>
-              <FormDescription>date format : DD/MM/YYYY</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="quizcode"
-          render={({ field }) => (
-            <FormItem className="">
-              <FormLabel>Test Code</FormLabel>
+              <FormLabel>Participant II name</FormLabel>
               <FormControl>
                 <Input placeholder={""} {...field} />
               </FormControl>
@@ -126,6 +92,35 @@ export function TestForm({
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="user1email"
+          render={({ field }) => (
+            <FormItem className="">
+              <FormLabel>Participant I email</FormLabel>
+              <FormControl>
+                <Input placeholder={""} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="user2email"
+          render={({ field }) => (
+            <FormItem className="">
+              <FormLabel>Participant II Email</FormLabel>
+              <FormControl>
+                <Input placeholder={""} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
 
         <Button type="submit">Submit</Button>
       </form>

@@ -47,6 +47,7 @@ dependencies:
   provider: ^6.1.2
   shimmer: ^3.0.0
   scrollable_positioned_list: ^0.3.8
+  flutter_markdown: ^0.7.4+2
   
 
 dev_dependencies:

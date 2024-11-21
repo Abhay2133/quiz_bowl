@@ -9,8 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { formatISODate } from "@/util/datetime";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
 // This type is used to define the shape of our data.
@@ -28,7 +29,17 @@ export type Team = {
 export const columns: ColumnDef<Team>[] = [
   {
     accessorKey: "id",
-    header: "ID",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ID
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "name",
@@ -36,10 +47,12 @@ export const columns: ColumnDef<Team>[] = [
   },
   {
     accessorKey: "createdAt",
+    accessorFn:(ogRow, index)=>formatISODate(ogRow.createdAt),
     header: "Created At",
   },
   {
     accessorKey: "updatedAt",
+    accessorFn:(ogRow, index)=>formatISODate(ogRow.updatedAt),
     header: "Updated At",
   },
   {
@@ -58,8 +71,8 @@ export const columns: ColumnDef<Team>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            
+            {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
+
             <DropdownMenuItem>
               <Link href={"/admin/teams/" + team.id + "/members"}>Members</Link>
             </DropdownMenuItem>
