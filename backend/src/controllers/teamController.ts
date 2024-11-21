@@ -168,3 +168,119 @@ export const deleteTeam = async (req: Request, res: Response) => {
     res.status(404).json({ error: "Team not found" });
   }
 };
+
+export const addTeamToQuiz = async (req: Request, res: Response) => {
+  const { quizId } = req.params;
+  const { teamId } = req.body;
+
+  try {
+    // Check if the quiz exists
+    const quiz = await prisma.quiz.findUnique({
+      where: { id: parseInt(quizId) },
+    });
+
+    if (!quiz) {
+      return res.status(404).json({ error: "Quiz not found" });
+    }
+
+    // Check if the team exists
+    const team = await prisma.team.findUnique({
+      where: { id: teamId },
+    });
+
+    if (!team) {
+      return res.status(404).json({ error: "Team not found" });
+    }
+
+    // Check if the team is already added to the quiz
+    const existingEntry = await prisma.teamQuiz.findUnique({
+      where: {
+        teamId_quizId: { teamId, quizId: parseInt(quizId) },
+      },
+    });
+
+    if (existingEntry) {
+      return res.status(400).json({ error: "Team is already added to this quiz" });
+    }
+
+    // Add the team to the quiz
+    const teamQuiz = await prisma.teamQuiz.create({
+      data: {
+        teamId,
+        quizId: parseInt(quizId),
+      },
+    });
+
+    res.status(201).json({ message: "Team added to quiz successfully", teamQuiz });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while adding the team to the quiz" });
+  }
+};
+
+export const removeTeamFromQuiz = async (req: Request, res: Response) => {
+  const { quizId } = req.params;
+  const { teamId } = req.body;
+
+  try {
+    // Check if the team-quiz entry exists
+    const teamQuiz = await prisma.teamQuiz.findUnique({
+      where: {
+        teamId_quizId: { teamId, quizId: parseInt(quizId) },
+      },
+    });
+
+    if (!teamQuiz) {
+      return res.status(404).json({ error: "Team is not associated with this quiz" });
+    }
+
+    // Remove the team from the quiz
+    await prisma.teamQuiz.delete({
+      where: {
+        teamId_quizId: { teamId, quizId: parseInt(quizId) },
+      },
+    });
+
+    res.status(200).json({ message: "Team removed from quiz successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while removing the team from the quiz" });
+  }
+};
+
+
+export const getOtherTeams = async (req: Request, res: Response) => {
+  const { quizId } = req.params;
+
+  try {
+    // Parse quizId and check if the quiz exists
+    const quiz = await prisma.quiz.findUnique({
+      where: { id: parseInt(quizId) },
+    });
+
+    if (!quiz) {
+      return res.status(404).json({ error: "Quiz not found" });
+    }
+
+    // Fetch team IDs already associated with the quiz
+    const associatedTeamIds = await prisma.teamQuiz.findMany({
+      where: { quizId: parseInt(quizId) },
+      select: { teamId: true },
+    });
+
+    // Extract team IDs from the query result
+    const associatedIds = associatedTeamIds.map((teamQuiz) => teamQuiz.teamId);
+
+    // Get all teams that are not associated with this quiz
+    const otherTeams = await prisma.team.findMany({
+      where: {
+        id: { notIn: associatedIds },
+      },
+    });
+
+    res.status(200).json({ message: "Other teams fetched successfully", otherTeams });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while fetching other teams" });
+  }
+};

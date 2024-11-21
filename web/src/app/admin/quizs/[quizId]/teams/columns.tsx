@@ -14,6 +14,7 @@ export type Team = {
   quizId: number,
   createdAt: string,
   updatedAt: string,
+  remove:any,
 }
 
 export const columns: ColumnDef<Team>[] = [
@@ -49,7 +50,7 @@ export const columns: ColumnDef<Team>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={team.remove}>Remove</DropdownMenuItem>
             <DropdownMenuItem>
               <Link href={`/admin/quizs/${team.quizId}/teams/${team.id}/members`}>
                 Members
