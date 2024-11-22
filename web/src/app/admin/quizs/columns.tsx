@@ -24,6 +24,8 @@ export type Test = {
   date: string;
   createdAt: string;
   updatedAt: string;
+  positiveScore: number;
+  negativeScore: number;
   delete: any;
   edit: any;
 };
@@ -44,6 +46,14 @@ export const columns: ColumnDef<Test>[] = [
   {
     accessorKey: "duration",
     header: "Duration",
+  },
+  {
+    accessorKey: "positiveScore",
+    header: "+ve Score",
+  },
+  {
+    accessorKey: "negativeScore",
+    header: "-ve Score",
   },
   {
     accessorKey: "date",

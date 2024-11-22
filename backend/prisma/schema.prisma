@@ -33,8 +33,8 @@ model Quiz {
   id            Int          @id @default(autoincrement())
   name          String       @unique
   quizcode      String       @unique
-  positiveScore Int          @default(1)
-  negativeScore Int          @default(0)
+  positiveScore Float        @default(1)
+  negativeScore Float        @default(0)
   duration      Int
   startTiming   DateTime
   date          DateTime
@@ -100,7 +100,7 @@ model Submission {
   submittedAt DateTime @default(now())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  score       Int      @default(0)
+  score       Float    @default(0)
 }
 
 // model Score {

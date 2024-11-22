@@ -13,8 +13,8 @@ const router = Router();
 router.use(ramRoutes);
 
 router.use((req, res, next) => {
-  next();
-  // adminProtectionMiddleware(req, res, next);
+  if(process.env.NODE_ENV == 'dev') return next();
+  adminProtectionMiddleware(req, res, next);
 });
 
 router.use(userRoutes);

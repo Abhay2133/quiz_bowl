@@ -31,6 +31,8 @@ const formSchema = z.object({
   startTiming: z.string().refine(isValidTime),
   date: z.string().refine(isValidDate),
   quizcode: z.string(),
+  positiveScore: z.coerce.number().gte(1, "Must be 1 and above"),
+  negativeScore: z.coerce.number().gte(0, "Must be 0 and above"),
 });
 
 export function TestForm({
@@ -121,6 +123,34 @@ export function TestForm({
               <FormLabel>Test Code</FormLabel>
               <FormControl>
                 <Input placeholder={""} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="positiveScore"
+          render={({ field }) => (
+            <FormItem className="">
+              <FormLabel>Positive Score</FormLabel>
+              <FormControl>
+                <Input placeholder={"default is 1"} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="negativeScore"
+          render={({ field }) => (
+            <FormItem className="">
+              <FormLabel>Negative Score</FormLabel>
+              <FormControl>
+                <Input placeholder={"default is 0"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -183,6 +183,7 @@ export default function TestsPage() {
       );
       if (res.status < 400) {
         toast("Test updated");
+        loadData();
       } else {
         const json = await res.json();
         toast("Failed to update quiz", {

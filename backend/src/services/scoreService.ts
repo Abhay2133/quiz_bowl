@@ -13,7 +13,7 @@ export const calculateScores = ({
   answersJson: JsonObject;
   positiveScore: number;
   negativeScore: number;
-}) => {
+}):number => {
   // const questions = await fetchAllQuestions();
   let score = 0;
   for (let roundId in answersJson) {

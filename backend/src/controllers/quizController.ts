@@ -24,8 +24,8 @@ export const createQuiz = async (req: Request, res: Response) => {
         startTiming,
         date,
         quizcode,
-        positiveScore,
-        negativeScore,
+        positiveScore: parseFloat(positiveScore || ""),
+        negativeScore: parseFloat(negativeScore || ""),
       },
     });
     res.status(201).json(quiz);
@@ -66,11 +66,19 @@ export const getQuizById = async (req: Request, res: Response) => {
 // Update a quiz
 export const updateQuiz = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, duration, startTiming, date } = req.body;
+  const { name, duration, startTiming, date, positiveScore, negativeScore } =
+    req.body;
   try {
     const updatedQuiz = await prisma.quiz.update({
       where: { id: parseInt(id) },
-      data: { name, duration, startTiming, date },
+      data: {
+        name,
+        duration,
+        startTiming,
+        date,
+        positiveScore: parseFloat(positiveScore),
+        negativeScore: parseFloat(negativeScore),
+      },
     });
     res.json(updatedQuiz);
   } catch (error: any) {
