@@ -1,37 +1,37 @@
-question,option1,option2,option3,option4,answer,type,difficulty,roundId,updatedAt
-This logo belongs to,Wendy's,Taco Bell,McDonald's,Dominos,OPTION3,TEXT,EASY,7,2024-11-22T23:36:15.648866
-This logo belongs to ,Chanel,Cartoon Network ,Chevrolet,Christian Dior,OPTION1,TEXT,EASY,7,2024-11-22T23:36:15.648866
-This logo belongs to ,Crown Plaza Hotel,Thomas Crown Affair movie,Crown Casino,Rolex,OPTION4,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Can you recognize this logo?,Royal Back Of Scotland ,HSBC,The Common Wealth Games 2010,Arrow Van Heusen,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Can you recognize this logo?,United News Of India ,Unilever,Uni Klinger Limited,Uni Style Image,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Can you recognize this logo?,B.M.W,Renault,Ford,Volkswagen option d,OPTION4,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Can you recognize this logo?,IBN,CNN,ICICI,NBC,OPTION4,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Can you recognize this logo?,Pepsi,Mirinda ,7UP,Coca Cola,OPTION1,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Can you recognize this logo?,Lamborghini,Maserati,Ferrari,Mclaren F1,OPTION3,TEXT,EASY,7,2024-11-22T23:36:15.648866
-This is the logo of.,Kuoni Travels,TUI,Thomas Cook,Smyle Travels,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
- Can you tell which company's logo is it?,Puma ,Adidas ,Nike,None of the above ,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-This is an iconic luxury British sports car manufacturer brand. Can you identify its name from the logo?,Aston Martin,Bentley,Mercedes,Jaguar,OPTION1,TEXT,EASY,7,2024-11-22T23:36:15.648866
-This is also a very popular French brand of automobiles. Identify its company name.,Carrefour,Michelin,Renault,Citroen,OPTION4,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Guess it's brand name from the logo.,Indian Post,DTDC,E-Com,None of the above ,OPTION1,TEXT,EASY,7,2024-11-22T23:36:15.648866
-This is an American multinational telecommunications company. Identify its brand name.,Motorola,Micromax ,Nokia,Samsung,OPTION1,TEXT,EASY,7,2024-11-22T23:36:15.648866
-This company is one of the leading two-wheeler companies in India. Identify its brand name from the logo.,TATA,Yamaha,Nissan,None of the above ,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-What brand is this?,Locoste,gucci,Armani,Nike,OPTION1,TEXT,EASY,7,2024-11-22T23:36:15.648866
-What brand is this?,Armani,Patek And Philpe,Fossil,Schwartz,OPTION3,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Indentify the brand?,Lacoste,Tommy Hilfiger,Dolce Gabbana,Redtape,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
- Indentify the brand?,North Face,Reebok,Levis,Superdry,OPTION3,TEXT,EASY,7,2024-11-22T23:36:15.648866
-What brand is this?,Hush Puppies,Redtape,Gucci,Holister,OPTION4,TEXT,EASY,7,2024-11-22T23:36:15.648866
-What brand is this?,Armani,Versace ,Chanel ,Dolce Gabbana ,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-What brand is this?,Nike,Reebok,Adidas,Gucci,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Indentify the brand?,Titan,Fastrack,Casico,Timex,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Indentify the brand?,Indian Oil,Hindustan Petroleum,Reliance Petroleum,Bharat Petroleum,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Indentify the brand?,Ford,Bugatti,BMW,Carrier,OPTION1,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Indentify the brand?,Café Coffee Day,Starbucks,Chaayos,Zomato,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-What brand is this?,Hindustan Unilever,Dabur,Godrej,Himalaya Herbals,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-What brand is this?,Pepsi Co,Britannia,Parle,Nestle,OPTION4,TEXT,EASY,7,2024-11-22T23:36:15.648866
- Indentify the brand?,MTS,Airtel,Vodafone,BSNL,OPTION3,TEXT,EASY,7,2024-11-22T23:36:15.648866
- Indentify the company logo?,Dr Reddy’s,Sun Pharma,Piramal Enterprise,Bharat Biotech,OPTION3,TEXT,EASY,7,2024-11-22T23:36:15.648866
- Indentify the company logo?,Amazon,Alibaba,Tata Cliq,Flipkart,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Indentify the company logo?,Tuborg ,Budweiser,Kingfisher,Haywards,OPTION3,TEXT,EASY,7,2024-11-22T23:36:15.648866
- Indentify the brand?,Zenni Optical,EyeBuyDirect,Titan Eye Plus,Lenskart,OPTION4,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Indentify the company logo?,Vistara,Indigo,Air India,Spice Jet,OPTION1,TEXT,EASY,7,2024-11-22T23:36:15.648866
-Indentify the logo?,Skype ,Telegram,Twitter,Zoom,OPTION2,TEXT,EASY,7,2024-11-22T23:36:15.648866
+question,option1,option2,option3,option4,answer,type,difficulty,roundId,updatedAt,link
+This logo belongs to,Wendy's,Taco Bell,McDonald's,Dominos,OPTION3,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-1.png
+This logo belongs to ,Chanel,Cartoon Network ,Chevrolet,Christian Dior,OPTION1,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-10.png
+This logo belongs to ,Crown Plaza Hotel,Thomas Crown Affair movie,Crown Casino,Rolex,OPTION4,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-11.png
+Can you recognize this logo?,Royal Back Of Scotland ,HSBC,The Common Wealth Games 2010,Arrow Van Heusen,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-12.png
+Can you recognize this logo?,United News Of India ,Unilever,Uni Klinger Limited,Uni Style Image,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-13.jpg
+Can you recognize this logo?,B.M.W,Renault,Ford,Volkswagen option d,,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-14.png
+Can you recognize this logo?,IBN,CNN,ICICI,NBC,OPTION4,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-15.jpg
+Can you recognize this logo?,Pepsi,Mirinda ,7UP,Coca Cola,OPTION1,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-16.png
+Can you recognize this logo?,Lamborghini,Maserati,Ferrari,Mclaren F1,OPTION3,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-17.jpg
+This is the logo of.,Kuoni Travels,TUI,Thomas Cook,Smyle Travels,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-18.jpg
+ Can you tell which company's logo is it?,Puma ,Adidas ,Nike,None of the above ,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-19.jpg
+This is an iconic luxury British sports car manufacturer brand. Can you identify its name from the logo?,Aston Martin,Bentley,Mercedes,Jaguar,OPTION1,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-2.png
+This is also a very popular French brand of automobiles. Identify its company name.,Carrefour,Michelin,Renault,Citroen,OPTION4,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-20.jpg
+Guess it's brand name from the logo.,Indian Post,DTDC,E-Com,None of the above ,OPTION1,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-21.jpg
+This is an American multinational telecommunications company. Identify its brand name.,Motorola,Micromax ,Nokia,Samsung,OPTION1,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-22.jpg
+This company is one of the leading two-wheeler companies in India. Identify its brand name from the logo.,TATA,Yamaha,Nissan,None of the above ,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-23.jpg
+What brand is this?,Locoste,gucci,Armani,Nike,OPTION1,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-24.jpg
+What brand is this?,Armani,Patek And Philpe,Fossil,Schwartz,OPTION3,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-25.jpg
+Indentify the brand?,Lacoste,Tommy Hilfiger,Dolce Gabbana,Redtape,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-26.jpg
+ Indentify the brand?,North Face,Reebok,Levis,Superdry,OPTION3,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-27.png
+What brand is this?,Hush Puppies,Redtape,Gucci,Holister,OPTION4,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-28.png
+What brand is this?,Armani,Versace ,Chanel ,Dolce Gabbana ,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-29.jpg
+What brand is this?,Nike,Reebok,Adidas,Gucci,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-3.jpg
+Indentify the brand?,Titan,Fastrack,Casico,Timex,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-30.jpg
+Indentify the brand?,Indian Oil,Hindustan Petroleum,Reliance Petroleum,Bharat Petroleum,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-31.png
+Indentify the brand?,Ford,Bugatti,BMW,Carrier,OPTION1,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-32.png
+Indentify the brand?,Café Coffee Day,Starbucks,Chaayos,Zomato,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-33.jpg
+What brand is this?,Hindustan Unilever,Dabur,Godrej,Himalaya Herbals,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-34.jpg
+What brand is this?,Pepsi Co,Britannia,Parle,Nestle,OPTION4,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-35.jpg
+ Indentify the brand?,MTS,Airtel,Vodafone,BSNL,OPTION3,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-36.png
+ Indentify the company logo?,Dr Reddy’s,Sun Pharma,Piramal Enterprise,Bharat Biotech,OPTION3,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-4.png
+ Indentify the company logo?,Amazon,Alibaba,Tata Cliq,Flipkart,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-5.jpg
+Indentify the company logo?,Tuborg ,Budweiser,Kingfisher,Haywards,OPTION3,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-6.png
+ Indentify the brand?,Zenni Optical,EyeBuyDirect,Titan Eye Plus,Lenskart,OPTION4,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-7.jpg
+Indentify the company logo?,Vistara,Indigo,Air India,Spice Jet,OPTION1,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-8.png
+Indentify the logo?,Skype ,Telegram,Twitter,Zoom,OPTION2,TEXT,EASY,7,2024-11-23T00:42:14.401612,https://quiz-bowl-2024.vercel.app/logo/brand-logo-9.jpg
