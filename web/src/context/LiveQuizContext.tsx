@@ -101,7 +101,7 @@ export const LiveQuizProvider = ({ children }: { children: ReactNode }) => {
     } catch (e: any) {
       errorToast("Failed to update Round", e);
     } finally {
-      cb && cb();
+      if(cb) cb();
     }
   };
 
@@ -125,7 +125,7 @@ export const LiveQuizProvider = ({ children }: { children: ReactNode }) => {
     } catch (e: any) {
       errorToast(`Failed to set Qestion (${questionIndex})`, e);
     } finally {
-      cb && cb();
+      if(cb) cb();
     }
   };
 
