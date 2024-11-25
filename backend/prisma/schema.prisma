@@ -75,20 +75,21 @@ model Round {
 }
 
 model Question {
-  id         Int          @id @default(autoincrement())
-  question   String
-  answer     ANSWER
-  option1    String
-  option2    String
-  option3    String
-  option4    String
-  type       QuestionType
-  link       String?
-  difficulty Difficulty
-  roundId    Int
-  round      Round        @relation(fields: [roundId], references: [id], onDelete: Cascade)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  id          Int          @id @default(autoincrement())
+  question    String
+  answer      ANSWER
+  option1     String
+  option2     String
+  option3     String
+  option4     String
+  type        QuestionType
+  link        String?
+  difficulty  Difficulty
+  roundId     Int
+  round       Round        @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  liveAnswers LiveAnswer[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Submission {
@@ -117,23 +118,27 @@ model LiveQuiz {
   status              LiveQuizStatus @default(NOT_STARTED)
   timeLimit           Int // time limit of answer window frame
   liveAnswers         LiveAnswer[]
-  quizId              Int           @unique
-  quiz                Quiz          @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  positiveScore Int @default(1)
-  negativeScore Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  quizId              Int            @unique
+  quiz                Quiz           @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  positiveScore       Int            @default(1)
+  negativeScore       Int            @default(0)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 }
 
 model LiveAnswer {
   id         Int      @id @default(autoincrement())
   liveQuizId Int
-  liveQuiz   LiveQuiz @relation(fields: [liveQuizId], references: [id], onDelete: Cascade)
   userId     Int
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   answer     ANSWER
+  questionId Int
+  
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  liveQuiz   LiveQuiz @relation(fields: [liveQuizId], references: [id], onDelete: Cascade)
 }
 
 enum LiveQuizStatus {

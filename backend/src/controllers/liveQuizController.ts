@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { errorResponse } from "../utils/prisma";
-import { _createLiveQuizByQuizcode } from "../services/liveQuizService";
+import {
+  _createLiveQuizByQuizcode,
+  fetchLiveQuestion,
+  getLiveQuizInfoByEmailQuizcode,
+} from "../services/liveQuizService";
 
 const prisma = new PrismaClient();
 
@@ -161,5 +165,38 @@ export const getLiveQuizByQuizcode = (req: Request, res: Response) => {
   try {
   } catch (e: any) {
     errorResponse(e, res);
+  }
+};
+
+export const getLiveQuizInfo = async (req: Request, res: Response) => {
+  const { email, quizcode } = req.body;
+  if (!email.trim() || !quizcode.trim())
+    return res
+      .status(400)
+      .json({ error: `email (${email}) or quizcode (${quizcode}) missing` });
+  try {
+    const liveQuiz = await getLiveQuizInfoByEmailQuizcode(email, quizcode);
+    return res.json(liveQuiz);
+  } catch (e: any) {
+    errorResponse(e, res);
+  }
+};
+
+export const getLiveQuestion = async (req: Request, res: Response) => {
+  const { liveQuizId, userId } = req.body;
+  if (!liveQuizId || !userId)
+    return res
+      .status(400)
+      .json({
+        error: `liveQuizd(${liveQuizId}) or userId(${userId}) is missing`,
+      });
+  try {
+    const question = await fetchLiveQuestion(
+      parseInt(liveQuizId),
+      parseInt(userId)
+    );
+    return res.json(question);
+  } catch (error) {
+    errorResponse(error, res);
   }
 };

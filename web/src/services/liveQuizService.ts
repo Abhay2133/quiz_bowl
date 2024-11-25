@@ -20,3 +20,4 @@ export const udpateLiveQuizById = (id: number, data: Partial<LiveQuiz>) =>
       Authorization: `Bearer ${getJwtToken()}`,
     },
   });
+

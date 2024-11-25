@@ -5,75 +5,71 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { QuestionType } from "@/app/admin/quizs/[quizId]/submissions/form";
 import Header from "@/components/header";
 import { useQuiz } from "@/context/QuizContext";
-import { getQuizInfo } from "@/services/quizService";
+import {
+  getQuizInfo,
+  getQuizQuestion,
+  loadQuizInfo,
+} from "@/services/quizService";
 import { errorToast } from "@/util/errors";
 import { useRouter } from "next/navigation";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { RefreshCcw } from "lucide-react";
+import { Loader2Icon, RefreshCcw } from "lucide-react";
 
 export default function LiveQuiz() {
-  const { user, team, quiz, setQuiz, setTeam, setUser } = useQuiz();
+  const ctx = useQuiz();
+  const { setQuestion } = ctx;
   const router = useRouter();
-  const loadInfo = async () => {
-    if (!user.email) return router.replace("/");
-    try {
-      const res = await getQuizInfo(user.email, quiz.quizcode);
-      if (res.status < 400) {
-        const {
-          userName,
-          quizId,
-          teamName,
-          teammateName,
-          teamId,
-          userId,
-          duration,
-          timing,
-          date,
-          quizName,
-          // quizcode,
-        } = await res.json();
-
-        setUser((old) => ({ ...old, name: userName, id: userId }));
-        setQuiz((old) => ({
-          ...old,
-          id: quizId,
-          duration,
-          timing,
-          date,
-          name: quizName,
-        }));
-        setTeam((old) => ({
-          ...old,
-          id: teamId,
-          user1: userName,
-          user2: teammateName,
-          name: teamName,
-        }));
-      } else {
-        const message = await res.text();
-        errorToast("Failed to load quiz info", { message });
-      }
-    } catch (e: any) {
-      errorToast("Failed to load Quiz Info", e);
-    }
-  };
   useEffect(() => {
-    loadInfo();
+    // loadInfo();
+    // _loadQueston();
+    _onRefresh();
   }, []);
 
-  const [isRefreshing, setRefreshing] = useState(false);
-  const _onRefresh = () => {
+  const [isRefreshing, setRefreshing] = useState(true);
+
+  // REFRESH
+  const _onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 1000);
+    await _loadQueston();
+    setRefreshing(false);
   };
 
-  const [question, setQuestion] = useState(null);
+  // LOAD QUESTOIN
+  const _loadQueston = async (cb?: any) => {
+    if (!ctx.user.email) return router.replace("/");
+
+    // (does not include in pro) remove after dev ---------------------------------------------------------------------------------------
+    await loadQuizInfo(ctx, router);
+
+    try {
+      const res = await getQuizQuestion(ctx.quiz.id, ctx.user.id);
+      if (res.status < 400) {
+        const question = await res.json();
+        setQuestion({ ...question });
+      } else {
+        const e = { message: await res.text() };
+        errorToast("Failed to Load Question", e);
+      }
+    } catch (e) {
+      errorToast("Failed to Load Question", e);
+    } finally {
+      if (cb) cb();
+    }
+  };
+
   return (
     <div>
       {/* <Data /> */}
       <Header />
-      <Question />
+      {isRefreshing ? (
+        <div className="mx-auto my-32 text-center">
+          <Loader2Icon size={40} className="animate-spin mx-auto my-5" />
+          Do not refresh the page
+        </div>
+      ) : (
+        <Question />
+      )}
       <Refresh isRefreshing={isRefreshing} onRefresh={_onRefresh} />
     </div>
   );
@@ -209,7 +205,9 @@ function SubmitButton({
       Submitting
     </Button>
   ) : (
-    <Button type="submit">Submit Answer</Button>
+    <Button type="submit" onClick={onSubmit}>
+      Submit Answer
+    </Button>
   );
 }
 

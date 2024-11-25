@@ -13,6 +13,11 @@ import {
   getUserQuestion,
 } from "../controllers/questionController";
 import { submitQuiz } from "../controllers/submissionController";
+import {
+  getLiveQuestion,
+  getLiveQuizInfo,
+} from "../controllers/liveQuizController";
+import { submitLiveAnswer } from "../controllers/liveAnswerController";
 
 const router = Router();
 
@@ -50,5 +55,19 @@ router.post("/submit", (req, res) => {
 router.get("/generate-quiz/:quizcode", (req, res) => {
   generateQuiz(req, res);
 });
+
+// ------------ ROUTES FOR LIVE QUIZ ----------------
+
+router.post("/liveQuizInfo", (req, res) => {
+  getLiveQuizInfo(req, res);
+});
+
+router.post("/liveQuestion", (req, res) => {
+  getLiveQuestion(req, res);
+});
+
+router.post("/liveAnswer", (req, res)=>{
+  submitLiveAnswer(req, res);
+})
 
 export default router;

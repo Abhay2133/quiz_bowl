@@ -54,6 +54,7 @@ export type QuizContextType = {
   setLiveQuiz: React.Dispatch<React.SetStateAction<LiveQuiz>>;
   setRound: (index: number, cb?: any) => void;
   setQuestion: (index: number, cb?: any) => void;
+  setAnswerAccess: (val: boolean, cb?: any) => void;
 };
 
 const LiveQuizContext = createContext<QuizContextType | undefined>(undefined);
@@ -101,7 +102,7 @@ export const LiveQuizProvider = ({ children }: { children: ReactNode }) => {
     } catch (e: any) {
       errorToast("Failed to update Round", e);
     } finally {
-      if(cb) cb();
+      if (cb) cb();
     }
   };
 
@@ -125,7 +126,27 @@ export const LiveQuizProvider = ({ children }: { children: ReactNode }) => {
     } catch (e: any) {
       errorToast(`Failed to set Qestion (${questionIndex})`, e);
     } finally {
-      if(cb) cb();
+      if (cb) cb();
+    }
+  };
+
+  const setAnswerAccess = async (val: boolean, cb?: any) => {
+    const updates = {
+      status: "ACTIVE" as STATUS,
+      isAnswerAllowed: val,
+    };
+    try {
+      const res = await udpateLiveQuizById(liveQuiz.id, updates);
+      if (res.status < 400) {
+        setLiveQuiz((old) => ({ ...old, ...updates }));
+      } else {
+        const message = await res.text();
+        errorToast(`failed to change answer acess`, { message });
+      }
+    } catch (e: any) {
+      errorToast(`failed to change answer acess`, e);
+    } finally {
+      if (cb) cb();
     }
   };
 
@@ -136,6 +157,7 @@ export const LiveQuizProvider = ({ children }: { children: ReactNode }) => {
         setLiveQuiz,
         setRound,
         setQuestion,
+        setAnswerAccess,
       }}
     >
       {children}

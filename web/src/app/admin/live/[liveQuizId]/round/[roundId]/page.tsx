@@ -13,7 +13,7 @@ import { errorToast } from "@/util/errors";
 import { ArrowLeft, HomeIcon, TimerIcon, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function RoundQuestionsPage({ params }: any) {
   const { liveQuizId, roundId } = params;
@@ -219,11 +219,41 @@ function Timer() {
 }
 
 function Footer() {
+  const {
+    setAnswerAccess,
+    liveQuiz: { isAnswerAllowed },
+  } = useLiveQuiz();
+  const [allowClicked, setAllowClicked] = useState(false);
+  const [closeClicked, setCloseClicked] = useState(false);
+
+  const _onAllowClicked = (e: any) => {
+    setAllowClicked(true);
+    setAnswerAccess(true, () => setAllowClicked(false));
+  };
+
+  const _onCloseClicked = (e: any) => {
+    setCloseClicked(true);
+    setAnswerAccess(false, () => setCloseClicked(false));
+  };
+
+  const AllowButton = () => (
+    <Button
+      onClick={_onAllowClicked}
+      {...(allowClicked ? { disabled: true } : {})}
+    >
+      {allowClicked ? "Starting Timer" : "Allow Answers"}
+    </Button>
+  );
+
+  const CloseButton = () => (
+    <Button onClick={_onCloseClicked} {...(closeClicked ? { disabled: true } : {})}>
+      {closeClicked ? "Stoping Timer" : "Close Answers"}
+    </Button>
+  );
+
   return (
     <div className="border-t border flex p-5 justify-between">
-      <div>
-        <Button>Start Timer</Button>
-      </div>
+      <div>{isAnswerAllowed ? <CloseButton /> : <AllowButton />}</div>
       <div>
         <Button>Show Answer</Button>
       </div>

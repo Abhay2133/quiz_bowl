@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuiz } from "@/context/QuizContext";
 import { userLogout } from "@/services/authService";
-import { getQuizInfo } from "@/services/quizService";
+import { getQuizInfo, loadQuizInfo } from "@/services/quizService";
 import {
   convertIsoToDate,
   convertIsoToTime,
@@ -15,57 +15,14 @@ import { errorToast } from "@/util/errors";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
-export default function LiveQuiz({ params }: any) {
-  const { user, quiz, setUser, setQuiz, setTeam } = useQuiz();
+export default function LiveQuizLogin({ params }: any) {
+  const context = useQuiz();
+  const { user, quiz, setUser, setQuiz, setTeam } = context;
   const { quizcode } = params;
   const router = useRouter();
 
-  const loadInfo = async () => {
-    if (!user.email) return router.replace("/");
-    try {
-      const res = await getQuizInfo(user.email, quiz.quizcode);
-      if (res.status < 400) {
-        const {
-          userName,
-          quizId,
-          teamName,
-          teammateName,
-          teamId,
-          userId,
-          duration,
-          timing,
-          date,
-          quizName,
-          // quizcode,
-        } = await res.json();
-
-        setUser((old) => ({ ...old, name: userName, id: userId }));
-        setQuiz((old) => ({
-          ...old,
-          id: quizId,
-          duration,
-          timing,
-          date,
-          name: quizName,
-        }));
-        setTeam((old) => ({
-          ...old,
-          id: teamId,
-          user1: userName,
-          user2: teammateName,
-          name: teamName,
-        }));
-      } else {
-        const message = await res.text();
-        errorToast("Failed to load quiz info", { message });
-      }
-    } catch (e: any) {
-      errorToast("Failed to load Quiz Info", e);
-    }
-  };
-
   useEffect(() => {
-    loadInfo();
+    loadQuizInfo(context, router);
   }, []);
 
   return (
@@ -98,35 +55,14 @@ function Info() {
         <Detail title={"Quiz Name"} body={quiz.name} />
         <Detail title={"User Name"} body={user.name} />
         <Detail title={"Team Name"} body={team.name} />
+        <Detail title={"Status"} body={quiz.status} />
         <Detail
-          title={"Duration"}
-          body={
-            quiz.duration ? (
-              quiz.duration + " mins"
-            ) : (
-              <PlaceHolder width="100px" />
-            )
-          }
+          title={"Positive Score"}
+          body={quiz.positiveScore?.toString()}
         />
         <Detail
-          title={"Timing"}
-          body={
-            quiz.timing ? (
-              convertIsoToTime(quiz.timing)
-            ) : (
-              <PlaceHolder width="90px" />
-            )
-          }
-        />
-        <Detail
-          title={"Date"}
-          body={
-            quiz.timing ? (
-              convertIsoToDate(quiz.date)
-            ) : (
-              <PlaceHolder width="130px" />
-            )
-          }
+          title={"Negative Score"}
+          body={quiz.negativeScore?.toString()}
         />
       </div>
       <div className="flex gap-3 justify-center pb-5">
@@ -135,13 +71,15 @@ function Info() {
         </Button>
         {/* <Button className="focus:ring-blue-500 focus:border-blue-500">Start Quiz</Button> */}
 
-        {!!user.id && <button
-          // type="submit"
-          onClick={()=>_start()}
-          className="text-white end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Start Quiz
-        </button>}
+        {!!user.id && (
+          <button
+            // type="submit"
+            onClick={() => _start()}
+            className="text-white end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Start Quiz
+          </button>
+        )}
       </div>
     </section>
   );

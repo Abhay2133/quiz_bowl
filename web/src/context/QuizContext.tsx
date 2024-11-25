@@ -29,19 +29,24 @@ type Quiz = {
   id: number;
   name: string;
   quizcode: string;
-  duration: string;
-  timing: string;
-  date: string;
+  // duration: string;
+  // timing: string;
+  // date: string;
+  liveQuizcode: string;
+  status: string;
+  timeLimit: number;
+  positiveScore: number;
+  negativeScore: number;
 };
 
 type Team = {
   id: number;
   name: string;
-  user1: string;
-  user2: string;
+  // user1: string;
+  // user2: string;
 };
 
-type QuizContextType = {
+export type QuizContextType = {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User>>;
   team: Team;
@@ -55,24 +60,35 @@ type QuizContextType = {
 const QuizContext = createContext<QuizContextType | undefined>(undefined);
 
 export const QuizProvider = ({ children }: { children: ReactNode }) => {
+
+  // USER
   const [user, setUser] = useState<User>({
-    id: 0,
+    id: 32,
     name: "",
     email: "demo-email-1@mail.com",
   });
+
+  // QuiZ
   const [quiz, setQuiz] = useState<Quiz>({
-    id: 0,
+    id: 4,
     name: "",
-    quizcode: "123",
-    duration: "",
-    timing: "",
-    date: "",
+    quizcode: "1234",
+    // duration: "",
+    // timing: "",
+    // date: "",
+    liveQuizcode: "",
+    status: "",
+    timeLimit: 20, // in seconds
+    positiveScore: 1,
+    negativeScore: 0,
   });
+
+  // TEAM
   const [team, setTeam] = useState<Team>({
     id: 0,
     name: "",
-    user1: "",
-    user2: "",
+    // user1: "",
+    // user2: "",
   });
   const [question, setQuestion] = useState<Question>({
     id: 0,
@@ -85,7 +101,7 @@ export const QuizProvider = ({ children }: { children: ReactNode }) => {
     type: "TEXT",
     link: null,
     answered: false,
-    selectedAnswer:"",
+    selectedAnswer: "",
   });
 
   return (
