@@ -1,5 +1,5 @@
 export const userLogin = (email: string, quizcode: string) => {
-  return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/user`, {
+  return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/live-user`, {
     method: "POST",
     body: JSON.stringify({ email, quizcode }),
     headers: {

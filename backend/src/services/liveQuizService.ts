@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
-import { ANSWER, LiveQuiz, PrismaClient } from "@prisma/client";
+import {
+  ANSWER,
+  LiveAnswer,
+  LiveQuiz,
+  PrismaClient,
+  Question,
+} from "@prisma/client";
 import { generateQuiz } from "./quizService";
 
 const prisma = new PrismaClient();
@@ -31,7 +37,7 @@ export async function _createLiveQuizByQuizcode(
       activeQuestionIndex: -1,
       isAnswerAllowed: false,
       status: "NOT_STARTED",
-      timeLimit: 0, // Default value; you can customize it as needed
+      timeLimit: 20, // Default value; you can customize it as needed
       positiveScore: quiz.positiveScore,
       negativeScore: quiz.negativeScore,
       quizId: quiz.id,
@@ -111,7 +117,9 @@ export const fetchLiveQuestion = async (liveQuizId: number, userId: number) => {
     activeQuestionIndex
   ];
 
-  const liveAnswer = await prisma.liveAnswer.findFirst({ where: { userId } });
+  const liveAnswer = await prisma.liveAnswer.findFirst({
+    where: { userId, questionId: question.id },
+  });
   const answered = !!liveAnswer;
   const selectedAnswer = liveAnswer ? liveAnswer.answer : "";
 
@@ -128,16 +136,24 @@ export const uploadLiveAnswer = async ({
   userId,
   answer,
   questionId,
+  teamId,
 }: {
   liveQuizId: number;
   userId: number;
   answer: ANSWER;
   questionId: number;
+  teamId: number;
 }) => {
+  const liveQuiz = await prisma.liveQuiz.findUnique({
+    where: { id: liveQuizId },
+  });
+  if (!liveQuiz) throw new Error(`Live Quiz does exists (id:${liveQuizId})`);
+  if (!liveQuiz.isAnswerAllowed) throw new Error(`Answer window closed`);
+
   const liveAnswer = await prisma.liveAnswer.findFirst({
     where: { AND: [{ userId }, { questionId }, { liveQuizId }] },
   });
-  if (liveAnswer) throw new Error(`Questoin already answered`);
+  if (liveAnswer) throw new Error(`Question already answered`);
 
   const _liveAnswer = await prisma.liveAnswer.create({
     data: {
@@ -145,8 +161,53 @@ export const uploadLiveAnswer = async ({
       userId,
       answer,
       questionId,
+      teamId,
     },
   });
 
   return _liveAnswer;
+};
+
+export const generateLeaderboard = async (
+  liveQuizId: number,
+  questions: Question[]
+) => {
+  const liveQuiz = await prisma.liveQuiz.findUnique({
+    where: { id: liveQuizId },
+  });
+  if (!liveQuiz) throw new Error(`Invalid liveQuizId(${liveQuizId})`);
+
+  const quiz = await prisma.quiz.findUnique({ where: { id: liveQuiz.quizId } });
+  const liveAnswers = await prisma.liveAnswer.findMany({
+    where: { liveQuizId },
+  });
+  const teams = (
+    await prisma.teamQuiz.findMany({
+      where: { quizId: quiz?.id },
+      include: { team: true },
+    })
+  ).map((val) => val.team);
+
+  const scores = teams.reduce((pre: any, curr) => {
+    pre[curr.id] = 0;
+    return pre;
+  }, {});
+
+  const { positiveScore, negativeScore } = liveQuiz;
+
+  liveAnswers.forEach((liveAnswer) => {
+    const { answer, teamId, questionId } = liveAnswer;
+    const mark =
+      questions.find((q) => q.id == questionId)?.answer == answer
+        ? positiveScore
+        : 0 - negativeScore;
+    scores[teamId] += mark;
+  });
+
+  const leaderboard = Object.entries(scores).map((kvPair:any)=>{
+    const [teamId, score] = kvPair;
+    return {team: teams.find(team=>team.id == teamId)?.name, score};
+  })
+
+  return leaderboard;
 };

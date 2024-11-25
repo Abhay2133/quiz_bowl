@@ -13,7 +13,7 @@ export const fetchLiveQuizById = (id: number) =>
 
 export const udpateLiveQuizById = (id: number, data: Partial<LiveQuiz>) =>
   fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/liveQuizzes/" + id, {
-    method:"put",
+    method: "put",
     body: JSON.stringify(data),
     headers: {
       "content-type": "application/json",
@@ -21,3 +21,15 @@ export const udpateLiveQuizById = (id: number, data: Partial<LiveQuiz>) =>
     },
   });
 
+export const fetchLeaderboard = (liveQuizid: number) =>
+  fetch(
+    process.env.NEXT_PUBLIC_BASE_URL +
+      "/api/liveQuizzes/" +
+      liveQuizid +
+      "/leaderboard",
+    {
+      headers: {
+        Authorization: `Bearer ${getJwtToken()}`,
+      },
+    }
+  );

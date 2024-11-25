@@ -4,8 +4,10 @@ import { errorResponse } from "../utils/prisma";
 import {
   _createLiveQuizByQuizcode,
   fetchLiveQuestion,
+  generateLeaderboard,
   getLiveQuizInfoByEmailQuizcode,
 } from "../services/liveQuizService";
+import { fetchAllQuestions } from "../services/questionService";
 
 const prisma = new PrismaClient();
 
@@ -185,11 +187,9 @@ export const getLiveQuizInfo = async (req: Request, res: Response) => {
 export const getLiveQuestion = async (req: Request, res: Response) => {
   const { liveQuizId, userId } = req.body;
   if (!liveQuizId || !userId)
-    return res
-      .status(400)
-      .json({
-        error: `liveQuizd(${liveQuizId}) or userId(${userId}) is missing`,
-      });
+    return res.status(400).json({
+      error: `liveQuizd(${liveQuizId}) or userId(${userId}) is missing`,
+    });
   try {
     const question = await fetchLiveQuestion(
       parseInt(liveQuizId),
@@ -198,5 +198,21 @@ export const getLiveQuestion = async (req: Request, res: Response) => {
     return res.json(question);
   } catch (error) {
     errorResponse(error, res);
+  }
+};
+
+export const generateLiveLeaderboard = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  if (!id)
+    return res
+      .status(400)
+      .json({ message: `invalid ID in /api/liveQuizzes/:ID/leaderboard` });
+  try {
+    const questions = await fetchAllQuestions();
+    const leaderboard = await generateLeaderboard(parseInt(id), questions);
+    return res.json(leaderboard);
+  } catch (e) {
+    console.error(e);
+    errorResponse(e, res);
   }
 };

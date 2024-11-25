@@ -22,10 +22,12 @@ model User {
 
 model Team {
   id          Int          @id @default(autoincrement())
-  name        String
+  name        String       @unique
   users       User[]
   submissions Submission[]
   teamQuizzes TeamQuiz[]
+  liveAnswers LiveAnswer[]
+
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -120,25 +122,27 @@ model LiveQuiz {
   liveAnswers         LiveAnswer[]
   quizId              Int            @unique
   quiz                Quiz           @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  positiveScore       Int            @default(1)
-  negativeScore       Int            @default(0)
+  positiveScore       Float          @default(1)
+  negativeScore       Float          @default(0)
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
 }
 
 model LiveAnswer {
-  id         Int      @id @default(autoincrement())
+  id         Int    @id @default(autoincrement())
   liveQuizId Int
   userId     Int
   answer     ANSWER
   questionId Int
-  
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  teamId Int
 
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  liveQuiz   LiveQuiz @relation(fields: [liveQuizId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  liveQuiz LiveQuiz @relation(fields: [liveQuizId], references: [id], onDelete: Cascade)
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 enum LiveQuizStatus {

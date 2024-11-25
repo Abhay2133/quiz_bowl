@@ -13,8 +13,9 @@ import { toast } from "sonner";
 export default function Home() {
   const [email, setEmail] = useState("");
   const [quizcode, setQuizcode] = useState("");
+  const [isSubmitting, setSubmitting] = useState(false);
   const router = useRouter();
-  const {setUser, setQuiz} = useQuiz();
+  const { setUser, setQuiz } = useQuiz();
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -22,21 +23,24 @@ export default function Home() {
     if (email.trim().length == 0) return toast(`email cannot be empty`);
     if (quizcode.trim().length == 0) return toast(`quizcode cannot be empty`);
 
+    setSubmitting(true);
     try {
       const res = await userLogin(email, quizcode);
       if (res.status < 400) {
-        const {token} = await res.json();
+        const { token } = await res.json();
         localStorage.setItem("jwtToken", token);
-        setUser((user)=> ({...user, email}));
-        setQuiz((old)=> ({...old, quizcode}));
+        setUser((user) => ({ ...user, email }));
+        setQuiz((old) => ({ ...old, quizcode }));
         // goto /[quizcode]
-        router.replace("/"+quizcode);
+        router.replace("/" + quizcode);
       } else {
-        const text = await res.text();
-        errorToast(`Failed to Login`, { message: text });
+        const error = await res.json();
+        errorToast(`Failed to Login`,  error);
       }
     } catch (e: any) {
-      errorToast("failed to login : " + e.message, e);
+      errorToast("failed to login :- " + e.message, e);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -77,7 +81,9 @@ export default function Home() {
           placeholder="xxx-yyy"
           required
         />
-        <Button className="mt-3">Login</Button>
+        <Button className="mt-3" {...(isSubmitting ? { disabled: true } : {})}>
+          {isSubmitting ? "Logging in" : "Login"}
+        </Button>
       </form>
     </div>
   );

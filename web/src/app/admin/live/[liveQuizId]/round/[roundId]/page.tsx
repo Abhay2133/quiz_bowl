@@ -246,7 +246,7 @@ function Footer() {
   );
 
   const CloseButton = () => (
-    <Button onClick={_onCloseClicked} {...(closeClicked ? { disabled: true } : {})}>
+    <Button variant={'destructive'} onClick={_onCloseClicked} {...(closeClicked ? { disabled: true } : {})}>
       {closeClicked ? "Stoping Timer" : "Close Answers"}
     </Button>
   );

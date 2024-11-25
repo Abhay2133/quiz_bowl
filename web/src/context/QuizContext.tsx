@@ -64,8 +64,10 @@ export const QuizProvider = ({ children }: { children: ReactNode }) => {
   // USER
   const [user, setUser] = useState<User>({
     id: 32,
+    // id: 0,
     name: "",
     email: "demo-email-1@mail.com",
+    // email: "",
   });
 
   // QuiZ

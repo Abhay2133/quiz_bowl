@@ -79,3 +79,21 @@ export const loadQuizInfo = async (
     errorToast("Failed to load Quiz Info", e);
   }
 };
+
+export const submitLiveAnswer = (
+  liveQuizId: number,
+  userId: number,
+  questionId: number,
+  answer: string, 
+  teamId:number
+) => {
+  // {"liveQuizId": 4, "userId": 32, "answer":"OPTION1", "questionId":319}
+  return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/liveAnswer`, {
+    method: "POST",
+    body: JSON.stringify({ liveQuizId, userId, questionId, answer, teamId }),
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+    },
+  });
+};

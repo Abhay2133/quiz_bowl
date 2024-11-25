@@ -9,6 +9,7 @@ import {
   getQuizInfo,
   getQuizQuestion,
   loadQuizInfo,
+  submitLiveAnswer,
 } from "@/services/quizService";
 import { errorToast } from "@/util/errors";
 import { useRouter } from "next/navigation";
@@ -119,10 +120,11 @@ function Data() {
 }
 
 function Question() {
-  const { question, setQuestion } = useQuiz();
+  const ctx = useQuiz();
+  const { question, setQuestion } = ctx;
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const _onSubmit = (e: SyntheticEvent) => {
+  const _onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     if (!question.selectedAnswer) {
@@ -131,6 +133,32 @@ function Question() {
       });
     }
     setSubmitting(true);
+    const {
+      quiz: { id: liveQuizId },
+      user: { id: userId },
+      question: { selectedAnswer: answer, id: questionId },
+      team:{id: teamId}
+    } = ctx;
+    try {
+      const res = await submitLiveAnswer(
+        liveQuizId,
+        userId,
+        questionId,
+        answer,
+        teamId
+      );
+
+      if (res.status < 400) {
+        setQuestion((old) => ({ ...old, answered: true }));
+      } else {
+        const e = await res.json();
+        errorToast(`Unable to sumbit answer`, e);
+      }
+    } catch (e: any) {
+      errorToast(`Failed to submit Answer`, e);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const _onAnswerSelected = (val: string) => {
@@ -159,19 +187,19 @@ function Question() {
         onValueChange={_onAnswerSelected}
       >
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="option1" id="option1" />
+          <RadioGroupItem value="OPTION1" id="option1" />
           <Label htmlFor="option1">{question.option1}</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="option2" id="option2" />
+          <RadioGroupItem value="OPTION2" id="option2" />
           <Label htmlFor="option2">{question.option2}</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="option3" id="option3" />
+          <RadioGroupItem value="OPTION3" id="option3" />
           <Label htmlFor="option3">{question.option3}</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="option4" id="option4" />
+          <RadioGroupItem value="OPTION4" id="option4" />
           <Label htmlFor="option4">{question.option4}</Label>
         </div>
       </RadioGroup>
@@ -199,7 +227,12 @@ function SubmitButton({
   isSubmitting: boolean;
   isAnswered: boolean;
 }) {
-  if (isAnswered) return <Button disabled>Answered</Button>;
+  if (isAnswered)
+    return (
+      <Button variant={"outline"} disabled>
+        Answered
+      </Button>
+    );
   return isSubmitting ? (
     <Button type="submit" disabled>
       Submitting

@@ -3,6 +3,8 @@ import prisma from "../prisma/client";
 import { generateToken } from "../utils/jwt";
 import { comparePasswords, hashPassword } from "../utils/password";
 import { Quiz } from "@prisma/client";
+import { errorResponse } from "../utils/prisma";
+import { generateLiveUserToken } from "../services/authService";
 
 export async function userLogin(req: Request, res: Response) {
   const { email, quizcode } = req.body;
@@ -25,7 +27,7 @@ export async function userLogin(req: Request, res: Response) {
         },
       },
     });
-    
+
     if (!user || !user?.teamId)
       return res
         .status(401)
@@ -83,3 +85,13 @@ export async function adminLogin(req: Request, res: Response) {
     });
   }
 }
+
+export const liveUserLogin = async (req: Request, res: Response) => {
+  const { email, quizcode } = req.body;
+  try {
+    const token = await generateLiveUserToken(email, quizcode);
+    return res.json({ token });
+  } catch (e) {
+    errorResponse(e, res);
+  }
+};
