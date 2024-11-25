@@ -14,6 +14,7 @@ model User {
   teamId      Int?
   team        Team?        @relation(fields: [teamId], references: [id], onDelete: Cascade)
   submissions Submission[]
+  liveAnswers LiveAnswer[]
   // scores      Score[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -42,8 +43,10 @@ model Quiz {
   submissions   Submission[]
   // scores        Score[]
   teamQuizzes   TeamQuiz[]
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  liveQuiz      LiveQuiz[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model TeamQuiz {
@@ -101,6 +104,42 @@ model Submission {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   score       Float    @default(0)
+}
+
+model LiveQuiz {
+  id                  Int            @id @default(autoincrement())
+  name                String         @unique
+  liveQuizcode        String         @unique
+  quizData            Json
+  activeRoundIndex    Int            @default(-1)
+  activeQuestionIndex Int            @default(-1)
+  isAnswerAllowed     Boolean        @default(false)
+  status              LiveQuizStatus @default(NOT_STARTED)
+  timeLimit           Int // time limit of answer window frame
+  liveAnswers         LiveAnswer[]
+  quizId              Int           @unique
+  quiz                Quiz          @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  positiveScore Int @default(1)
+  negativeScore Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LiveAnswer {
+  id         Int      @id @default(autoincrement())
+  liveQuizId Int
+  liveQuiz   LiveQuiz @relation(fields: [liveQuizId], references: [id], onDelete: Cascade)
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answer     ANSWER
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+enum LiveQuizStatus {
+  NOT_STARTED
+  ACTIVE
+  FINISHED
 }
 
 // model Score {

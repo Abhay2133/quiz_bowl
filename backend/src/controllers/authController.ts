@@ -17,7 +17,15 @@ export async function userLogin(req: Request, res: Response) {
       console.log(`quizcode(${quizcode}) doesn't exists`);
       return res.status(401).json({ error: "quizcode doesn't exists" });
     }
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findFirst({
+      where: {
+        email: {
+          equals: email, // This is the email to search for
+          mode: "insensitive", // Enables case-insensitive matching
+        },
+      },
+    });
+    
     if (!user || !user?.teamId)
       return res
         .status(401)

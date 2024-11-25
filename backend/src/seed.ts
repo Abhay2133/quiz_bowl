@@ -1,15 +1,17 @@
 import { Difficulty, PrismaClient } from "@prisma/client";
+import { errorResponse } from "./utils/prisma";
+import { Response } from "express";
 
 const prisma = new PrismaClient();
 
-export async function mainSeed() {
+export async function mainSeed(res?:Response) {
   try {
     // Create a Quiz (Test)
     const quiz = await prisma.quiz.create({
       data: {
-        name: "FESTLA Quiz",
-        quizcode: "FESTLA-2024",
-        duration: 60,
+        name: "Demo Quiz",
+        quizcode: "demo",
+        duration: 30,
         startTiming: new Date(),
         date: new Date(),
       },
@@ -108,5 +110,6 @@ export async function mainSeed() {
     console.log("Seeding completed!");
   } catch (e) {
     console.error(e);
+    res && errorResponse(e, res);
   }
 }

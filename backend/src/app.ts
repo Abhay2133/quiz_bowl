@@ -22,7 +22,7 @@ app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.get("/seed", async (req, res) => {
   try {
-    await mainSeed();
+    await mainSeed(res);
     res.json({ message: "seeding completed" })
   } catch (e: any) {
     res.status(500).json({ error: e.message });

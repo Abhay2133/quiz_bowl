@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/theme-toggle";
 import { Toaster } from "@/components/ui/sonner";
+import { QuizProvider } from "@/context/QuizContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,7 +21,7 @@ const montserrat = localFont({
   src: "./fonts/Montserrat.ttf",
   variable: "--font-montserrat",
   weight: "100 900",
-})
+});
 
 export const metadata: Metadata = {
   title: "Quiz Bowl",
@@ -37,19 +38,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <div className="fixed bottom-3 left-3">
-            <ModeToggle />
-          </div>
-          
-          <Toaster />
-        </ThemeProvider>
+        <QuizProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <div className="fixed bottom-3 left-3">
+              <ModeToggle />
+            </div>
+
+            <Toaster />
+          </ThemeProvider>
+        </QuizProvider>
       </body>
     </html>
   );

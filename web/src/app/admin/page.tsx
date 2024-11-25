@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Box, CloudUploadIcon, TextSelectionIcon, Users } from "lucide-react";
+import { Box, CloudUploadIcon, Radio, TextSelectionIcon, Users } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminPage() {
@@ -14,6 +14,12 @@ export default function AdminPage() {
           title="Quizs"
           subtitle="Create and Edit Quizs"
           icon={<TextSelectionIcon size={40} />}
+        />
+        <LinkCard
+          href="/admin/live"
+          title="Live Quizzes"
+          subtitle="Organize Live Quizzes"
+          icon={<Radio size={40} />}
         />
         <LinkCard
           href="/admin/teams"

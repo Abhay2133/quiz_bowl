@@ -24,8 +24,8 @@ export const createQuiz = async (req: Request, res: Response) => {
         startTiming,
         date,
         quizcode,
-        positiveScore: parseFloat(positiveScore || ""),
-        negativeScore: parseFloat(negativeScore || ""),
+        positiveScore: parseFloat(positiveScore ?? "1"),
+        negativeScore: parseFloat(negativeScore ?? "0"),
       },
     });
     res.status(201).json(quiz);
@@ -166,6 +166,7 @@ export async function getQuizInfo(req: Request, res: Response) {
       timing: quiz.startTiming,
       date: quiz.date,
       quizcode: quiz.quizcode,
+      quizName: quiz.name
     });
   } catch (e: any) {
     console.error(e, req.body);

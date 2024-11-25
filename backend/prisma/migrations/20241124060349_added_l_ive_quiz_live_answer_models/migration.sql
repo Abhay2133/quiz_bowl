@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "LiveQuiz" ADD COLUMN     "negativeScore" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "positiveScore" INTEGER NOT NULL DEFAULT 1;

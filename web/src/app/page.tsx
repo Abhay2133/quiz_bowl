@@ -1,101 +1,84 @@
-import Image from "next/image";
+// import Image from "next/image";
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useQuiz } from "@/context/QuizContext";
+import { userLogin } from "@/services/authService";
+import { errorToast } from "@/util/errors";
+import { useRouter } from "next/navigation";
+import { SyntheticEvent, useState } from "react";
+import { toast } from "sonner";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [email, setEmail] = useState("");
+  const [quizcode, setQuizcode] = useState("");
+  const router = useRouter();
+  const {setUser, setQuiz} = useQuiz();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  const onSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+
+    if (email.trim().length == 0) return toast(`email cannot be empty`);
+    if (quizcode.trim().length == 0) return toast(`quizcode cannot be empty`);
+
+    try {
+      const res = await userLogin(email, quizcode);
+      if (res.status < 400) {
+        const {token} = await res.json();
+        localStorage.setItem("jwtToken", token);
+        setUser((user)=> ({...user, email}));
+        setQuiz((old)=> ({...old, quizcode}));
+        // goto /[quizcode]
+        router.replace("/"+quizcode);
+      } else {
+        const text = await res.text();
+        errorToast(`Failed to Login`, { message: text });
+      }
+    } catch (e: any) {
+      errorToast("failed to login : " + e.message, e);
+    }
+  };
+
+  return (
+    <div className="min-h-screen min-w-full">
+      {/* Header */}
+      <div className="p-4 text-center space-y-3">
+        <h1 className="text-3xl text-primary">Quiz Bowl Challenge</h1>
+        <h2 className="">FESTLA 6.0 - 2024</h2>
+      </div>
+
+      <form
+        onSubmit={onSubmit}
+        className="md:px-10 border-secondary border shadow-md px-8 max-w-[400px] mx-3 md:mx-auto p-3 pb-8 rounded-xl bg-primary-foreground"
+      >
+        <h2 className="text-center my-5 text-xl">Participant Login</h2>
+
+        <label htmlFor="email">User Email</label>
+        <Input
+          className="mt-2"
+          id="email"
+          name="email"
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="user@example.com"
+          required
+        />
+
+        <label htmlFor="quizcode" className="block mt-3">
+          Quiz Code
+        </label>
+        <Input
+          className="mt-2"
+          onChange={(e) => setQuizcode(e.target.value)}
+          id="quizcode"
+          name="quizcode"
+          type="text"
+          placeholder="xxx-yyy"
+          required
+        />
+        <Button className="mt-3">Login</Button>
+      </form>
     </div>
   );
 }
