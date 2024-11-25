@@ -10,6 +10,7 @@ import { Question, QuestionType, useLiveQuiz } from "@/context/LiveQuizContext";
 import { cn } from "@/lib/utils";
 import { fetchLiveQuizById } from "@/services/liveQuizService";
 import { errorToast } from "@/util/errors";
+import { isValidTime } from "@/util/validators";
 import { ArrowLeft, HomeIcon, TimerIcon, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -230,14 +231,40 @@ function Option({ text, isAnswer }: { text: string; isAnswer?: boolean }) {
 }
 
 function Timer() {
-  const { liveQuiz } = useLiveQuiz();
+  const { liveQuiz, setLiveQuiz, setAnswerAccess } = useLiveQuiz();
+  const [seconds, setSeconds] = useState(liveQuiz.timeLimit);
 
+  useEffect(() => {
+    let timer: any;
+    if (liveQuiz.isTimerStarted) {
+      // if (timer) clearInterval(timer);
+      setSeconds(() => liveQuiz.timeLimit);
+      timer = setInterval(() => {
+        setSeconds((seconds) => {
+          if (seconds > 0) {
+            return seconds - 1;
+          } else {
+            clearInterval(timer);
+            setAnswerAccess(false);
+            return liveQuiz.timeLimit;
+          }
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, [liveQuiz.isTimerStarted]);
   return (
     <div className="flex w-[200px] justify-center gap-5 mx-auto mt-5 rounded-full px-5 py-2 border shadow-md">
-      <TimerIcon size={20} /> 00 : 00
+      <TimerIcon size={20} /> {seconds} secs
     </div>
   );
 }
+// let timer: any;
 
 function Controls() {
   const {
@@ -251,6 +278,7 @@ function Controls() {
   const _onAllowClicked = (e: any) => {
     setAllowClicked(true);
     setAnswerAccess(true, () => setAllowClicked(false));
+    // setLiveQuiz((old)=>)
   };
 
   const _onCloseClicked = (e: any) => {

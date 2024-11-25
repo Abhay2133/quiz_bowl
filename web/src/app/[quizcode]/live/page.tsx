@@ -177,7 +177,7 @@ function Question() {
       <div className=" opacity-50">Question : {question.index}</div>
       <div>{question.question}</div>
       <div>
-        <QuestionMedia {...question} />
+        <QuestionMedia type={question.type} link={question.link || ""} />
       </div>
       <div className="text-sm">Options </div>
       <RadioGroup
@@ -244,12 +244,26 @@ function SubmitButton({
   );
 }
 
-function QuestionMedia({
-  type,
-  link,
-}: {
-  type: QuestionType;
-  link: string | null;
-}) {
-  if (type == "TEXT") return <></>;
+function QuestionMedia({ type, link }: { type: QuestionType; link?: string }) {
+  let ui = <></>;
+  switch (type) {
+    case "IMAGE":
+      ui = <img src={link} className="max-h-[300px] max-w-full" />;
+      break;
+    case "AUDIO":
+      ui = (
+        <audio controls>
+          <source src={link} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      );
+      break;
+    case "VIDEO":
+      <video width="640" height="360" controls>
+        <source src={link} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>;
+      break;
+  }
+  return ui;
 }

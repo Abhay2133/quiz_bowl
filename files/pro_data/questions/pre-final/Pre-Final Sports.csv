@@ -1,0 +1,21 @@
+id,question,answer,option1,option2,option3,option4,type,link,difficulty
+1,"Which Indian cricketer is known as the ""Master Blaster""?",option1,Sachin Tendulkar,V Sahvag,M S Dhoni,Virat Kohli,text,,Easy
+2,Which sport is associated with the Dronacharya Award?,option2,Football,Coaching (all sports),Cricket,Hockey,text,,Easy
+3,Who was the first Indian woman to win a silver medal at the Olympics?,option2,P T Usha,P.V. Sindhu,Sakshi Malik,Saina Nehwal,text,,Easy
+4,Which Indian cricketer holds the record for the highest individual score in a test match?,option1,Virender Sehwag,Virat Kohli,Sunil Gavaskar,Sachin Tendulkar,text,,Easy
+5,In which year did India win its first Cricket World Cup?,option2,1987,1983,1992,1979,text,,Easy
+6,Who was the captain of the Indian football team during the 1962 Asian Games when India won gold?,option2,Bhaichung Bhutia,Chuni Goswami,I.M. Vijayan,Sailen Manna,text,,Hard
+7,"What does the term ""hat-trick"" mean in cricket?",Option2,Three runs in three balls,Three wickets in three balls,Three runs in three overs,Three players scoring the same amount,text,,Medium
+8,In which sport do players compete for the Stanley Cup?,Option1,Ice Hockey,Basketball,Baseball,Football,text,,Medium
+9,Who is the all-time leading scorer in NBA history as of 2024?,Option 3,Michael Jordan,Kareem Abdul-Jabbar,LeBron James,Kobe Bryant,text,,Medium
+10,Which tennis player has won the most Grand Slam titles in the men's category?,Option3,Pete Sampras,Rafael Nadal,Novak Djokovic,Roger Federer,text,,Medium
+11,What is the national sport of Japan?,Option2,Cricket,Sumo wrestling,Baseball,Karate,text,,Medium
+12,In which country did the 2016 Summer Olympics take place?,Option 3,China,United Kingdom,Brazil,Russia,text,,Hard
+13,In which year was the first modern Olympic Games held?,Option2,1900,1896,1924,1932,text,,Hard
+14,Who holds the record for most goals in World Cup history?,Option2,Ronaldo,Miroslav Klose,Lionel Messi,Pelé,text,,Medium
+15,What is the maximum break possible in snooker?,option1,147,155,150,145,text,,Hard
+16,Which country is known for the sport of sumo wrestling?,Option 3,South Korea,China,Japan,Mongolia,text,,Medium
+17,Who won the 2020 NBA Finals?,Option2,Miami Heat,Los Angeles Lakers,Golden State Warriors,Toronto Raptors,text,,Medium
+18,"Which sport involves a ""puck""?",option1,Ice Hockey,Lacrosse,Field Hockey,Rugby,text,,Medium
+19,"Who is known as ""The Greatest of All Time"" (GOAT) in boxing?",Option2,Mike Tyson,Muhammad Ali,Floyd Mayweather,Manny Pacquiao,text,,Easy
+20,Who was the first woman to win an Olympic gold medal in boxing?,Option2,Mary Kom,Nicola Adams,Claressa Shields,Katie Taylor,text,,Medium

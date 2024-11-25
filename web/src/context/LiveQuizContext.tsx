@@ -47,6 +47,7 @@ export type LiveQuiz = {
   negativeScore: number;
   createdAt: string;
   updatedAt: string;
+  isTimerStarted: boolean;
 
   // roundIndexToUpdate: number;
   // questionIndexToUpdate: number;
@@ -78,6 +79,7 @@ export const LiveQuizProvider = ({ children }: { children: ReactNode }) => {
     negativeScore: 1,
     createdAt: "2024-11-24T07:01:24.634Z",
     updatedAt: "2024-11-24T07:01:24.634Z",
+    isTimerStarted: false,
 
     // roundIndexToUpdate: -1,
     // questionIndexToUpdate: -1,
@@ -141,7 +143,7 @@ export const LiveQuizProvider = ({ children }: { children: ReactNode }) => {
     try {
       const res = await udpateLiveQuizById(liveQuiz.id, updates);
       if (res.status < 400) {
-        setLiveQuiz((old) => ({ ...old, ...updates }));
+        setLiveQuiz((old) => ({ ...old, ...updates, isTimerStarted: val }));
       } else {
         const message = await res.text();
         errorToast(`failed to change answer acess`, { message });
