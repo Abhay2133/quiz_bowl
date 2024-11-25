@@ -41,7 +41,7 @@ export default function LiveQuiz() {
     if (!ctx.user.email) return router.replace("/");
 
     // (does not include in pro) remove after dev ---------------------------------------------------------------------------------------
-    await loadQuizInfo(ctx, router);
+    if (process.env.NEXT_PUBLIC_ENV == "dev") await loadQuizInfo(ctx, router);
 
     try {
       const res = await getQuizQuestion(ctx.quiz.id, ctx.user.id);
@@ -137,7 +137,7 @@ function Question() {
       quiz: { id: liveQuizId },
       user: { id: userId },
       question: { selectedAnswer: answer, id: questionId },
-      team:{id: teamId}
+      team: { id: teamId },
     } = ctx;
     try {
       const res = await submitLiveAnswer(

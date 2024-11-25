@@ -126,7 +126,7 @@ function QuestionPanel() {
       <div className="flex-1">
         <QuestionUI />
       </div>
-      <Footer />
+      <Controls />
     </div>
   );
 }
@@ -150,8 +150,8 @@ function QuestionUI() {
     ];
 
   return (
-    <div className="flex ">
-      <div className=" bg-primary-foreground flex-1 flex flex-col m-5 gap-5 p-5 rounded-xl border shadow-lg">
+    <div className="flex gap-5 bg-primary-foreground m-5 rounded-xl border shadow-lg p-5">
+      <div className=" flex-1 flex flex-col  gap-5  ">
         <div className=" opacity-50">
           Question : {liveQuiz.activeQuestionIndex + 1}{" "}
         </div>
@@ -159,12 +159,24 @@ function QuestionUI() {
         <div>Options</div>
         <div className="flex flex-col gap-3 ">
           <div className="flex gap-3">
-            <Option text={`1. ${question.option1}`} />
-            <Option text={`2. ${question.option2}`} />
+            <Option
+              text={`1. ${question.option1}`}
+              isAnswer={question.showAnswer && question.answer == "OPTION1"}
+            />
+            <Option
+              text={`2. ${question.option2}`}
+              isAnswer={question.showAnswer && question.answer == "OPTION2"}
+            />
           </div>
           <div className="flex gap-3">
-            <Option text={`3. ${question.option3}`} />
-            <Option text={`4. ${question.option4}`} />
+            <Option
+              text={`3. ${question.option3}`}
+              isAnswer={question.showAnswer && question.answer == "OPTION3"}
+            />
+            <Option
+              text={`4. ${question.option4}`}
+              isAnswer={question.showAnswer && question.answer == "OPTION4"}
+            />
           </div>
         </div>
       </div>
@@ -179,7 +191,12 @@ function Media({ type, link }: { type: QuestionType; link: string }) {
   let ui = <></>;
   switch (type) {
     case "IMAGE":
-      ui = <img src={link}></img>;
+      ui = (
+        <img
+          className="max-h-[400px] max-w-[500px] rounded-xl"
+          src={link}
+        ></img>
+      );
       break;
     case "AUDIO":
       ui = (
@@ -200,9 +217,13 @@ function Media({ type, link }: { type: QuestionType; link: string }) {
   return ui;
 }
 
-function Option({ text }: { text: string }) {
+function Option({ text, isAnswer }: { text: string; isAnswer?: boolean }) {
   return (
-    <div className="flex items-center flex-1 border rounded-full  min-h-[40px] py-1 px-5 text-base">
+    <div
+      className={`${
+        isAnswer ? "ring-4" : ""
+      } flex items-center flex-1 border rounded-full  min-h-[40px] py-1 px-5 text-base`}
+    >
       {text}
     </div>
   );
@@ -218,10 +239,11 @@ function Timer() {
   );
 }
 
-function Footer() {
+function Controls() {
   const {
     setAnswerAccess,
     liveQuiz: { isAnswerAllowed },
+    setLiveQuiz,
   } = useLiveQuiz();
   const [allowClicked, setAllowClicked] = useState(false);
   const [closeClicked, setCloseClicked] = useState(false);
@@ -246,16 +268,34 @@ function Footer() {
   );
 
   const CloseButton = () => (
-    <Button variant={'destructive'} onClick={_onCloseClicked} {...(closeClicked ? { disabled: true } : {})}>
+    <Button
+      variant={"destructive"}
+      onClick={_onCloseClicked}
+      {...(closeClicked ? { disabled: true } : {})}
+    >
       {closeClicked ? "Stoping Timer" : "Close Answers"}
     </Button>
   );
+
+  const _showAnswer = () => {
+    setLiveQuiz((old) => {
+      const { activeQuestionIndex, activeRoundIndex } = old;
+      old.quizData.rounds[activeRoundIndex].questions[
+        activeQuestionIndex
+      ].showAnswer = !Boolean(
+        old.quizData.rounds[activeRoundIndex].questions[activeQuestionIndex]
+          .showAnswer
+      );
+      // return {...old};
+      return JSON.parse(JSON.stringify(old));
+    });
+  };
 
   return (
     <div className="border-t border flex p-5 justify-between">
       <div>{isAnswerAllowed ? <CloseButton /> : <AllowButton />}</div>
       <div>
-        <Button>Show Answer</Button>
+        <Button onClick={_showAnswer}>Show Answer</Button>
       </div>
     </div>
   );

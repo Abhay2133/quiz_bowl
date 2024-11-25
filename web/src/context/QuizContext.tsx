@@ -60,21 +60,20 @@ export type QuizContextType = {
 const QuizContext = createContext<QuizContextType | undefined>(undefined);
 
 export const QuizProvider = ({ children }: { children: ReactNode }) => {
-
   // USER
   const [user, setUser] = useState<User>({
-    id: 32,
-    // id: 0,
+    // id: 32,
+    id: 0,
     name: "",
-    email: "demo-email-1@mail.com",
-    // email: "",
+    // email: "demo-email-1@mail.com",
+    email: "",
   });
 
   // QuiZ
   const [quiz, setQuiz] = useState<Quiz>({
-    id: 4,
+    id: 0,
     name: "",
-    quizcode: "1234",
+    quizcode: "",
     // duration: "",
     // timing: "",
     // date: "",

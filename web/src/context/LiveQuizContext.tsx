@@ -8,6 +8,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { toast } from "sonner";
 
 export type QuestionType = "TEXT" | "IMAGE" | "VIDEO" | "AUDIO";
+export type AnswerType = "OPTION1" | "OPTION2" | "OPTION3" | "OPTION4";
 export type Question = {
   id: number;
   link: string;
@@ -17,6 +18,8 @@ export type Question = {
   option3: string;
   option4: string;
   question: string;
+  answer: string;
+  showAnswer?: boolean;
 };
 export type QuizData = {
   rounds: {
@@ -183,6 +186,7 @@ const questions: Question[] = Array.from([
     option3: "Pervert",
     option4: "All of These",
     question: "Who is Yogesh",
+    answer: "OPTION3",
   },
   {
     id: 316,
@@ -193,8 +197,10 @@ const questions: Question[] = Array.from([
     option3: "Hooman",
     option4: "None",
     question: "Who is Abhay Bisht ?",
+    answer: "OPTION3",
   },
 ]);
+
 const demoQuizData = {
   rounds: [
     {

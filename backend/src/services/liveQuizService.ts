@@ -25,7 +25,7 @@ export async function _createLiveQuizByQuizcode(
   if (!quiz) throw Error(`Quiz not found (quizcode:${quizcode})`);
 
   // Generate quizData using the generateQuiz function
-  const quizData = await generateQuiz(quizcode);
+  const quizData = await generateQuiz(quizcode, true);
 
   // Create a new LiveQuiz
   const liveQuiz = await prisma.liveQuiz.create({
@@ -113,6 +113,8 @@ export const fetchLiveQuestion = async (liveQuizId: number, userId: number) => {
   if (!liveQuiz) throw new Error(`Live Quiz not found (id:${liveQuizId})`);
   const { quizData, activeQuestionIndex, activeRoundIndex } = liveQuiz;
 
+  if (activeQuestionIndex < 0 || activeRoundIndex < 0)
+    throw new Error(`No Question Active for Answer`);
   const question = (quizData as any).rounds[activeRoundIndex].questions[
     activeQuestionIndex
   ];
@@ -204,10 +206,10 @@ export const generateLeaderboard = async (
     scores[teamId] += mark;
   });
 
-  const leaderboard = Object.entries(scores).map((kvPair:any)=>{
+  const leaderboard = Object.entries(scores).map((kvPair: any) => {
     const [teamId, score] = kvPair;
-    return {team: teams.find(team=>team.id == teamId)?.name, score};
-  })
+    return { team: teams.find((team) => team.id == teamId)?.name, score };
+  });
 
-  return leaderboard;
+  return leaderboard.sort((a, b) => b.score - a.score);
 };

@@ -2,7 +2,10 @@ import { Question, Round } from "@prisma/client";
 import prisma from "../prisma/client";
 import { shuffleArray } from "../utils/array";
 
-export const generateQuiz = async (quizcode: string) => {
+export const generateQuiz = async (
+  quizcode: string,
+  includeAnswers?: boolean
+) => {
   const quiz = await prisma.quiz.findUnique({
     where: { quizcode },
     include: { rounds: { include: { questions: true } } },
@@ -15,12 +18,15 @@ export const generateQuiz = async (quizcode: string) => {
     rounds: Array<any>(),
   };
   for (const round of quiz.rounds) {
-    quizData.rounds.push(generateRound(round));
+    quizData.rounds.push(generateRound(round, includeAnswers));
   }
   return quizData;
 };
 
-const generateRound = (round: Round & { questions: Question[] }) => {
+const generateRound = (
+  round: Round & { questions: Question[] },
+  includeAnswers?: boolean
+) => {
   // filtering questions based on difficulty
   // then checking if we have enough questions
   const easyQs = round.questions
@@ -34,6 +40,7 @@ const generateRound = (round: Round & { questions: Question[] }) => {
       option4: q.option4,
       type: q.type,
       link: q.link,
+      answer: includeAnswers ? q.answer : null,
     }));
 
   if (easyQs.length < round.easyQ)
@@ -52,6 +59,7 @@ const generateRound = (round: Round & { questions: Question[] }) => {
       option4: q.option4,
       type: q.type,
       link: q.link,
+      answer: includeAnswers ? q.answer : null,
     }));
 
   if (mediumQs.length < round.mediumQ)
@@ -70,6 +78,7 @@ const generateRound = (round: Round & { questions: Question[] }) => {
       option4: q.option4,
       type: q.type,
       link: q.link,
+      answer: includeAnswers ? q.answer : null,
     }));
 
   if (hardQs.length < round.hardQ)

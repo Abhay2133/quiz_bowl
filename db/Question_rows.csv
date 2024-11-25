@@ -1,0 +1,107 @@
+id,question,answer,option1,option2,option3,option4,type,link,difficulty,roundId,createdAt,updatedAt
+1,"Which brand uses the slogan I'm livin it""?",OPTION3,HP,COCA COLA,McDonald's,Walmart,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+2,"Which brand is associated with the slogan ""JUST DO IT""?",OPTION1,Nike,Adidas,Reebok,Goodyear,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+3,"Which brand uses the slogan ""It's Finger-Lickin Good""?",OPTION3,"Popeye's ",Mrs. Winters,KFC,ChikFila,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+4,"Which brand uses the slogan ""Strong enough for a man, made for a women""?",OPTION2,Degree,Secret,Mitchum,Old Spice,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+5,"Which brand is associated with the slogan ""Melt in your mouth, not in your hand""?",OPTION2,Hershey's,M&M's,Reese's,Milky Way,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+6,"Which brand is represented by the slogan ""Snap, crackle, pop""?",OPTION4,Frosted Flakes,Cinnamon Toast Crunch,Cheerios,Kellogs,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+7,"Which brand uses the slogan ""When you care enough to send the very best""?",OPTION3,FTD Flowers,FedEx,Hallmark,UPS,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+8,"Which brand is associated with the slogan ""Always low prices""?",OPTION2,Kmart,Wal-Mart,Low's,The Home Depot,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+9,"Which brand uses the slogan ""Zoom, Zoom, Zoom.""?",OPTION1,Mazda,Toyota,Subaru,Kia,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+10,"Which brand is represented by the slogan ""Maybe she's born with it, may be it's �..""?",OPTION3,Degree,Revlon,Maybelline,Maxim,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+11,"Which brand uses the slogan ""Betcha can't eat just one""?",OPTION1,Lay's,Fritos,Doritos,Grippos,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+12,"Which brand is associated with the slogan ""Eat Fresh""?",OPTION2,Panera,Subway,KFC,Jimmy John's,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+13,"Which brand is represented by the slogan ""There are something money can't buy. For everything else, there's �...""?",OPTION3,Visa,American Express,Mastercard,Discover,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+14,"Which airline uses the slogan ""You are now free to move about the country""?",OPTION1,Southwest,"American ",Continental,Delta,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+15,"Which brand is represented by the slogan ""Because You're Worth it""?",OPTION2,Maybelline,L'Oreal,Olay,Revlon,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+16,"Which company is represented by the slogan ""There is a little bit of �.. in everybody's life""?",OPTION1,SAIL,Iron,NTPC,HAL,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+17,"""Connecting India"" is a Tagline of �..?",OPTION3,Airtel,Vodafone Idea,BSNL,Reliance Jio,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+18,"""Think Different"" is the Slogan of �..""?",OPTION3,HP,Dell,Apple,Samsung,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+19,"""Are yahi to hai desh ki dhadkan"" is the slogan of �.?",OPTION3,Honda,Hero,Hero Honda,TVS,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+20,"""The future of computing"" is the tagline of �..?",OPTION4,Samsung,Apple,LG,AMD,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+21,"""Imagine the possibilities"" is the tagline of �..?",OPTION1,Samsung,Atari,MicroMax,Nokia,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+22,"""The power of dreams"" is the Tagline of �..?",OPTION4,TVS,Bajaj,Hero Honda,Honda,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+23,"""Hum me hai �."" is the Tagline of ",OPTION2,Honda,Hero,Yamaha,Royal Enfield,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+24,"""Connecting People"" is the tagline of �..?",OPTION3,eKart,FedEx,Nokia,Vivo,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+25,"""Connecting People Improving Lives"" is the Tagline of �...?",OPTION4,BlueDart,DTDC,Nokia,DHL,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+26,"""Delivering Value"" is the tagline of �..?",OPTION4,eCom,Ekart Logistics,DHL,DTDC,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+27,"""The energy of India"" is the Tagline of �....?",OPTION3,HAL,NTPC,IOCL,Bharat Petroleum,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+28,"""We also make tomorrow"" is the tagline of �.?",OPTION1,TISCO,TELCO,SAIL,BHEL,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+29,"""Alarm Bajne se pahle jago re"" is the Tagline of �..?",OPTION3,Ajanta Watches,Titan Watches,Tata Tea,Wagh Bakri Chay,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+30,"""Taaza ho le"" is the Tagline of �..?",OPTION2,Reliance Fresh,Taaza Tea,Upper Assam Tea,Tata Tea,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+31,The Tagline of Indian Tourism is �..?,OPTION2,Padharo Mahare Desh,Incredible India,Just Imagine,Rang Biranga Desh,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+32,"""The man your man could smell like"" is the Tagline of �...?",OPTION3,Gillette,Park Avenue,Old Spice,Axe,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+33,Think Different is the Tagline of �...?,OPTION2,Orange,Apple,Grapes,Banana,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+34,"""Twist, Lick, Dunk"" is the Tagline of �..?",OPTION3,Skittles,Rainbow,Oreo,Kellogs,TEXT,,EASY,5,2024-11-22 16:50:24.357,2024-11-22 22:19:52.928
+302,What are some of technological advancements that have made workplace collaboration easier?,OPTION4,High speed internet and digital/remote file sharing,Web-based programs and communications,Email and video-conferencing,All of the answers are correct,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+303,Some of the benefits of collaboration in workplace are,OPTION4,Access to additional skills,Employee development,Quicker problem solving and solutions,All of the answers are correct,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+304,Collaboration in the workplace is when two or more people (often groups) do what?,OPTION4,Work together,Share ideas,Share a common purpose,All of the answers are correct,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+305,"To start a partnership business, what should be the minimum number of partners?",OPTION1,2,10,4,20,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+306,What type of agreement is used to form a partnership business?,OPTION3,Written agreement,Oral agreement,Written or oral agreement,None of them,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+307,Is a partnership firm considered as a separate legal entity?,OPTION1,No,Yes,Partially Yes,Yes in  case of public sector firm only,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+308,What happens when interest on drawings is charged to partner?,OPTION3,Credited to partner�s current a/c,Not shown in current account,�Debited to partner�s capital a/c,None of the above,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+309,What is the partnership written agreement known as?:,OPTION3,Partnership contract,Agreement,Partnership deed,Partnership Act,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+310,"In absence of a partnership agreement, what will be the percentage of profit sharing ratio between the partners?",OPTION2,Unequal,Equal,It will depend on the experience of a partner,�It will depend on a partner�s capital,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+311,Which is not a feature of a partnership business?,OPTION2,Ease of formation,Limited liability,Limited life,Mutual agency,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+312,In which kind of partnership one partner has unlimited liability and other partner have limited liability?,OPTION2,Partnership-at-will,Limited� liability partnership,General partnership,Particular partnership,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+313,Which types of partnership have no agreement in terms of the duration of partnership?,OPTION1,�Partnership-at-will,Limited partnership,General partnership,Particular partnership,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+314,Joint venture is a:,OPTION2,Personal A/c,Nominal A/c,Real A/c,Memorandum A/c,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+315,Joint Bank A/c is a:,OPTION2,Nominal A/c,Personal A/c,Real A/c,Dummy A/c,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+316,Joint Venture with another co-venturer A/c is a:,OPTION2,Personal A/c,Nominal A/c,Real A/c,Memorandum A/c,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+317,Which of the following account is opened when separate joint venture account is opened?,OPTION4,Joint Venture A/c,Joint Bank A/c,Coventure A/c,All of the above,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+318,What does the balance in Menorandom Joint Venture A/c shows-,OPTION1,Profit or loss,Closing stock,Balance due from other co-venturer,Difference in Trial Balance,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+319,The partners to joint venture are called,OPTION3,Bailor and bailee,Partner's,Coventurer,Principal and agent,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+320,Which of these is not a part of double entry system?,OPTION2,Joint Bank A/c,Memorandum A/c,Joint Venture A/c,Joint Venture with other co-venture A/c,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+321,Loss on joint venture is:,OPTION2,Credit to profit and loss A/c,Debited to co-ventures capital A/c,Credited to Capital Fund A/c,Debited to Suspense A/c,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+322,Stock left over taken by a Co-venture is:,OPTION3,Debited to Joint Venture A/c,Credited to Co-Venture A/c,Credited to Joint Venture A/c,Credited to Joint Bank A/c,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+323,Which of these is not a feature of a joint venture?,OPTION1,Continuing business,No firm name,Partners called co-venturer,Partnership for limited purpose,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+324,Which of these accounts are not opened in a joint venture?,OPTION1,Stock reserve,Jount bank A/c,Joint Venture A/c,Co-Ventures Personal A/c,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+325,Which two leading telecommunication companies merged with each other in the year 2018?,OPTION2," BSNL and Idea",Vodafone and Idea,Bharti Airtel and BSNL,Jio and Vodafone,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+326,"Which online food delivery platform acquired Uber Eats in 2020, for around $350 million?",OPTION2,Swiggy,Zomato,Flipkart Groceries,Amazon Pantry,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+327,"Which leading private sector bank acquired digital payment company, Freecharge from Snapdeal in 2017?",OPTION1,Axis Bank,HDFC Bank,ICICI Bank,Deutche Bank,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+328,�IDFC Bank and non-banking financial company (NBFC) Capital First announced the completion of their merger in which year?,OPTION2,2017,2018,2019,2020,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+329,Which of the following is NOT a benefit of business collaboration?,OPTION4,Shared resources,Increased innovation,Reduced competition,Guaranteed profitability,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+330,A joint venture involves:,OPTION2,Companies merging their operations permanently,Two or more businesses forming a new entity to pursue a specific project,Outsourcing business operations to a third party,Licensing a product to another company,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+331,What type of collaboration involves sharing brand names or trademarks for mutual benefit?,OPTION2,Licensing,Co-branding,Franchise agreements,Distribution partnerships,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+332,What is the primary reason companies collaborate in research and development (R&D)?,OPTION2,To increase competition,To reduce costs and risks,To limit market expansion,To avoid intellectual property sharing,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+333,"In strategic alliances, companies:",OPTION3,Merge into one legal entity,Form a legally binding contract to share profits,Maintain independence while working together on specific projects,Transfer ownership to a third-party organization,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+334,Which is a common challenge in business collaborations?,OPTION2,Improved communication,Misaligned objectives,Enhanced market access,Reduced compliance issues,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+335,How can companies address trust issues in a collaboration?,OPTION2,By reducing formal agreements,By conducting due diligence and clear communication,By avoiding long-term partnerships,By relying on informal promises,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+336,Two companies collaborate to design a product but compete in the same market. This situation is known as:,OPTION1,Coopetition,Vertical integration,Exclusive licensing,Mergers and acquisitions,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+337,Which metric would best evaluate the success of a collaborative effort?,OPTION2,Number of meetings held,Revenue growth attributed to the collaboration,Increase in competitors,Employee satisfaction scores,TEXT,,EASY,6,2024-11-22 17:43:48.687,2024-11-22 23:13:10.019
+446,This logo belongs to,OPTION3,Wendy's,Taco Bell,McDonald's,Dominos,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-1.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+447,"This logo belongs to ",OPTION1,Chanel,"Cartoon Network ",Chevrolet,Christian Dior,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-2.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+448,"This logo belongs to ",OPTION4,Crown Plaza Hotel,Thomas Crown Affair movie,Crown Casino,Rolex,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-3.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+449,Can you recognize this logo?,OPTION2,"Royal Back Of Scotland ",HSBC,The Common Wealth Games 2010,Arrow Van Heusen,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-4.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+450,Can you recognize this logo?,OPTION2,"United News Of India ",Unilever,Uni Klinger Limited,Uni Style Image,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-5.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+451,Can you recognize this logo?,OPTION4,B.M.W,Renault,Ford,Volkswagen,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-6.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+452,Can you recognize this logo?,OPTION4,IBN,CNN,ICICI,NBC,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-7.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+453,Can you recognize this logo?,OPTION1,Pepsi,"Mirinda ",7UP,Coca Cola,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-8.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+454,Can you recognize this logo?,OPTION3,Lamborghini,Maserati,Ferrari,Mclaren F1,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-9.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+455,This is the logo of.,OPTION2,Kuoni Travels,TUI,Thomas Cook,Smyle Travels,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-10.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+456," Can you tell which company's logo is it?",OPTION2,"Puma ","Adidas ",Nike,"None of the above ",IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-11.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+457,This is an iconic luxury British sports car manufacturer brand. Can you identify its name from the logo?,OPTION1,Aston Martin,Bentley,Mercedes,Jaguar,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-12.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+458,This is also a very popular French brand of automobiles. Identify its company name.,OPTION4,Carrefour,Michelin,Renault,Citroen,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-13.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+459,Guess it's brand name from the logo.,OPTION1,Indian Post,DTDC,E-Com,"None of the above ",IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-14.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+460,This is an American multinational telecommunications company. Identify its brand name.,OPTION1,Motorola,"Micromax ",Nokia,Samsung,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-15.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+461,This company is one of the leading two-wheeler companies in India. Identify its brand name from the logo.,OPTION2,TATA,Yamaha,Nissan,"None of the above ",IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-16.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+462,What brand is this?,OPTION1,Locoste,gucci,Armani,Nike,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-17.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+463,What brand is this?,OPTION3,Armani,Patek And Philpe,Fossil,Schwartz,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-18.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+464,Indentify the brand?,OPTION2,Lacoste,Tommy Hilfiger,Dolce Gabbana,Redtape,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-19.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+465," Indentify the brand?",OPTION3,North Face,Reebok,Levis,Superdry,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-20.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+466,What brand is this?,OPTION4,Hush Puppies,Redtape,Gucci,Holister,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-21.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+467,What brand is this?,OPTION2,Armani,"Versace ","Chanel ","Dolce Gabbana ",IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-22.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+468,What brand is this?,OPTION2,Nike,Reebok,Adidas,Gucci,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-23.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+469,Indentify the brand?,OPTION2,Titan,Fastrack,Casico,Timex,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-24.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+470,Indentify the brand?,OPTION2,Indian Oil,Hindustan Petroleum,Reliance Petroleum,Bharat Petroleum,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-25.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+471,Indentify the brand?,OPTION1,Ford,Bugatti,BMW,Carrier,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-26.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+472,Indentify the brand?,OPTION2,Café Coffee Day,Starbucks,Chaayos,Zomato,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-27.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+473,What brand is this?,OPTION2,Hindustan Unilever,Dabur,Godrej,Himalaya Herbals,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-28.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+474,What brand is this?,OPTION4,Pepsi Co,Britannia,Parle,Nestle,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-29.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+475," Indentify the brand?",OPTION3,MTS,Airtel,Vodafone,BSNL,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-30.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+476," Indentify the company logo?",OPTION3,Dr Reddy’s,Sun Pharma,Piramal Enterprise,Bharat Biotech,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-31.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+477," Indentify the company logo?",OPTION2,Amazon,Alibaba,Tata Cliq,Flipkart,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-32.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+478,Indentify the company logo?,OPTION3,"Tuborg ",Budweiser,Kingfisher,Haywards,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-33.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+479," Indentify the brand?",OPTION4,Zenni Optical,EyeBuyDirect,Titan Eye Plus,Lenskart,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-34.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+480,Indentify the company logo?,OPTION1,Vistara,Indigo,Air India,Spice Jet,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-35.jpg,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353
+481,Indentify the logo?,OPTION2,"Skype ",Telegram,Twitter,Zoom,IMAGE,https://quiz-bowl-2024.vercel.app/logo/brand-logo-36.png,EASY,7,2024-11-22 19:35:12.267,2024-11-23 00:55:18.353

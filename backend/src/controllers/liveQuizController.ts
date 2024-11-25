@@ -197,6 +197,7 @@ export const getLiveQuestion = async (req: Request, res: Response) => {
     );
     return res.json(question);
   } catch (error) {
+    console.error(error);
     errorResponse(error, res);
   }
 };
