@@ -11,6 +11,7 @@ import Link from "next/link"
 // You can use a Zod schema here if you want.
 export interface LiveQuiz {
   id: number;
+  name:string;
   quizcode: string;
   quizData: any; // Change `any` to a more specific type for quizData if needed
   activeRoundIndex: number;
@@ -18,7 +19,7 @@ export interface LiveQuiz {
   isAnswerAllowed: boolean;
   status: 'NOT_STARTED' | 'ACTIVE' | 'FINISHED';
   timeLimit: number;
-  liveAnswers: any[]; // Array of LiveAnswer objects, could be further typed if needed
+  // liveAnswers: any[]; // Array of LiveAnswer objects, could be further typed if needed
   positiveScore: number;
   negativeScore: number;
   createdAt: string;
@@ -39,14 +40,16 @@ export const columns: ColumnDef<LiveQuiz>[] = [
     header: "Name",
   },
   {
-    accessorFn: (row) => formatISODate(row.createdAt),
-    accessorKey: "createdAt",
-    header: "Created At",
+    accessorKey: "status",
+    header: "Status",
   },
   {
-    accessorKey: "updatedAt",
-    accessorFn: (row) => formatISODate(row.updatedAt),
-    header: "Updated At",
+    accessorKey: "positiveScore",
+    header: "+ve Score",
+  },
+  {
+    accessorKey: "negativeScore",
+    header: "-ve Score",
   },
   {
     header:"OPEN",

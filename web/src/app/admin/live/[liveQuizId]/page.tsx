@@ -153,7 +153,7 @@ function Header({
     <header className="flex gap-3 p-4  ">
       <div className="flex fle-col items-center">
         <Link href={backHref} className="rounded-full p-3 border">
-          <Radio size={20} />
+          <ArrowLeft size={20} />
         </Link>
       </div>
       <div className="flex-1 flex flex-col items-center">

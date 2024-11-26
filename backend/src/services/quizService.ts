@@ -96,3 +96,11 @@ const generateRound = (
     ]),
   };
 };
+
+export const fetchAllNotLiveQuiz = async () => {
+  const quizs = await prisma.quiz.findMany();
+  const liveQuizs = await prisma.liveQuiz.findMany();
+  const idSet = new Set(liveQuizs.map((liveQuiz)=>liveQuiz.quizId));
+
+  return quizs.filter((quiz)=>!idSet.has(quiz.id));
+}

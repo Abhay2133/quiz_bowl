@@ -6,9 +6,13 @@ import { Loader2, LoaderIcon } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { columns, LiveQuiz } from "./columns";
 import { errorToast } from "@/util/errors";
-import { getAllLiveQuizzes } from "@/services/liveQuizService";
+import {
+  deleteLiveQuizById,
+  getAllLiveQuizzes,
+} from "@/services/liveQuizService";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const Loading = () => {
   return (
@@ -63,9 +67,26 @@ export default function LiveQuizPage() {
   };
 
   const _onEdit = (liveQuiz: Partial<LiveQuiz>) => {};
-  const _onDelete = (liveQuiz: Partial<LiveQuiz>) => {};
+  const _onDelete = async (liveQuiz: Partial<LiveQuiz>) => {
+    try {
+      if (!liveQuiz.id) return toast(`Invalid liveQuiz id (${liveQuiz.id})`);
+      toast(`Deleting Live-Quiz '${liveQuiz.name}' `);
+      const res = await deleteLiveQuizById(liveQuiz.id);
+      if (res.status < 400) {
+        _loadData();
+        toast(`Deleted liveQuiz '${liveQuiz.name}' successfully`);
+      } else {
+        const e = await res.json();
+        errorToast(`Failed to Delete liveQuiz "${liveQuiz.name}"`, e);
+      }
+    } catch (e) {
+      errorToast(`Failed to Delete liveQuiz "${liveQuiz.name}"`, e);
+    }
+  };
 
-  const _onCreate = async () => {};
+  const _onCreate = async () => {
+    router.push(`/admin/live/new`);
+  };
 
   return (
     <div>

@@ -4,6 +4,7 @@ import prisma from "../prisma/client";
 import { errorResponse } from "../utils/prisma";
 import { Question, Round } from "@prisma/client";
 import { shuffleArray } from "../utils/array";
+import { fetchAllNotLiveQuiz } from "../services/quizService";
 
 // Create a new quiz
 export const createQuiz = async (req: Request, res: Response) => {
@@ -267,3 +268,13 @@ const generateRound = (round: Round & { questions: Question[] }) => {
     ]),
   };
 };
+
+export const getNotLive_Quizs = async (req:Request, res: Response) => {
+  try{
+    const notLiveQuizs = await fetchAllNotLiveQuiz();
+    return res.json(notLiveQuizs);
+  } catch(e){
+    console.error(e);
+    errorResponse(e, res);  
+  }
+}

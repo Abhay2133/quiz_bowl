@@ -10,6 +10,7 @@ import {
   createLiveQuizByQuizcode,
   generateLiveLeaderboard,
 } from "../../controllers/liveQuizController";
+import { getNotLive_Quizs } from "../../controllers/quizController";
 
 const router = Router();
 
@@ -24,6 +25,9 @@ router.post("/liveQuizzes/byQuizcode", createLiveQuizByQuizcode);
 router.get("/liveQuizzes/:id/leaderboard", (a, b) => {
   generateLiveLeaderboard(a, b);
 });
+// router.get("/liveQuizzes/quizs", (a, b) => {
+//   getNotLive_Quizs(a, b);
+// });
 // router.get('/liveQuizzes/quizcode/:quizcode', )
 
 export default router;

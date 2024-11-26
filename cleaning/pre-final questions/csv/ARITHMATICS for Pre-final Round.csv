@@ -1,0 +1,77 @@
+﻿ID,QUESTION,ANSWER,Option1,Option2,Option3,Option4,Type,
+1, Calculate the combined area of two squares with side lengths of 4 and 6,Option2,40,52,36,28,Text,
+2," If ( a = 4 ) and ( b = 3 ), find ( 4a + 2b ).",Option4,18,14,20,22,Text,
+3,"If you invest $200 at a rate of ( 5% ) for a year, how much
+interest will you earn?",Option2, $8, $10, $5`, $7,Text,
+4," If the base of a triangle is 10 and its height is 4, what is its
+area?",Option1,20,25,30,15,Text,
+5," If a number is increased by 25% and the result is 150, what
+is the original number?",Option2,100,120,125,90,Text,
+6," In a group of 100 students, 60 play football and 30 play
+basketball. If 10 play both sports, how many play only football?",Option2,40,50,60,70,Text,
+7," If the ratio of boys to girls in a class is 3:2 and there are 18
+boys, how many girls are there?",Option3,9,10,12,15,Text,
+8," Complete the pattern: 2, 5, 10, 17, 26,       ?",Option3,35,36,37,38,Text,
+9," If a bat and a ball together cost $1.10, and the bat costs
+$1 more than the ball, how much does the ball cost?",Option1, $0.05, $0.10, $0.15, $0.20,Text,
+10,"If one cat can catch one mouse in one minute, how many
+cats are needed to catch 100 mice in 100 minutes?",Option1,1,10,50,100,Text,
+11,"If a cube has a side length of 5 units, what is the volume
+of the cube?",Option2,100 cubic units, 125 cubic units, 150 cubic units, 200 cubic units,Text,
+12," If a minute hand of a clock moves 6 degrees per minute,
+how many degrees does it move in 45 minutes?",Option3, 180 degrees, 240 degrees, 270 degrees, 300 degrees,Text,
+13," A man sold an article at 20% loss. If the selling price was
+₹960, what was the cost price?  ",Option1,"₹ 1,200","₹ 1,000","₹ 1,150","₹ 1,100",Text,
+14,"A sum of ₹5000 is invested at 4% per annum compound
+interest. What is the amount after 2 years?",Option2,"₹ 5,200","₹ 5,400","₹ 5,500","₹ 5,600",Text,
+15,"In a bag, there are 6 red, 4 green, and 10 blue balls. What is
+the probability of picking a green ball?",Option1, ⅕, ⅖, 1/10, ¼,Text,
+16,What is the value of 24*15/6+9,Option2,64,69,70,74,Text,
+17, The number of multiples of 4 between 10 and 250 is:,Option4,50,70,30,60,Text,
+18," If the numerator of a fraction is increased by 50% and its
+denominator is diminished by 28%, the value of the fraction is 25/36. Find the original fraction.",Option4,"  ⅕
+","⅔
+ ","  ⅖
+ ", ⅓,Text,
+19," The sum of two numbers is 90. If one of them exceeds the other by
+16, find both the numbers?",Option2,"50,40","53,37","64,48","43,49",Text,
+20," A college hostel mess has provisions for 25 days for 350 boys. At the end of 10 days, when some boys were shifted to another hostel, it was found that now the provisions will last for 21 more days. How many boys were shifted to
+another hostel?",Option4,92,110,98,100,Text,
+21," A student made twice as many mistakes as he got correct answers. If he attempted 48 questions in total, how many questions did he get
+right?",Option3,12,18,16,20,Text,
+22," Find the square root of the perfect square made by multiplying
+4050 with a least positive integer.",Option2,88,90,95,85,Text,
+23," The distance between two parallel tangents of a circle of radius 3
+cm is",Option1,6 cm,8 cm,4 cm,9 cm,Text,
+24,The value of cos2 17 –sin2 73 is,Option3,1,13,0,-1,Text,
+25, The Product of 131 × 0 × 300 × 4,Option2,11,0,48,45,Text,
+26,"If a pair of linear equations is consistent, then the lines will be:",Option3,Parallel                                         ,Always coincident,Intersecting or coincident            ,Always intersecting,Text,
+27,"If the distance between the points (2, –2) and (–1, x) is 5, one of the values of x is",Option2,–2,2,1,-1,Text,
+28,The value of sin θ and cos (90° – θ),Option1," Are same
+
+"," Are different
+
+",Information insufficient,No relation,Text,
+29,"If sin A = 1/2 and cos B = 1/2, then A + B = ?",Option4,0 degree,30 degree,60 degree,90 degree,Text,
+30, The shadow of a tower standing on a level plane is found to be 50 m longer when Sun’s elevation is 30° than when it is 60°. Then the height of tower is:,Option2,20√3                                             ,25√3,10√3                                             ,30√3,Text,
+31,"If ½ is a root of the quadratic equation x2 - mx- 5/4 = 0 , then the value of m is:",Option1,-2,-3,1,2,Text,
+32,The perimeter of a sector of a circle having radius r and angle 60° is:,Option4,r(π/6 + 1)        , 2r(π/6 - 1),r(π/6 + 2)        ,2r(π/6 + 1),Text,
+33,"The mean and median of a distribution are 14 and 15, respectively. The value of the mode is:",Option2,16,17,18,13,Text,
+34,The value of k for which the lines 5x + 7y = 3 and 15x + 21y = k coincide is:,Option1,9,15,7,11,Text,
+35,"If the arithmetic mean of x, x + 3, x + 6, x + 9 and x + 12 is 10, then x = ?",Option4,1,2,6,4,Text,
+36,"If the sum of the first n terms of an arithmetic progression is given by Sn=3n2+2n
+, what is the 10th term of the progression?",Option4,63,68,78,36,Text,
+37,Find the zeroes of the quadratic polynomial x² – 4x + 3. ,Option2,"4,1","3,1","1,3","3,4",Text,
+38,"If tangents AB and AC from a point A to a circle with centre O are inclined to each other at angle of 70˚, then find ∠BOC. ",Option4,70˚,110˚ ,80˚ ,120˚,Text,
+39,A number is selected at random from the numbers 1 to 30. The probability that it is a prime number is,Option3, 2/3, 1/6, 1/3,  11/30,Text,
+40,A pair of tangents can be constructed from a point P to a circle of radius 3.5 cm situated at a distance of ___________ from the centre.,Option1,5cm,2cm,3cm,3.5cm,Text,
+41,"If a card is drawn from a deck of cards, what is the probability of a card drawn to be a red or a black card and what can we say about that event?  ",Option1,1 and it is a sure event.,0 and it is a sure event.,1 and it is an impossible event.,0 and it is an impossible event.,Text,
+42,"Volume and surface area of a sphere are numerically equal, then radius of sphere is",Option4,7 unit,2 unit,5 unit,3 unit,Text,
+43,"If the perimeter of a circle is equal to that of a square , then the ratio of their area is",Option3,22:07,14:11, 7:22 ,11:14,Text,
+44,The probability that non – leap year has 53 Sundays is,Option4,  2/7, 5/7 , 6/7 , 1/7,Text,
+45,"In a throw of two dice, the probability of getting a sum of 10 is ",Option1,  1/12, 1/36 , 1/6 ,  1/4,Text,
+46,The radii of bases of a cylinder and a cone are in the ratio 3 : 4 and their heights are in the ratio 2 : 3. The ratio between the volume of cylinder to that of cone is,Option2,",8:9",", 9 : 8",",5 : 7 ", 7 : 5,Text,
+47,Construction of a cumulative frequency table is useful in determining the,Option2,mean ,median , mode , all the above three measures,Text,
+48,"A tangent PQ at a point P of a circle of radius 5 cm meets a line through the centre O at a point Q so that OQ = 12cm , length PQ is",Option4,12cm,13 cm , 8.5 cm ,sq root 119,Text,
+49,CosecA /secA is ,Option2,tan A, cot A,sin A , cosec A,Text,
+50,"The perimeter of a triangle with vertices (0,4) and (0, 0) and (3,0) is",Option4,7,5,10,12,Text,

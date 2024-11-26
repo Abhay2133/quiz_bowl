@@ -33,3 +33,21 @@ export const fetchLeaderboard = (liveQuizid: number) =>
       },
     }
   );
+
+export const createLiveQuizbyQuizcode = (quizcode: string) =>
+  fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/liveQuizzes/byQuizcode", {
+    method: "post",
+    body: JSON.stringify({ quizcode }),
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${getJwtToken()}`,
+    },
+  });
+
+export const deleteLiveQuizById = (id: number) =>
+  fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/liveQuizzes/" + id, {
+    method: "delete",
+    headers: {
+      Authorization: `Bearer ${getJwtToken()}`,
+    },
+  });

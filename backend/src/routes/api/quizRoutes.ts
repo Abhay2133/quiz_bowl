@@ -6,6 +6,7 @@ import {
   getQuizById,
   updateQuiz,
   deleteQuiz,
+  getNotLive_Quizs,
 } from "../../controllers/quizController";
 
 const router = express.Router();
@@ -30,5 +31,10 @@ router.put("/quizs/:id", updateQuiz);
 
 // Route to delete a specific quiz by its ID
 router.delete("/quizs/:id", deleteQuiz);
+
+// get quiz which doesnot have live quizzes
+router.get("/not-live-quizs", (a, b) => {
+  getNotLive_Quizs(a, b);
+});
 
 export default router;

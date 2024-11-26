@@ -122,9 +122,9 @@ function SidePanel() {
 function QuestionPanel() {
   const { liveQuiz } = useLiveQuiz();
   return (
-    <div className="flex-1 flex flex-col h-screen">
+    <div className="flex-1 flex flex-col h-screen overflow-auto">
       <Timer />
-      <div className="flex-1">
+      <div className="flex-1 ">
         <QuestionUI />
       </div>
       <Controls />
@@ -255,6 +255,7 @@ function Timer() {
     return () => {
       if (timer) {
         clearInterval(timer);
+        setSeconds(liveQuiz.timeLimit)
       }
     };
   }, [liveQuiz.isTimerStarted]);
