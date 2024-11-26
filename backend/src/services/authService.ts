@@ -13,6 +13,9 @@ export const generateLiveUserToken = async (email:string, quizcode:string) => {
   const quiz = await prisma.quiz.findUnique({where:{quizcode}});
   if(!quiz) throw new Error(`Quizcode (${quizcode}) invalid`);
 
+  const teamQuiz = await prisma.teamQuiz.findFirst({where:{teamId: team.id, quizId: quiz.id}});
+  if(!teamQuiz) throw new Error(`Team '${team.name}' is not allowed`);
+
   const liveQuiz = await prisma.liveQuiz.findUnique({where:{quizId: quiz.id}});
   if(!liveQuiz) throw new Error(`LiveQuiz doesn't exists for given quiz-code`);
 
