@@ -17,9 +17,9 @@ import ConfirmDialog from "@/components/confirm-dialog";
 
 const Loading = () => {
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col my-10 mx-auto items-center gap-3">
       <Loader2 className=" animate-spin" size={40} />
-      <div>Loading</div>
+      {/* <div>Loading</div> */}
     </div>
   );
 };
