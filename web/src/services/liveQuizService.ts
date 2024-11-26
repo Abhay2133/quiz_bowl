@@ -1,3 +1,5 @@
+// services for admin use
+
 import { LiveQuiz } from "@/app/admin/live/columns";
 import { getJwtToken } from "./authService";
 
@@ -51,3 +53,4 @@ export const deleteLiveQuizById = (id: number) =>
       Authorization: `Bearer ${getJwtToken()}`,
     },
   });
+

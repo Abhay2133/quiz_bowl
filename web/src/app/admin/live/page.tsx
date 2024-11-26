@@ -9,11 +9,19 @@ import { errorToast } from "@/util/errors";
 import {
   deleteLiveQuizById,
   getAllLiveQuizzes,
+  udpateLiveQuizById,
 } from "@/services/liveQuizService";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import ConfirmDialog from "@/components/confirm-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { LiveQuizForm } from "./form";
 
 const Loading = () => {
   return (
@@ -67,14 +75,17 @@ export default function LiveQuizPage() {
     router.push(`/admin/live/${liveQuiz.id}`);
   };
 
-  const _onEdit = (liveQuiz: Partial<LiveQuiz>) => {};
+  const _onEdit = (liveQuiz: Partial<LiveQuiz>) => {
+    setFormDialog((old) => ({ liveQuiz, open: true }));
+  };
+
   const _onDelete = (liveQuiz: Partial<LiveQuiz>) => {
     setDelDialog({
       open: true,
       liveQuiz: liveQuiz,
     });
   };
-  const _doDelete = async (liveQuiz: Partial<LiveQuiz>, cb?:any) => {
+  const _doDelete = async (liveQuiz: Partial<LiveQuiz>, cb?: any) => {
     try {
       if (!liveQuiz.id) return toast(`Invalid liveQuiz id (${liveQuiz.id})`);
       toast(`Deleting Live-Quiz '${liveQuiz.name}' `);
@@ -88,8 +99,8 @@ export default function LiveQuizPage() {
       }
     } catch (e) {
       errorToast(`Failed to Delete liveQuiz "${liveQuiz.name}"`, e);
-    }finally{
-      if(cb) cb();
+    } finally {
+      if (cb) cb();
     }
   };
 
@@ -104,6 +115,35 @@ export default function LiveQuizPage() {
     liveQuiz: null,
     open: false,
   });
+
+  const [formDialog, setFormDialog] = useState<{
+    liveQuiz: Partial<LiveQuiz> | null;
+    open: boolean;
+  }>({
+    liveQuiz: null,
+    open: false,
+  });
+
+  const _doEdit = async (values: any) => {
+    values = { ...values, isAnswerAllowed: values.isAnswerAllowed === "TRUE" };
+
+    if (!formDialog.liveQuiz?.id)
+      return toast(`invalid id while editing (${formDialog.liveQuiz?.id})`);
+    try {
+      const res = await udpateLiveQuizById(formDialog.liveQuiz?.id, values);
+      if (res.status < 400) {
+        toast(`'${formDialog.liveQuiz.name}' edited successfully`);
+        _loadData();
+      } else {
+        const error = await res.json();
+        errorToast(`Unable to Edit '${delDialog.liveQuiz?.name}'`, error);
+      }
+    } catch (error) {
+      errorToast(`Error whlie Editing '${delDialog.liveQuiz?.name}'`, error);
+    } finally {
+      setFormDialog((old) => ({ ...old, open: false }));
+    }
+  };
 
   return (
     <div>
@@ -122,12 +162,18 @@ export default function LiveQuizPage() {
 
       {/* Delete confimation dialog */}
       <ConfirmDialog
-        title= {`Delete "${delDialog.liveQuiz?.name}"`}
+        title={`Delete "${delDialog.liveQuiz?.name}"`}
         body={`All the submission will also get deleted`}
         footer={
           <Button
             variant={"destructive"}
-            onClick={() => delDialog.liveQuiz && _doDelete(delDialog.liveQuiz, setDelDialog((old)=>({...old, open:false})))}
+            onClick={() =>
+              delDialog.liveQuiz &&
+              _doDelete(
+                delDialog.liveQuiz,
+                setDelDialog((old) => ({ ...old, open: false }))
+              )
+            }
           >
             Delete
           </Button>
@@ -137,6 +183,25 @@ export default function LiveQuizPage() {
           setDelDialog((old) => ({ ...old, open }))
         }
       />
+
+      {/* Update Form */}
+      <Dialog
+        open={formDialog.open}
+        onOpenChange={(val) => setFormDialog({ ...formDialog, open: val })}
+      >
+        <DialogContent className="sm:max-w-[425px] w-[90%] mx-auto rounded-lg overflow-y-auto max-h-[95%]">
+          <DialogHeader>
+            <DialogTitle>Edit Live-Quiz</DialogTitle>
+          </DialogHeader>
+          <LiveQuizForm
+            defaultData={{
+              ...formDialog.liveQuiz,
+              isAnswerAllowed: "" + formDialog?.liveQuiz?.isAnswerAllowed,
+            }}
+            handleSubmit={_doEdit}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
