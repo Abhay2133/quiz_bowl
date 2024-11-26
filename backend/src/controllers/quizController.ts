@@ -140,7 +140,14 @@ export async function getQuizInfo(req: Request, res: Response) {
       .status(401)
       .json({ error: `email (${email}) or quizcode (${quizcode}) missing !` });
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findFirst({
+      where: {
+        email: {
+          equals: email, // This is the email to search for
+          mode: "insensitive", // Enables case-insensitive matching
+        },
+      },
+    });
     const team = await prisma.team.findUnique({
       where: { id: user?.teamId as any },
     });
@@ -167,7 +174,7 @@ export async function getQuizInfo(req: Request, res: Response) {
       timing: quiz.startTiming,
       date: quiz.date,
       quizcode: quiz.quizcode,
-      quizName: quiz.name
+      quizName: quiz.name,
     });
   } catch (e: any) {
     console.error(e, req.body);
@@ -269,12 +276,12 @@ const generateRound = (round: Round & { questions: Question[] }) => {
   };
 };
 
-export const getNotLive_Quizs = async (req:Request, res: Response) => {
-  try{
+export const getNotLive_Quizs = async (req: Request, res: Response) => {
+  try {
     const notLiveQuizs = await fetchAllNotLiveQuiz();
     return res.json(notLiveQuizs);
-  } catch(e){
+  } catch (e) {
     console.error(e);
-    errorResponse(e, res);  
+    errorResponse(e, res);
   }
-}
+};

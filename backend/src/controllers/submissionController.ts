@@ -130,8 +130,8 @@ export const getSubmissionByUserEmail = async (req: Request, res: Response) => {
   const { email } = req.params;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { email },
+    const user = await prisma.user.findFirst({
+      where: { email: { equals: email, mode: "insensitive" } },
       include: { submissions: true },
     });
 
@@ -235,6 +235,8 @@ export const getAllSubmissions = async (req: any, res: any) => {
     res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching submissions: ", error);
-    res.status(500).json({ error: "An error occurred while fetching submissions." });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching submissions." });
   }
 };

@@ -51,8 +51,13 @@ export const getLiveQuizInfoByEmailQuizcode = async (
   email: string,
   quizcode: string
 ) => {
-  const user = await prisma.user.findUnique({
-    where: { email },
+  const user = await prisma.user.findFirst({
+    where: {
+      email: {
+        equals: email, // This is the email to search for
+        mode: "insensitive", // Enables case-insensitive matching
+      },
+    },
   });
 
   if (!user) {
