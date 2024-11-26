@@ -13,9 +13,15 @@ import {
 } from "@/services/quizService";
 import { errorToast } from "@/util/errors";
 import { useRouter } from "next/navigation";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { PropsWithChildren, SyntheticEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Loader2Icon, RefreshCcw } from "lucide-react";
+import {
+  Loader2Icon,
+  RefreshCcw,
+  TriangleAlertIcon,
+  User,
+  Users,
+} from "lucide-react";
 
 export default function LiveQuiz() {
   const ctx = useQuiz();
@@ -53,7 +59,7 @@ export default function LiveQuiz() {
         errorToast("Failed to Load Question", e);
       }
     } catch (e) {
-      errorToast("Failed to Load Question", e);
+      errorToast("Error while Loading Question", e);
     } finally {
       if (cb) cb();
     }
@@ -63,6 +69,7 @@ export default function LiveQuiz() {
     <div>
       {/* <Data /> */}
       <Header />
+      <UserInfo />
       {isRefreshing ? (
         <div className="mx-auto my-32 text-center">
           <Loader2Icon size={40} className="animate-spin mx-auto my-5" />
@@ -169,52 +176,61 @@ function Question() {
     setQuestion((old) => ({ ...old, selectedAnswer: "" }));
   };
 
+  if (question.id === 0)
+    return (
+      <div className="my-20 gap-3  flex justify-center">
+        <TriangleAlertIcon size={20} /> No active Question
+      </div>
+    );
+
   return (
-    <form
-      onSubmit={_onSubmit}
-      className="flex flex-col gap-3 mx-3 p-5 rounded border border-secondary shadow-md bg-primary-foreground max-w-[500px] md:mx-auto"
-    >
-      <div className=" opacity-50">Question : {question.index}</div>
-      <div>{question.question}</div>
-      <div>
-        <QuestionMedia type={question.type} link={question.link || ""} />
-      </div>
-      <div className="text-sm">Options </div>
-      <RadioGroup
-        // defaultValue={question.selectedAnswer}
-        value={question.selectedAnswer}
-        className="flex flex-col gap-y-5"
-        onValueChange={_onAnswerSelected}
+    <div className="flex justify-center">
+      <form
+        onSubmit={_onSubmit}
+        className="flex flex-col gap-3 mx-3 p-5 rounded border border-secondary shadow-md bg-primary-foreground max-w-[500px] flex-1"
       >
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="OPTION1" id="option1" />
-          <Label htmlFor="option1">{question.option1}</Label>
+        <div className=" opacity-50">Question : {question.index}</div>
+        <div>{question.question}</div>
+        <div>
+          <QuestionMedia type={question.type} link={question.link || ""} />
         </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="OPTION2" id="option2" />
-          <Label htmlFor="option2">{question.option2}</Label>
+        <div className="text-sm">Options </div>
+        <RadioGroup
+          // defaultValue={question.selectedAnswer}
+          value={question.selectedAnswer}
+          className="flex flex-col gap-y-5"
+          onValueChange={_onAnswerSelected}
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="OPTION1" id="option1" />
+            <Label htmlFor="option1">{question.option1}</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="OPTION2" id="option2" />
+            <Label htmlFor="option2">{question.option2}</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="OPTION3" id="option3" />
+            <Label htmlFor="option3">{question.option3}</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="OPTION4" id="option4" />
+            <Label htmlFor="option4">{question.option4}</Label>
+          </div>
+        </RadioGroup>
+        <div className="flex justify-between mt-3">
+          <Button type="reset" variant={"outline"} onClick={() => _reset()}>
+            Reset
+          </Button>
+          {/* <button type="reset">Reset</button> */}
+          <SubmitButton
+            onSubmit={_onSubmit}
+            isSubmitting={isSubmitting}
+            isAnswered={question.answered}
+          />
         </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="OPTION3" id="option3" />
-          <Label htmlFor="option3">{question.option3}</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="OPTION4" id="option4" />
-          <Label htmlFor="option4">{question.option4}</Label>
-        </div>
-      </RadioGroup>
-      <div className="flex justify-between mt-3">
-        <Button type="reset" variant={"outline"} onClick={() => _reset()}>
-          Reset
-        </Button>
-        {/* <button type="reset">Reset</button> */}
-        <SubmitButton
-          onSubmit={_onSubmit}
-          isSubmitting={isSubmitting}
-          isAnswered={question.answered}
-        />
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
 
@@ -266,4 +282,20 @@ function QuestionMedia({ type, link }: { type: QuestionType; link?: string }) {
       break;
   }
   return ui;
+}
+
+function UserInfo() {
+  const { user, team } = useQuiz();
+  return (
+    <div className="flex justify-center">
+      <div className="flex flex-col m-3 rounded shadow border flex-1 max-w-[500px] p-3">
+        <div className="flex items-center gap-2 flex-1">
+          <User size={15} /> {user.name}
+        </div>
+        <div className="flex items-center gap-2 flex-1">
+          <Users size={15} /> {team.name}
+        </div>
+      </div>
+    </div>
+  );
 }

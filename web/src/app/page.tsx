@@ -14,6 +14,7 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [quizcode, setQuizcode] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
+  const [isLogined, setLogined] = useState(false);
   const router = useRouter();
   const { setUser, setQuiz } = useQuiz();
 
@@ -31,6 +32,7 @@ export default function Home() {
         localStorage.setItem("jwtToken", token);
         setUser((user) => ({ ...user, email }));
         setQuiz((old) => ({ ...old, quizcode }));
+        setLogined(true);
         // goto /[quizcode]
         router.replace("/" + quizcode);
       } else {
@@ -81,9 +83,9 @@ export default function Home() {
           placeholder="xxx-yyy"
           required
         />
-        <Button className="mt-3" {...(isSubmitting ? { disabled: true } : {})}>
+        {isLogined ? <Button className="mt-3" disabled>Login Successfull</Button>:<Button className="mt-3" {...(isSubmitting ? { disabled: true } : {})}>
           {isSubmitting ? "Logging in" : "Login"}
-        </Button>
+        </Button>}
       </form>
     </div>
   );

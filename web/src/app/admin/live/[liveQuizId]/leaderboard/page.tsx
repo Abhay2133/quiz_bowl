@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipProvider,
@@ -8,7 +9,7 @@ import {
 import { useLiveQuiz } from "@/context/LiveQuizContext";
 import { fetchLeaderboard } from "@/services/liveQuizService";
 import { errorToast } from "@/util/errors";
-import { ArrowLeft, Radio } from "lucide-react";
+import { ArrowLeft, Loader2Icon, Radio, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
@@ -17,11 +18,14 @@ export default function LeaderboardPage({ params }: any) {
   const { liveQuiz } = useLiveQuiz();
   const { liveQuizId } = params;
   const router = useRouter();
+
+  const [isLoading, setLoading] = useState(true);
   const [leaderboard, setLeaderboard] = useState<
     { team: string; score: number }[]
   >([]);
 
   const _loadLeaderboard = async () => {
+    setLoading(true);
     try {
       const res = await fetchLeaderboard(parseInt(liveQuizId));
       const data = await res.json();
@@ -32,6 +36,8 @@ export default function LeaderboardPage({ params }: any) {
       }
     } catch (e) {
       errorToast(`Failed to load Leaderboard`, e);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -42,7 +48,8 @@ export default function LeaderboardPage({ params }: any) {
     <div>
       <Header name={liveQuiz.name} backHref={`/admin/live/${liveQuizId}`} />
       {/* <code>{JSON.stringify(leaderboard)}</code> */}
-      <Leaderboard data={leaderboard} />
+      <Leaderboard data={leaderboard} isLoading={isLoading} />
+      {!isLoading && <Button variant={'outline'} onClick={()=>_loadLeaderboard()} className="flex gap-3 mx-auto my-5"><RefreshCcw/> Refresh </Button> }
     </div>
   );
 }
@@ -70,13 +77,23 @@ function Header({ name, backHref }: { name: string; backHref: string }) {
   );
 }
 
-const Leaderboard = ({ data }: { data: { team: string; score: number }[] }) => {
+const Leaderboard = ({
+  data,
+  isLoading,
+}: {
+  isLoading: boolean;
+  data: { team: string; score: number }[];
+}) => {
   return (
     <div className="flex flex-col gap-3 max-w-[500px] mx-auto m-3 rounded-lg border shadow-md p-5">
       <div className="text-2xl font-bold text-center my-4">LEADERBOARD</div>
-      {data.map((val, i) => (
-        <TeamScore index={i + 1} key={i} team={val.team} score={val.score} />
-      ))}
+      {isLoading ? (
+        <div><Loader2Icon size={40} className=" animate-spin my-10 mx-auto"/> </div>
+      ) : (
+        data.map((val, i) => (
+          <TeamScore index={i + 1} key={i} team={val.team} score={val.score} />
+        ))
+      )}
     </div>
   );
 };

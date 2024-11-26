@@ -12,8 +12,8 @@ import {
   formatISODate,
 } from "@/util/datetime";
 import { errorToast } from "@/util/errors";
-import { useRouter } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ReactNode, useEffect, useState } from "react";
 
 export default function LiveQuizLogin({ params }: any) {
   const context = useQuiz();
@@ -25,20 +25,30 @@ export default function LiveQuizLogin({ params }: any) {
     loadQuizInfo(context, router);
   }, []);
 
+  const _onRefresh = async (cb?: any) => {
+    try {
+      await loadQuizInfo(context, router);
+    } catch (error) {
+      errorToast(`Failed to Load quiz data`, error);
+    } finally {
+      if (cb) cb();
+    }
+  };
+
   return (
     <div>
       {/* <div>{user.email}</div>
       <div>{quiz.quizcode}</div> */}
       <Header />
-      <Info />
+      <Info onRefresh={_onRefresh} />
     </div>
   );
 }
 
-function Info() {
+function Info({ onRefresh }: { onRefresh: any }) {
   const { user, team, quiz } = useQuiz();
   const router = useRouter();
-
+  const [isRefreshing, setRefreshing] = useState(false);
   const _logout = () => {
     userLogout();
     router.replace("/");
@@ -46,6 +56,11 @@ function Info() {
 
   const _start = () => {
     router.push(`/${quiz.quizcode}/live`);
+  };
+
+  const _onRefresh = () => {
+    setRefreshing(true);
+    onRefresh(() => setRefreshing(false));
   };
 
   return (
@@ -70,8 +85,14 @@ function Info() {
           Logout
         </Button>
         {/* <Button className="focus:ring-blue-500 focus:border-blue-500">Start Quiz</Button> */}
-
-        {!!user.id && (
+        <Button
+          variant={"outline"}
+          {...(isRefreshing ? { disabled: true } : {})}
+          onClick={_onRefresh}
+        >
+          {isRefreshing ? "Refreshing" : "Refresh"}
+        </Button>
+        {!!user.id && quiz.status == "ACTIVE" && (
           <button
             // type="submit"
             onClick={() => _start()}

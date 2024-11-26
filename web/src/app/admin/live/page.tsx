@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import ConfirmDialog from "@/components/confirm-dialog";
 
 const Loading = () => {
   return (
@@ -67,7 +68,13 @@ export default function LiveQuizPage() {
   };
 
   const _onEdit = (liveQuiz: Partial<LiveQuiz>) => {};
-  const _onDelete = async (liveQuiz: Partial<LiveQuiz>) => {
+  const _onDelete = (liveQuiz: Partial<LiveQuiz>) => {
+    setDelDialog({
+      open: true,
+      liveQuiz: liveQuiz,
+    });
+  };
+  const _doDelete = async (liveQuiz: Partial<LiveQuiz>, cb?:any) => {
     try {
       if (!liveQuiz.id) return toast(`Invalid liveQuiz id (${liveQuiz.id})`);
       toast(`Deleting Live-Quiz '${liveQuiz.name}' `);
@@ -81,12 +88,22 @@ export default function LiveQuizPage() {
       }
     } catch (e) {
       errorToast(`Failed to Delete liveQuiz "${liveQuiz.name}"`, e);
+    }finally{
+      if(cb) cb();
     }
   };
 
   const _onCreate = async () => {
     router.push(`/admin/live/new`);
   };
+
+  const [delDialog, setDelDialog] = useState<{
+    liveQuiz: Partial<LiveQuiz> | null;
+    open: boolean;
+  }>({
+    liveQuiz: null,
+    open: false,
+  });
 
   return (
     <div>
@@ -102,6 +119,24 @@ export default function LiveQuizPage() {
           <DataTable columns={columns} data={data} onCreate={_onCreate} />
         )}
       </div>
+
+      {/* Delete confimation dialog */}
+      <ConfirmDialog
+        title= {`Delete "${delDialog.liveQuiz?.name}"`}
+        body={`All the submission will also get deleted`}
+        footer={
+          <Button
+            variant={"destructive"}
+            onClick={() => delDialog.liveQuiz && _doDelete(delDialog.liveQuiz, setDelDialog((old)=>({...old, open:false})))}
+          >
+            Delete
+          </Button>
+        }
+        open={delDialog.open}
+        onOpenChange={(open: boolean) =>
+          setDelDialog((old) => ({ ...old, open }))
+        }
+      />
     </div>
   );
 }
